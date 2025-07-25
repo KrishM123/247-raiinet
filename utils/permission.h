@@ -3,9 +3,10 @@
 
 #include <memory>
 #include <vector>
-#include "../game/player.h"
 
 using namespace std;
+
+class Player;
 
 class Permission
 {
@@ -16,6 +17,7 @@ private:
 public:
   Permission() : owner{nullptr}, visibleTo{} {}
   Permission(shared_ptr<Player> owner) : owner{owner}, visibleTo{} {}
+  ~Permission();
 
   shared_ptr<Player> getOwner() const;
   bool viewableBy(const Player &player) const;

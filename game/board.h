@@ -1,13 +1,14 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "cell.h"
-#include "occupant.h"
-#include "position.h"
+#include "../utils/position.h"
 #include <vector>
 #include <memory>
 
 using namespace std;
+
+class Cell;
+class Occupant;
 
 class Board
 {
@@ -16,6 +17,7 @@ class Board
 
 public:
   Board() : grid{GRID_SIZE, vector<unique_ptr<Cell>>(GRID_SIZE)} {}
+  ~Board();
 
   bool isValidPosition(const Position &pos);
   Cell &getCell(Position pos);

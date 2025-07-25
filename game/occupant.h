@@ -11,6 +11,7 @@ public:
   Permission permission;
 
   Occupant(const Position &pos, const Permission &perm) : position{pos}, permission{perm} {}
+  ~Occupant();
 
   Position &getPosition();
   void setPosition(const Position &pos);
