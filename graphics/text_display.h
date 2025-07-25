@@ -1,0 +1,4 @@
+#ifndef TEXT_DISPLAY_H
+#define TEXT_DISPLAY_H
+
+#endif // TEXT_DISPLAY_H

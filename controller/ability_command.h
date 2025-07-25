@@ -1,0 +1,4 @@
+#ifndef ABILITY_COMMAND_H
+#define ABILITY_COMMAND_H
+
+#endif // ABILITY_COMMAND_H

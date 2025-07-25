@@ -1,0 +1,4 @@
+#ifndef MOVE_COMMAND_H
+#define MOVE_COMMAND_H
+
+#endif // MOVE_COMMAND_H
