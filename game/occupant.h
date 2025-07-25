@@ -1,7 +1,8 @@
 #ifndef OCCUPANT_H
 #define OCCUPANT_H
 
-#include "position.h"
+#include "../utils/position.h"
+#include "../utils/permission.h"
 
 class Occupant
 {
