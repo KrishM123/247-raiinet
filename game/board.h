@@ -7,15 +7,20 @@
 #include <vector>
 #include <memory>
 
+using namespace std;
+
 class Board
 {
-  std::vector<std::vector<std::unique_ptr<Cell>>> grid;
+  static const int GRID_SIZE = 8;
+  vector<vector<unique_ptr<Cell>>> grid;
 
 public:
-  bool isValidPosition();
+  Board() : grid{GRID_SIZE, vector<unique_ptr<Cell>>(GRID_SIZE)} {}
+
+  bool isValidPosition(const Position &pos);
   Cell &getCell(Position pos);
-  void placeOccupant(std::shared_ptr<Occupant> occupant, const Position &pos);
-  void removeOccupant(std::shared_ptr<Occupant> occupant, const Position &pos);
+  void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
+  void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
 };
 
 #endif // BOARD_H
