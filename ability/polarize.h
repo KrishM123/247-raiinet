@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Polarize : public Ability {
+class Polarize final : public Ability {
 public:
-    using Ability::Ability;
+    Polarize(GameState& gameState);
+    ~Polarize() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 

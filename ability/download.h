@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Download : public Ability {
+class Download final : public Ability {
 public:
-    using Ability::Ability;
+    Download(GameState& gameState);
+    ~Download() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 

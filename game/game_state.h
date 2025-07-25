@@ -3,16 +3,20 @@
 
 #include <vector>
 #include <memory>
+#include "board.h" // Include the full definition of Board
 
 // Forward declarations
-class Board;
 class Player;
 class Link;
 class Occupant;
 class Position;
 
-class GameState {
+class GameState final {
 public:
+    // Constructor and Destructor
+    GameState();
+    virtual ~GameState();
+
     // Public methods
     std::vector<std::shared_ptr<Link>> getLinks();
     Board& getBoard();

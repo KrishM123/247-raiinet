@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Scan : public Ability {
+class Scan final : public Ability {
 public:
-    using Ability::Ability;
+    Scan(GameState& gameState);
+    ~Scan() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 

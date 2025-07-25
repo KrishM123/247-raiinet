@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class BarbedWire : public Ability {
+class BarbedWire final : public Ability {
 public:
-    using Ability::Ability;
+    BarbedWire(GameState& gameState);
+    ~BarbedWire() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 

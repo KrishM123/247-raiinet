@@ -6,9 +6,10 @@
 // Forward-declaration
 class Player;
 
-class Trigger : public Occupant {
+class Trigger final : public Occupant {
 public:
-    using Occupant::Occupant; // Inherit constructor
+    Trigger();
+    ~Trigger() override;
 
     void trigger(Player& triggeredBy);
 

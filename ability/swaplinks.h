@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Swaplinks : public Ability {
+class Swaplinks final : public Ability {
 public:
-    using Ability::Ability;
+    Swaplinks(GameState& gameState);
+    ~Swaplinks() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 

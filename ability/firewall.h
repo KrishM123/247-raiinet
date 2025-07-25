@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Firewall : public Ability {
+class Firewall final : public Ability {
 public:
-    using Ability::Ability; // Inherit constructor
+    Firewall(GameState& gameState);
+    ~Firewall() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 

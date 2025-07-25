@@ -12,7 +12,7 @@ class GameState;
 class Ability {
 protected:
     // Only allow subclasses to instantiate
-    Ability(Player& owner, GameState& gameState);
+    Ability(GameState& gameState);
 
 public:
     virtual ~Ability() = default;
@@ -23,7 +23,6 @@ public:
     void notifyAbilityUsed();
 
 private:
-    Player& owner;
     GameState& gameState;
 };
 

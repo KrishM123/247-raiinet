@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class LinkBoost : public Ability {
+class LinkBoost final : public Ability {
 public:
-    using Ability::Ability;
+    LinkBoost(GameState& gameState);
+    ~LinkBoost() override;
+
     void execute(const std::vector<std::string>& args) override;
 };
 
