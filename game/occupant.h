@@ -15,9 +15,7 @@ public:
   virtual ~Occupant();
 
   Position getPosition();
-  Permission getPermission();
   void setPosition(const Position &pos);
-  void setPermission(const Permission &perm);
 };
 
 #endif // OCCUPANT_H
