@@ -5,7 +5,7 @@
 
 class Telescope final : public Ability {
 public:
-    Telescope(GameState& gameState);
+    Telescope(Permission& permission, GameState& gameState);
     ~Telescope() override;
 
     void execute(const Payload& payload) override;

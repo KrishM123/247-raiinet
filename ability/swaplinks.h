@@ -5,7 +5,7 @@
 
 class Swaplinks final : public Ability {
 public:
-    Swaplinks(GameState& gameState);
+    Swaplinks(Permission& permission, GameState& gameState);
     ~Swaplinks() override;
 
     void execute(const Payload& payload) override;

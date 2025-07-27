@@ -5,7 +5,7 @@
 
 class LinkBoost final : public Ability {
 public:
-    LinkBoost(GameState& gameState);
+    LinkBoost(Permission& permission, GameState& gameState);
     ~LinkBoost() override;
 
     void execute(const Payload& payload) override;

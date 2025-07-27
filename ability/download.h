@@ -5,7 +5,7 @@
 
 class Download final : public Ability {
 public:
-    Download(GameState& gameState);
+    Download(Permission& permission, GameState& gameState);
     ~Download() override;
 
     void execute(const Payload& payload) override;

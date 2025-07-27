@@ -5,7 +5,7 @@
 
 class BarbedWire final : public Ability {
 public:
-    BarbedWire(GameState& gameState);
+    BarbedWire(Permission& permission, GameState& gameState);
     ~BarbedWire() override;
 
     void execute(const Payload& payload) override;

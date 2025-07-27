@@ -5,18 +5,20 @@
 #include <vector>
 #include <string>
 
-class Player;
+class Permission;
 class GameState;
 class Payload;
 
 class Ability {
 protected:
-    Ability(Player& owner, GameState& gameState);
+    Ability(Permission& permission, GameState& gameState);
 
 public:
     virtual ~Ability() = default;
 
     virtual void execute(const Payload& payload) = 0;
+    Permission getPermission() const;
+    void setPermission(const Permission& permission);
 
     void notifyAbilityUsed();
 
