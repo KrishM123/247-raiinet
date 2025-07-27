@@ -4,12 +4,15 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include "../utils/permission.h"
 
-class Permission;
 class GameState;
 class Payload;
 
 class Ability {
+    Permission permission;
+    GameState& gameState;
+
 protected:
     Ability(Permission& permission, GameState& gameState);
 
@@ -22,8 +25,6 @@ public:
 
     void notifyAbilityUsed();
 
-private:
-    GameState& gameState;
 };
 
 #endif // ABILITY_H
