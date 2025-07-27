@@ -11,12 +11,13 @@
 
 class Player
 {
+    int playerNumber;
     std::vector<std::shared_ptr<Link>> links;
     std::vector<std::shared_ptr<Ability>> abilities;
     std::vector<std::shared_ptr<Link>> downloadedLinks;
 
 public:
-    Player();
+    Player(int playerNumber, string links, string abilities);
     ~Player();
 
     std::vector<std::shared_ptr<Link>> getLinks();

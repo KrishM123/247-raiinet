@@ -20,7 +20,7 @@ public:
   ~Board();
 
   bool isValidPosition(const Position &pos);
-  Cell& getCell(const Position& pos);
+  Cell &getCell(const Position &pos);
   void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
 };

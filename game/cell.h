@@ -7,20 +7,20 @@
 
 class Occupant;
 
-class Cell {
+class Cell
+{
     std::vector<std::shared_ptr<Occupant>> occupants;
     const Position position;
     int type;
 
 public:
-    Cell(const Position& position, int type);
+    Cell(const Position &position, int type);
     ~Cell();
 
     std::vector<std::shared_ptr<Occupant>> getOccupants() const;
     Position getPosition() const;
     int getType() const;
-    
-    void setPosition(const Position& position);
+
     void setType(int type);
     void placeOccupant(std::shared_ptr<Occupant> occupant);
     void removeOccupant(std::shared_ptr<Occupant> occupant);
