@@ -25,6 +25,7 @@ public:
 
     std::vector<std::shared_ptr<Link>> getLinks();
     Board &getBoard();
+    std::vector<std::shared_ptr<Player>> getPlayers();
     Player &getCurPlayer() const;
     bool isWon() const;
     std::shared_ptr<Player> getWinner() const;

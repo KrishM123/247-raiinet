@@ -30,6 +30,11 @@ Board &GameState::getBoard()
   return board;
 }
 
+vector<shared_ptr<Player>> GameState::getPlayers()
+{
+  return players;
+}
+
 Player &GameState::getCurPlayer() const
 {
   return *curPlayer;
