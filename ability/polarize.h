@@ -6,7 +6,7 @@
 class Polarize : public Ability {
 public:
     using Ability::Ability;
-    void execute(const std::vector<std::string>& args) override;
+    void execute(const Payload& payload) override;
 };
 
 #endif // POLARIZE_H 

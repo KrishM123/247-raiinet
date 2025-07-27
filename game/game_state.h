@@ -3,9 +3,8 @@
 
 #include <vector>
 #include <memory>
+#include "board.h"
 
-// Forward declarations
-class Board;
 class Player;
 class Link;
 class Occupant;
@@ -13,7 +12,6 @@ class Position;
 
 class GameState {
 public:
-    // Public methods
     std::vector<std::shared_ptr<Link>> getLinks();
     Board& getBoard();
     Player& getCurPlayer();
@@ -24,12 +22,10 @@ public:
     void removeOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
 
 private:
-    // Private members
     Board board;
     std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Player> curPlayer;
 
-    // Private methods
     void notifyNextTurn();
     void notifyGameOver();
 };

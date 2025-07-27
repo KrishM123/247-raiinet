@@ -5,8 +5,8 @@
 
 class Firewall : public Ability {
 public:
-    using Ability::Ability; // Inherit constructor
-    void execute(const std::vector<std::string>& args) override;
+    using Ability::Ability;
+    void execute(const Payload& payload) override;
 };
 
-#endif // FIREWALL_H 
+#endif // FIREWALL_H    

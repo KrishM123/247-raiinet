@@ -21,8 +21,8 @@ public:
 
   shared_ptr<Player> getOwner() const;
   bool viewableBy(const Player &player) const;
-  void setOwner(shared_ptr<Player> newOwner);
-  void setVisibility(const vector<shared_ptr<Player>> &players);
+  void setOwner(const Player &newOwner);
+  void setVisibility(vector<shared_ptr<Player>> &players);
 };
 
 #endif // PERMISSION_H

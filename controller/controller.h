@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include "command.h"
-#include "game/game_state.h"
+#include "../game/game_state.h"
 
 class Command;
 class View;
