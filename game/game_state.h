@@ -19,7 +19,7 @@ class GameState final {
     void notifyGameOver();
     
 public:
-    GameState();
+    GameState(int );
     virtual ~GameState();
 
     std::vector<std::shared_ptr<Link>> getLinks();
@@ -30,8 +30,6 @@ public:
     void moveLink(std::shared_ptr<Link> link, const Position& newPos);
     void addOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
     void removeOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
-
-private:
 };
 
 #endif // GAME_STATE_H
