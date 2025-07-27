@@ -1,7 +1,13 @@
-#include "controller.h"
 #include <fstream>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include "controller.h"
+#include "move_command.h"
+#include "ability_command.h"
+#include "../graphics/view.h"
 
 Controller::Controller(int numPlayers, int boardSize) : 
     graphicsEnabled{false},
@@ -46,4 +52,48 @@ std::vector<std::string> Controller::loadLinkFiles() {
         file.close();
     }
     return links;
+}
+
+void Controller::play() {
+    std::cout << "Game started" << std::endl;
+    while (!gameState.isWon()) {
+        std::string input;
+        std::cin >> input;
+        std::unique_ptr<Command> command = parseInput(input);
+        executeCommand(std::move(command));
+    }
+    std::cout << "Game over" << std::endl;
+}
+
+void Controller::play(std::string filename) {
+    std::ifstream file(filename);
+    std::string line;
+    while (std::getline(file, line) && !gameState.isWon()) {
+        std::unique_ptr<Command> command = parseInput(line);
+        if (command != nullptr) {
+            executeCommand(std::move(command));
+        }
+    }
+}
+
+std::unique_ptr<Command> Controller::parseInput(const std::string& input) {
+    std::stringstream ss(input);
+    std::string command;
+    ss >> command;
+    if (command.find("move") != std::string::npos) {
+        return std::make_unique<MoveCommand>(command);
+    } else if (command.find("ability") != std::string::npos) {
+        return std::make_unique<AbilityCommand>(command);
+    } else if (command.find("board") != std::string::npos) {
+        views[0].printGame(gameState);
+    } else if (command.find("sequence") != std::string::npos) {
+        play(command.substr(9));
+    } else if (command.find("quit") != std::string::npos) {
+        gameState.endGame();
+    }
+    return nullptr;
+}
+
+void Controller::executeCommand(std::unique_ptr<Command> command) {
+    command->execute();
 }

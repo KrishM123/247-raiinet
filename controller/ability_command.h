@@ -1,11 +1,12 @@
 #ifndef ABILITY_COMMAND_H
 #define ABILITY_COMMAND_H
 
+#include <string>
 #include "command.h"
 
 class AbilityCommand final : public Command {
 public:
-    AbilityCommand();
+    AbilityCommand(std::string command);
     ~AbilityCommand();
     void execute() override;
 };
