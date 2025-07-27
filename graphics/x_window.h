@@ -5,8 +5,8 @@
 
 class XWindow final {
 public:
-    XWindow(); // Constructor
-    virtual ~XWindow(); // Destructor
+    XWindow();
+    virtual ~XWindow();
 
     int getWidth() const;
     int getHeight() const;

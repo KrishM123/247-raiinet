@@ -12,15 +12,15 @@ class Position;
 
 class Board final
 {
-  static const int GRID_SIZE = 8;
+  int gridSize;
   vector<vector<unique_ptr<Cell>>> grid;
 
 public:
-  Board() : grid{GRID_SIZE, vector<unique_ptr<Cell>>(GRID_SIZE)} {}
+  Board(int gridSize);
   ~Board();
 
   bool isValidPosition(const Position &pos);
-  Cell& getCell(Position pos);
+  Cell& getCell(const Position& pos);
   void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
 };

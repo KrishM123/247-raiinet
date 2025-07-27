@@ -11,26 +11,27 @@ class Occupant;
 class Position;
 
 class GameState final {
-public:
-    GameState();
-    virtual ~GameState();
-
-    std::vector<std::shared_ptr<Link>> getLinks();
-    Board& getBoard();
-    Player& getCurPlayer();
-    bool isWon();
-    Player getWinner();
-    void moveLink(std::shared_ptr<Link> link, const Position& newPos);
-    void addOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
-    void removeOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
-
-private:
     Board board;
     std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Player> curPlayer;
 
     void notifyNextTurn();
     void notifyGameOver();
+    
+public:
+    GameState();
+    virtual ~GameState();
+
+    std::vector<std::shared_ptr<Link>> getLinks();
+    Board& getBoard();
+    Player& getCurPlayer() const;
+    bool isWon() const;
+    Player getWinner() const;
+    void moveLink(std::shared_ptr<Link> link, const Position& newPos);
+    void addOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
+    void removeOccupant(std::shared_ptr<Occupant> occupant, const Position& pos);
+
+private:
 };
 
 #endif // GAME_STATE_H

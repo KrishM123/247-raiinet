@@ -6,8 +6,8 @@
 class Position {
     int x, y;
 public:
-    Position(int x, int y): x{x}, y{y} {}
-    Position(const Position &other): x{other.x}, y{other.y} {}
+    Position(int x, int y);
+    Position(const Position &other);
     void operator=(const Position &other);
     ~Position();
 

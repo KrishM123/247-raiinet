@@ -15,8 +15,8 @@ private:
   vector<shared_ptr<Player>> visibleTo;
 
 public:
-  Permission() : owner{nullptr}, visibleTo{} {}
-  Permission(shared_ptr<Player> owner) : owner{owner}, visibleTo{} {}
+  Permission();
+  Permission(shared_ptr<Player> owner);
   ~Permission();
 
   shared_ptr<Player> getOwner() const;

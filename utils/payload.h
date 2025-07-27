@@ -8,10 +8,12 @@ class Payload {
     std::map<std::string, std::string> payload;
 public:
     Payload();
-    ~Payload();
+    Payload(const std::map<std::string, std::string>& payload);
+    ~Payload(); 
 
-    std::map<std::string, std::string>& getPayload();
+    std::map<std::string, std::string> getPayload() const;
     void setPayload(const std::map<std::string, std::string>& payload);
+    
     void add(const std::string& key, const std::string& value);
     void remove(const std::string& key);
     void clear();

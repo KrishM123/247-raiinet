@@ -11,11 +11,13 @@ public:
   Permission permission;
 
   Occupant();
-  Occupant(const Position &pos, const Permission &perm) : position{pos}, permission{perm} {}
+  Occupant(const Position &pos, const Permission &perm);
   virtual ~Occupant();
 
-  Position& getPosition();
+  Position getPosition();
+  Permission getPermission();
   void setPosition(const Position &pos);
+  void setPermission(const Permission &perm);
 };
 
 #endif // OCCUPANT_H
