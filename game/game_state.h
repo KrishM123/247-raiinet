@@ -19,7 +19,7 @@ class GameState final {
     void notifyGameOver();
     
 public:
-    GameState(int );
+    GameState(int numPlayers, int boardSize);
     virtual ~GameState();
 
     std::vector<std::shared_ptr<Link>> getLinks();
