@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Firewall : public Ability {
+class Firewall final : public Ability {
 public:
-    using Ability::Ability;
+    Firewall(GameState& gameState);
+    ~Firewall() override;
+
     void execute(const Payload& payload) override;
 };
 

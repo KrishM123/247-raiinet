@@ -21,7 +21,6 @@ public:
     void notifyAbilityUsed();
 
 private:
-    Player& owner;
     GameState& gameState;
 };
 

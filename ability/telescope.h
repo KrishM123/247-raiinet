@@ -3,9 +3,11 @@
 
 #include "ability.h"
 
-class Telescope : public Ability {
+class Telescope final : public Ability {
 public:
-    using Ability::Ability;
+    Telescope(GameState& gameState);
+    ~Telescope() override;
+
     void execute(const Payload& payload) override;
 };
 

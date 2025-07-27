@@ -5,8 +5,11 @@
 
 class Player;
 
-class Trigger : public Occupant {
+class Trigger final : public Occupant {
 public:
+    Trigger();
+    ~Trigger() override;
+
     void trigger(Player& triggeredBy);
 
 private:

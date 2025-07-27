@@ -10,8 +10,11 @@ class Link;
 class Occupant;
 class Position;
 
-class GameState {
+class GameState final {
 public:
+    GameState();
+    virtual ~GameState();
+
     std::vector<std::shared_ptr<Link>> getLinks();
     Board& getBoard();
     Player& getCurPlayer();
