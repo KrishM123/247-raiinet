@@ -12,18 +12,18 @@ class Command;
 class View;
 
 class Controller final {
-    std::vector<View> views;
-    GameState gameState;
-    std::vector<std::string> linkFiles;
-    std::vector<std::string> abilities;
     bool graphicsEnabled;
     int boardSize;
     int numPlayers;
+    std::vector<std::string> linkFiles;
+    std::vector<std::string> abilities;
+    std::vector<View> views;
+    GameState gameState;
     
     std::unique_ptr<Command> parseInput(const std::string& input);
     void executeCommand(std::unique_ptr<Command> command);
     void parseCommandLineArgs(int argc, char* argv[]);
-    void loadLinksFromFile(const std::string& filename, std::shared_ptr<Player> player);
+    std::vector<std::string> loadLinkFiles();
     void loadAbilities(const std::string& abilities, std::shared_ptr<Player> player);
 
 public:
