@@ -5,11 +5,11 @@
 
 using namespace std;
 
-GameState::GameState(int numPlayers, int boardSize) : board{boardSize}
+GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector<string> abilities) : board{boardSize}
 {
   for (int i = 0; i < numPlayers; i++)
   {
-    players.push_back(make_shared<Player>());
+    players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
   }
   curPlayer = players[0];
 }

@@ -20,7 +20,8 @@ class GameState final
     void notifyGameOver();
 
 public:
-    GameState(int numPlayers, int boardSize);
+    GameState();
+    GameState(int numPlayers, int boardSize, vector<string> links, vector<string> abilities);
     ~GameState();
 
     std::vector<std::shared_ptr<Link>> getLinks();
