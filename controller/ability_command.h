@@ -5,8 +5,9 @@
 #include "command.h"
 
 class AbilityCommand final : public Command {
+    std::string command;
 public:
-    AbilityCommand(std::string command);
+    AbilityCommand(std::string command, GameState& gameState);
     ~AbilityCommand();
     void execute() override;
 };

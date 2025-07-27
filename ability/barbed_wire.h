@@ -9,6 +9,7 @@ public:
     ~BarbedWire() override;
 
     void execute(const Payload& payload) override;
+    std::string getName() override;
 };
 
 #endif // BARBED_WIRE_H 

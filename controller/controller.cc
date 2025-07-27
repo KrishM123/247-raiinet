@@ -81,9 +81,9 @@ std::unique_ptr<Command> Controller::parseInput(const std::string& input) {
     std::string command;
     ss >> command;
     if (command.find("move") != std::string::npos) {
-        return std::make_unique<MoveCommand>(command);
+        return std::make_unique<MoveCommand>(command.substr(5), gameState);
     } else if (command.find("ability") != std::string::npos) {
-        return std::make_unique<AbilityCommand>(command);
+        return std::make_unique<AbilityCommand>(command.substr(7), gameState);
     } else if (command.find("board") != std::string::npos) {
         views[0].printGame(gameState);
     } else if (command.find("sequence") != std::string::npos) {

@@ -1,9 +1,13 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+class GameState;
+
 class Command {
+protected:
+    GameState& gameState;
 public:
-    Command();
+    Command(GameState& gameState) : gameState(gameState) {}
     virtual ~Command();
     virtual void execute() = 0;
 };
