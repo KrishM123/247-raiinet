@@ -2,17 +2,19 @@
 #define TRIGGER_H
 
 #include "../game/occupant.h"
+#include <functional>
 
-class Player;
+class Link;
 
 class Trigger final : public Occupant {
 public:
-    Trigger();
+    Trigger(std::function<void(Link&)> action);
     ~Trigger() override;
 
-    void trigger(Player& triggeredBy);
+    void trigger(Link& triggeredBy);
 
 private:
+    std::function<void(Link&)> triggerAction;
     void notifyRuleUsed();
 };
 
