@@ -187,27 +187,6 @@ void GameState::moveLink(shared_ptr<Link> link, string direction)
   board.placeOccupant(link, newPos);
 }
 
-void GameState::serverLogic(shared_ptr<Link> link, Cell &cell)
-{
-  shared_ptr<ServerTrigger> serverTrigger;
-
-  for (auto &occupant : cell.getOccupants())
-  {
-    if (auto trigger = dynamic_pointer_cast<ServerTrigger>(occupant))
-    {
-      serverTrigger = trigger;
-      break;
-    }
-  }
-
-  if (serverTrigger)
-  {
-    Payload payload;
-    payload.add("link", to_string(link->getName()));
-    serverTrigger->trigger(payload);
-  }
-}
-
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)
 {
   board.placeOccupant(occupant, pos);
