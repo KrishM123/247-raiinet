@@ -5,16 +5,19 @@
 #include <functional>
 
 class Link;
+class Payload;
+class Position;
+class Permission;
 
-class Trigger final : public Occupant {
+class Trigger : public Occupant {
 public:
-    Trigger(std::function<void(Link&)> action);
+    Trigger(const Position& pos, const Permission& perm, std::function<void(const Payload&)> action);
     ~Trigger() override;
 
-    void trigger(Link& triggeredBy);
+    void trigger(const Payload& payload);
 
 private:
-    std::function<void(Link&)> triggerAction;
+    std::function<void(const Payload&)> triggerAction;
     void notifyRuleUsed();
 };
 

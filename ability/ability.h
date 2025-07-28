@@ -15,17 +15,13 @@ public:
     bool used = false;
     std::string name;
 
+    virtual ~Ability();
+    virtual void execute(const Payload& payload) = 0;
+    void notifyAbilityUsed();
+
 protected:
     GameState& gameState;
     Ability(std::string name, Permission& permission, GameState& gameState);
-
-public:
-    virtual ~Ability();
-
-    virtual void execute(const Payload& payload) = 0;
-    
-    void notifyAbilityUsed();
-
 };
 
 #endif // ABILITY_H
