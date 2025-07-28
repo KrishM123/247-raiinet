@@ -1,8 +1,7 @@
 #include "../ability/barbed_wire.h"
 #include "../game/game_state.h"
-#include "../game/player.h"
 #include "../game/link.h"
-#include "trigger.h" // Corrected path
+#include "trigger.h"
 #include "../game/board.h"
 #include "../game/cell.h"
 #include "../utils/payload.h"

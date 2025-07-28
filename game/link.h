@@ -2,6 +2,7 @@
 #define LINK_H
 
 #include <map>
+#include <string>
 #include "../utils/position.h"
 #include "../utils/permission.h"
 #include "occupant.h"
@@ -24,6 +25,7 @@ public:
     const std::map<std::string, Position> &getMoves() const;
     bool getIsDownloaded() const;
     std::string getDetails() const;
+    char getName() const;
 
     bool canMove(const std::string &direction);
     void setMoves(const std::map<std::string, Position> &moves);
