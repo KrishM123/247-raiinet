@@ -9,5 +9,7 @@ Ability::Ability(string name, Permission& permission, GameState& gameState) :
 Ability::~Ability() {}
 
 void Ability::notifyAbilityUsed() {
-    // Implement this later
+    this->used = true;
+    this->permission.setVisibleTo(gameState.getPlayers());
+    // TODO: Fire a GameEvent if necessary
 } 

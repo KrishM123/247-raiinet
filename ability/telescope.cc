@@ -1,6 +1,7 @@
 #include "telescope.h"
 #include "../game/game_state.h"
-#include "../utils/payload.h"
+#include "../game/player.h"
+#include <vector>
 
 using namespace std;
 
@@ -10,9 +11,25 @@ Telescope::Telescope(Permission& permission, GameState& gameState) :
 Telescope::~Telescope() {}
 
 void Telescope::execute(const Payload& payload) {
-    // TODO: Implement Telescope logic
-    // 1. This ability takes no arguments from the payload.
-    // 2. It should fire a GameEvent containing the opponent's ability list.
-    // 3. The View will be responsible for catching this event and displaying the info.
+    Player& currentPlayer = gameState.getCurPlayer();
+    shared_ptr<Player> opponent = nullptr;
+    shared_ptr<Player> currentPlayerPtr = nullptr;
+
+    // Find both the opponent and the shared_ptr for the current player
+    for (auto& player : gameState.getPlayers()) {
+        if (player.get() != &currentPlayer) {
+            opponent = player;
+        } else {
+            currentPlayerPtr = player;
+        }
+    }
+
+    // If we found both, grant permission
+    if (opponent && currentPlayerPtr) {
+        for (auto& ability : opponent->getAbilities()) {
+            ability->permission.addViewer(currentPlayerPtr);
+        }
+    }
+
     notifyAbilityUsed();
 } 
