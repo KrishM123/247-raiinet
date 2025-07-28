@@ -8,9 +8,14 @@ Board::Board(int gridSize) : gridSize{gridSize}
   grid.resize(gridSize + 2);
   for (int i = 0; i < gridSize + 2; i++)
   {
-    grid[i].resize(gridSize);
-    for (int j = 0; j < gridSize; j++)
+    grid[i].resize(gridSize + 2);
+    for (int j = 0; j < gridSize + 2; j++)
     {
+      if (j == 0 || j == gridSize + 1)
+      {
+        grid[i][j] = std::make_unique<Cell>(Position{i, j}, -1);
+        continue;
+      }
       if (i == 0)
       {
         grid[i][j] = std::make_unique<Cell>(Position{i, j}, 11);
@@ -41,7 +46,7 @@ Board::~Board() {};
 bool Board::isValidPosition(const Position &pos, int curPlayer)
 {
   // Check if position is on a server cell or out of bounds
-  if (getCell(pos).getType() == curPlayer % 10)
+  if (getCell(pos).getType() == curPlayer % 10 || getCell(pos).getType() == -1)
   {
     return false;
   }
@@ -63,4 +68,9 @@ void Board::placeOccupant(shared_ptr<Occupant> occupant, const Position &pos)
 void Board::removeOccupant(shared_ptr<Occupant> occupant, const Position &pos)
 {
   grid[pos.getPosition().first][pos.getPosition().second]->removeOccupant(occupant);
+}
+
+int Board::getGridSize()
+{
+  return gridSize;
 }
