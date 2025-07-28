@@ -9,6 +9,7 @@ class GameState;
 
 class View {
 protected:
+    int playerView;
     GameState& gameState;
     int gridSize;
     std::vector<std::vector<std::string>> board;
@@ -19,7 +20,7 @@ protected:
     std::vector<int> downloadedVirus;
 
 public:
-    View(GameState& gameState);
+    View(GameState& gameState, int playerView);
     virtual ~View() = default;
 
     void notify(const GameEvent& event);

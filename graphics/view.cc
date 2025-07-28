@@ -8,7 +8,8 @@
 #include "../ability/ability.h"
 #include "../controller/game_event.h"
 
-View::View(GameState& gameState) : 
+View::View(GameState& gameState, int playerView) : 
+    playerView(playerView),
     gameState(gameState),
     gridSize(gameState.getBoard().getGridSize()),
     board(std::vector<std::vector<std::string>>(gridSize, std::vector<std::string>(gridSize, "."))),

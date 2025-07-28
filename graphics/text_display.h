@@ -9,7 +9,7 @@ class TextDisplay final : public View {
     void printPlayer(int player);
     void printBoard();
 public:
-    TextDisplay(GameState& gameState);
+    TextDisplay(GameState& gameState, int playerView);
     ~TextDisplay() override;
 
     void printGame() override;
