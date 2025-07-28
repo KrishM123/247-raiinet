@@ -11,7 +11,7 @@ public:
     GameEvent();
     ~GameEvent();
     EventType getEventType() const;
-    Payload& getPayload();
+    Payload& getPayload() const;
     void setPayload(const Payload& payload);
 };
 

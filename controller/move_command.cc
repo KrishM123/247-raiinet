@@ -13,7 +13,7 @@ void MoveCommand::execute() {
     std::string direction;
     ss >> direction;
 
-    std::shared_ptr<Link> link_ptr = gameState.getLinks().at(gameState.getCurPlayer().linksMap.at(link[0]));
+    std::shared_ptr<Link> link_ptr = gameState.getCurPlayer().getLinks().at(gameState.getCurPlayer().linksMap.at(link[0]));
 
-    gameState.moveLink(link_ptr, direction);        
+    gameState.moveLink(link_ptr, direction);
 }

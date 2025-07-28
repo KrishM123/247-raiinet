@@ -5,14 +5,12 @@
 #include "x_window.h"
 
 class GameState;
-class GameEvent;
 
 class GraphicsDisplay final : public View {
 public:
     GraphicsDisplay(GameState& gameState);
     ~GraphicsDisplay() override;
 
-    void notify(const GameEvent& event) override;
     void printGame() override;
     void printAbilities() override;
 

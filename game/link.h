@@ -2,6 +2,7 @@
 #define LINK_H
 
 #include <map>
+#include <string>
 #include "../utils/position.h"
 #include "../utils/permission.h"
 #include "occupant.h"
@@ -15,6 +16,8 @@ class Link final : public Occupant
     bool isDownloaded;
 
 public:
+    char id;
+    std::string name;
     Link(int type, int strength, const std::map<std::string, Position> &moves, const Permission &perm);
     ~Link();
 

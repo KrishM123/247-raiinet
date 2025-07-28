@@ -4,14 +4,14 @@
 #include "view.h"
 
 class GameState;
-class GameEvent;
 
 class TextDisplay final : public View {
+    void printPlayer(int player);
+    void printBoard();
 public:
     TextDisplay(GameState& gameState);
     ~TextDisplay() override;
 
-    void notify(const GameEvent& event) override;
     void printGame() override;
     void printAbilities() override;
 };

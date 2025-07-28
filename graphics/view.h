@@ -15,12 +15,14 @@ protected:
     std::vector<std::vector<std::string>> linksOnBoard;
     std::vector<std::vector<std::string>> usedAbilities;
     std::vector<std::vector<std::string>> unusedAbilities;
+    std::vector<int> downloadedData;
+    std::vector<int> downloadedVirus;
 
 public:
     View(GameState& gameState);
     virtual ~View() = default;
 
-    virtual void notify(const GameEvent& event);
+    void notify(const GameEvent& event);
     virtual void printGame() = 0;
     virtual void printAbilities() = 0;
 };
