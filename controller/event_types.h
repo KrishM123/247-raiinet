@@ -1,6 +1,4 @@
 enum class EventType {
-    LinkAdded,
-    LinkRemoved,
     LinkMoved,
     LinkDownloaded,
     LinkStrengthChanged,

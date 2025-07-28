@@ -21,8 +21,6 @@ public:
     Player(int playerNumber, string links, string abilities);
     ~Player();
 
-    std::map<char, int> linksMap;
-
     std::vector<std::shared_ptr<Link>> getLinks();
     std::vector<std::shared_ptr<Ability>> getAbilities();
     std::vector<std::shared_ptr<Link>> getDownloadedLinks();
