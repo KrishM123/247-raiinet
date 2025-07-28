@@ -9,12 +9,12 @@
 AbilityCommand::AbilityCommand(GameState& gameState, Payload& payload) : Command(gameState), command(payload.get("command")) {}
 
 void AbilityCommand::execute() {
-    std::string ability = command.substr(7, 1);
+    std::string ability = command.substr(0, 1);
     bool found = false;
     for (auto& ability_ptr : gameState.getCurPlayer().getAbilities()) {
-        if (ability_ptr->getName() == ability) {
+        if (ability_ptr->name == ability && !ability_ptr->used) {
             found = true;
-            std::map<std::string, std::string> payload = {{"arguments", command.substr(9)}};
+            std::map<std::string, std::string> payload = {{"arguments", command.substr(1)}};
             ability_ptr->execute(Payload(payload));
         }
     }

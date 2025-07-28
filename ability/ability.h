@@ -12,6 +12,8 @@ class Payload;
 class Ability {
 public:
     Permission permission;
+    bool used = false;
+    std::string name;
 
 protected:
     GameState& gameState;
