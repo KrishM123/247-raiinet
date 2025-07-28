@@ -24,7 +24,7 @@ public:
     std::vector<std::shared_ptr<Ability>> getAbilities();
     std::vector<std::shared_ptr<Link>> getDownloadedLinks();
     std::pair<int, int> getScore() const;
-
+    int getPlayerNumber() const;
     void setLinks(const std::vector<std::shared_ptr<Link>> &links);
     void setAbilities(const std::vector<std::shared_ptr<Ability>> &abilities);
     void setDownloadedLinks(const std::vector<std::shared_ptr<Link>> &downloadedLinks);

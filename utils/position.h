@@ -3,8 +3,10 @@
 
 #include <utility>
 
-class Position {
+class Position
+{
     int x, y;
+
 public:
     Position(int x, int y);
     Position(const Position &other);
@@ -16,7 +18,7 @@ public:
     bool operator==(const Position &other) const;
     bool operator!=(const Position &other) const;
     Position operator+(const Position &other) const;
-    Position& operator+=(const Position &other);
+    Position &operator+=(const Position &other);
 };
 
 #endif // POSITION_H

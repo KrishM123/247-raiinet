@@ -6,22 +6,25 @@
 #include "../utils/permission.h"
 #include "occupant.h"
 
-class Link final : public Occupant {
+class Link final : public Occupant
+{
     int type;
+    // 0: Data, 1: Virus
     int strength;
     std::vector<Position> moves;
     bool isDownloaded;
 
 public:
-    Link(int type, int strength, const std::vector<Position>& moves);
+    Link(int type, int strength, const Permission &perm);
     ~Link();
 
     int getType() const;
     int getStrength() const;
-    const std::vector<Position>& getMoves() const;
+    const std::vector<Position> &getMoves() const;
     bool getIsDownloaded() const;
-    
-    void setMoves(const std::vector<Position>& moves);
+    bool canMove(const Position &pos) const;
+
+    void setMoves(const std::vector<Position> &moves);
     void setStrength(int strength);
     void setType(int type);
     void setIsDownloaded(bool isDownloaded);

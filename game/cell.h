@@ -12,6 +12,7 @@ class Cell
     std::vector<std::shared_ptr<Occupant>> occupants;
     const Position position;
     int type;
+    // 0: empty, 1: Player 1 server, 2: Player 2 server, ..., 11: Player 1 boundary, 12: Player 2 boundary, ...
 
 public:
     Cell(const Position &position, int type);

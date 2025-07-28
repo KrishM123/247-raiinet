@@ -1,7 +1,8 @@
 #include "game_state.h"
 #include "player.h"
 #include "link.h"
-#include "occupant.h"
+#include "board.h"
+#include <vector>
 
 using namespace std;
 
@@ -12,6 +13,37 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
     players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
   }
   curPlayer = players[0];
+
+  // place links on board
+  for (int i = 0; i < numPlayers; i++)
+  {
+    auto playerLinks = players[i]->getLinks();
+    for (int j = 0; j < playerLinks.size(); j++)
+    {
+      if (i == 0)
+      {
+        if (j == 3 || j == 4)
+        {
+          board.placeOccupant(playerLinks[j], Position{2, j});
+        }
+        else
+        {
+          board.placeOccupant(playerLinks[j], Position{1, j});
+        }
+      }
+      else if (i == 1)
+      {
+        if (j == 3 || j == 4)
+        {
+          board.placeOccupant(playerLinks[j], Position{boardSize - 1, j});
+        }
+        else
+        {
+          board.placeOccupant(playerLinks[j], Position{boardSize, j});
+        }
+      }
+    }
+  }
 }
 
 vector<shared_ptr<Link>> GameState::getLinks()
@@ -77,12 +109,16 @@ shared_ptr<Player> GameState::getWinner() const
   return nullptr;
 }
 
-void GameState::moveLink(std::shared_ptr<Link> link, const Position &newPos)
+void GameState::moveLink(std::shared_ptr<Link> link, const Position &delta)
 {
   Position oldPos = link->getPosition();
-  board.removeOccupant(link, oldPos);
-  board.placeOccupant(link, newPos);
-  link->setPosition(newPos);
+  Position newPos = oldPos + delta;
+  if (board.isValidPosition(newPos, curPlayer->getPlayerNumber()))
+  {
+    board.removeOccupant(link, oldPos);
+    board.placeOccupant(link, newPos);
+    link->setPosition(newPos);
+  }
 }
 
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)

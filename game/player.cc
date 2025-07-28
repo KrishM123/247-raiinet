@@ -1,8 +1,8 @@
 #include "player.h"
+#include "game_state.h"
 #include "link.h"
 #include "occupant.h"
 #include "../ability/ability.h"
-#include "game_state.h"
 #include "../utils/permission.h"
 #include <sstream>
 #include <random>
@@ -21,7 +21,7 @@ Player::Player(int playerNumber, string links, string abilities) : playerNumber{
       int strength = linkType[1] - '0';
       int type = (linkType[0] == 'V') ? 1 : 0;
       auto perm = make_shared<Permission>(make_shared<Player>(*this));
-      this->links.push_back(make_shared<Link>(type, strength, playerNumber, perm));
+      this->links.push_back(make_shared<Link>(type, strength, perm));
     }
   }
   else
@@ -30,10 +30,10 @@ Player::Player(int playerNumber, string links, string abilities) : playerNumber{
     for (int strength = 1; strength <= 4; strength++)
     {
       auto perm = make_shared<Permission>(make_shared<Player>(*this));
-      tempLinks.push_back(make_shared<Link>(0, strength, playerNumber, perm));
+      tempLinks.push_back(make_shared<Link>(0, strength, perm));
 
       perm = make_shared<Permission>(make_shared<Player>(*this));
-      tempLinks.push_back(make_shared<Link>(1, strength, playerNumber, perm));
+      tempLinks.push_back(make_shared<Link>(1, strength, perm));
     }
     random_device rd;
     mt19937 gen(rd());
@@ -44,9 +44,7 @@ Player::Player(int playerNumber, string links, string abilities) : playerNumber{
   // this->abilities = abilities;
 }
 
-Player::~Player()
-{
-}
+Player::~Player() = default;
 
 vector<shared_ptr<Link>> Player::getLinks()
 {
@@ -61,6 +59,11 @@ vector<shared_ptr<Ability>> Player::getAbilities()
 vector<shared_ptr<Link>> Player::getDownloadedLinks()
 {
   return downloadedLinks;
+}
+
+int Player::getPlayerNumber() const
+{
+  return playerNumber;
 }
 
 pair<int, int> Player::getScore() const

@@ -19,7 +19,7 @@ public:
   Board(int gridSize);
   ~Board();
 
-  bool isValidPosition(const Position &pos);
+  bool isValidPosition(const Position &pos, int curPlayer);
   Cell &getCell(const Position &pos);
   void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
