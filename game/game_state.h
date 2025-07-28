@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "board.h"
+#include <vector>
 using namespace std;
 
 class Player;
@@ -24,6 +25,8 @@ public:
     GameState();
     GameState(int numPlayers, int boardSize, vector<string> links, vector<string> abilities);
     ~GameState();
+
+    void init();
 
     std::vector<std::shared_ptr<Link>> getLinks();
     std::shared_ptr<Link> getLink(char name);
