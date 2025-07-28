@@ -9,17 +9,18 @@ class GameState;
 
 class View {
 protected:
-    const GameState& gameState;
+    GameState& gameState;
+    int gridSize;
     std::vector<std::vector<std::string>> board;
     std::vector<std::vector<std::string>> linksOnBoard;
     std::vector<std::vector<std::string>> usedAbilities;
     std::vector<std::vector<std::string>> unusedAbilities;
 
 public:
-    View(const GameState& gameState);
+    View(GameState& gameState);
     virtual ~View() = default;
 
-    virtual void notify(const GameEvent& event) = 0;
+    virtual void notify(const GameEvent& event);
     virtual void printGame() = 0;
     virtual void printAbilities() = 0;
 };

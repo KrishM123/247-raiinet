@@ -8,7 +8,7 @@ class GameEvent;
 
 class TextDisplay final : public View {
 public:
-    TextDisplay(const GameState& gameState);
+    TextDisplay(GameState& gameState);
     ~TextDisplay() override;
 
     void notify(const GameEvent& event) override;

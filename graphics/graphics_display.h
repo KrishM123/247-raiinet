@@ -9,7 +9,7 @@ class GameEvent;
 
 class GraphicsDisplay final : public View {
 public:
-    GraphicsDisplay(const GameState& gameState);
+    GraphicsDisplay(GameState& gameState);
     ~GraphicsDisplay() override;
 
     void notify(const GameEvent& event) override;
