@@ -54,60 +54,20 @@ void Swaplinks::execute(const Payload& payload) {
     Position pos2 = link2->getPosition();
     Board& board = gameState.getBoard();
     
-    // Helper lambda to resolve all interactions at a new position
-    auto resolveMove = [&](shared_ptr<Link> movingLink, Position newPos) {
-        if (!movingLink) return movingLink;
+    // Swap
+    // Remove both links from their current positions on the board
+    board.removeOccupant(link1, pos1);
+    board.removeOccupant(link2, pos2);
 
-        Cell& newCell = board.getCell(newPos);
-        vector<shared_ptr<Occupant>> occupants = newCell.getOccupants();
+    // Place both links in their new positions.
+    // We assume the game's rules engine (triggered by placeOccupant) will
+    // handle any resulting battles or trap activations.
+    board.placeOccupant(link1, pos2);
+    board.placeOccupant(link2, pos1);
 
-        // 1. Trigger traps first
-        for (auto& occupant : occupants) {
-            if (auto trigger = dynamic_pointer_cast<Trigger>(occupant)) {
-                if (trigger->permission.getOwner().get() != &currentPlayer) {
-                    trigger->trigger(Payload{});
-                }
-            }
-        }
-
-        // 2. Battle opponent links
-        shared_ptr<Link> opponentLink = nullptr;
-        for (auto& occupant : occupants) {
-            if (auto oLink = dynamic_pointer_cast<Link>(occupant)) {
-                if (oLink->permission.getOwner().get() != &currentPlayer) {
-                    opponentLink = oLink;
-                    break;
-                }
-            }
-        }
-        
-        if (opponentLink) {
-            Player& opponent = *opponentLink->permission.getOwner();
-            if (movingLink->getStrength() >= opponentLink->getStrength()) {
-                board.removeOccupant(opponentLink, newPos);
-                // (get/set logic to download link for current player)
-                vector<shared_ptr<Link>> downloads = currentPlayer.getDownloadedLinks();
-                downloads.push_back(opponentLink);
-                currentPlayer.setDownloadedLinks(downloads);
-            } else {
-                board.removeOccupant(movingLink, movingLink->getPosition());
-                // (get/set logic to download link for opponent)
-                vector<shared_ptr<Link>> downloads = opponent.getDownloadedLinks();
-                downloads.push_back(movingLink);
-                opponent.setDownloadedLinks(downloads);
-                return shared_ptr<Link>(nullptr); // movingLink was destroyed
-            }
-        }
-        
-        board.removeOccupant(movingLink, movingLink->getPosition());
-        board.placeOccupant(movingLink, newPos);
-        movingLink->setPosition(newPos);
-        return movingLink;
-    };
-
-    // Execute the swap, re-assigning link pointers in case they are destroyed
-    link1 = resolveMove(link1, pos2);
-    link2 = resolveMove(link2, pos1);
+    // Update the internal position trackers of the links themselves
+    link1->setPosition(pos2);
+    link2->setPosition(pos1);
 
     notifyAbilityUsed();
 } 
