@@ -12,15 +12,15 @@ class Payload;
 class Ability {
 public:
     Permission permission;
+    std::string name;
 
 protected:
     GameState& gameState;
-    Ability(Permission& permission, GameState& gameState);
+    Ability(std::string name, Permission& permission, GameState& gameState);
 
 public:
     virtual ~Ability();
 
-    virtual std::string getName() = 0;
     virtual void execute(const Payload& payload) = 0;
     
     void notifyAbilityUsed();
