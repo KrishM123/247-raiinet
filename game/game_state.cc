@@ -20,7 +20,10 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
     players[i]->initLinks(links[i], Permission(players[i]));
   }
   curPlayer = players[0];
+}
 
+void GameState::init()
+{
   // initialize board cells
   for (int i = 0; i < board.getGridSize() + 2; i++)
   {
@@ -62,7 +65,7 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
   }
 
   // place links on board
-  for (int i = 0; i < numPlayers; i++)
+  for (int i = 0; i < players.size(); i++)
   {
     auto playerLinks = players[i]->getLinks();
     for (int j = 0; j < playerLinks.size(); j++)
@@ -82,11 +85,11 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
       {
         if (j == 3 || j == 4)
         {
-          board.placeOccupant(playerLinks[j], Position{boardSize - 1, j});
+          board.placeOccupant(playerLinks[j], Position{board.getGridSize() - 1, j});
         }
         else
         {
-          board.placeOccupant(playerLinks[j], Position{boardSize, j});
+          board.placeOccupant(playerLinks[j], Position{board.getGridSize(), j});
         }
       }
     }
