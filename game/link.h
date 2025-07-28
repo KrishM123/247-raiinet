@@ -23,6 +23,7 @@ public:
     int getStrength() const;
     const std::map<std::string, Position> &getMoves() const;
     bool getIsDownloaded() const;
+    std::string getDetails() const;
 
     bool canMove(const std::string &direction);
     void setMoves(const std::map<std::string, Position> &moves);

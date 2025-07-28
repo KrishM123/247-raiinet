@@ -31,6 +31,11 @@ bool Link::getIsDownloaded() const
   return isDownloaded;
 }
 
+string Link::getDetails() const
+{
+  return (type == 0 ? "D" : "V") + to_string(strength);
+}
+
 bool Link::canMove(const string &direction)
 {
   return moves.find(direction) != moves.end();
