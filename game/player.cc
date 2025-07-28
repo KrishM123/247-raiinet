@@ -12,7 +12,6 @@ using namespace std;
 
 Player::Player(int playerNumber, string links, string abilities) : playerNumber{playerNumber}
 {
-
   // this->abilities = abilities;
 }
 
@@ -52,6 +51,9 @@ void Player::initLinks(const string &links, Permission perm)
     this->linksMap['c'] = 2;
     this->linksMap['d'] = 3;
     this->linksMap['e'] = 4;
+    this->linksMap['f'] = 5;
+    this->linksMap['g'] = 6;
+    this->linksMap['h'] = 7;
   }
   else if (this->playerNumber == 2)
   {
@@ -60,6 +62,9 @@ void Player::initLinks(const string &links, Permission perm)
     this->linksMap['C'] = 2;
     this->linksMap['D'] = 3;
     this->linksMap['E'] = 4;
+    this->linksMap['F'] = 5;
+    this->linksMap['G'] = 6;
+    this->linksMap['H'] = 7;
   }
 }
 

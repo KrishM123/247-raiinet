@@ -5,13 +5,14 @@
 #include "board.h"
 #include "cell.h"
 #include "gameTriggers/battleTrigger.h"
+#include "gameTriggers/serverTrigger.h"
 #include <stdexcept>
 #include "../utils/permission.h"
 #include "../utils/payload.h"
 
 using namespace std;
 
-GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector<string> abilities) : board{boardSize}, isGameOver{false}
+GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector<string> abilities) : board{Board{boardSize}}, isGameOver{false}
 {
   for (int i = 0; i < numPlayers; i++)
   {
@@ -19,6 +20,46 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
     players[i]->initLinks(links[i], Permission(players[i]));
   }
   curPlayer = players[0];
+
+  // initialize board cells
+  for (int i = 0; i < board.getGridSize() + 2; i++)
+  {
+    for (int j = 0; j < board.getGridSize() + 2; j++)
+    {
+      if (j == 0 || j == board.getGridSize() + 1)
+      {
+        board.getCell(Position{i, j}).setType(-1);
+        continue;
+      }
+      if (i == 0)
+      {
+        board.getCell(Position{i, j}).setType(11);
+      }
+      else if (i == board.getGridSize() + 1)
+      {
+        board.getCell(Position{i, j}).setType(12);
+      }
+      else
+      {
+        int type = 0;
+        if (i == 1 && (j == board.getGridSize() / 2 || j == board.getGridSize() / 2 - 1))
+        {
+          type = 1;
+          board.placeOccupant(make_shared<ServerTrigger>(*this, Position{i, j}, Permission(players[0])), Position{i, j});
+        }
+        else if (i == board.getGridSize() && (j == board.getGridSize() / 2 || j == board.getGridSize() / 2 - 1))
+        {
+          type = 2;
+          board.placeOccupant(make_shared<ServerTrigger>(*this, Position{i, j}, Permission(players[1])), Position{i, j});
+        }
+        else
+        {
+          board.placeOccupant(make_shared<BattleTrigger>(*this, Position{i, j}), Position{i, j});
+        }
+        board.getCell(Position{i, j}).setType(type);
+      }
+    }
+  }
 
   // place links on board
   for (int i = 0; i < numPlayers; i++)
@@ -47,23 +88,6 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
         {
           board.placeOccupant(playerLinks[j], Position{boardSize, j});
         }
-      }
-    }
-  }
-
-  // place triggers on board
-  for (int i = 1; i <= board.getGridSize(); ++i)
-  {
-    for (int j = 1; j <= board.getGridSize(); ++j)
-    {
-      Position p{i, j};
-      if (board.getCell(p).getType() == 0)
-      {
-        board.placeOccupant(make_shared<BattleTrigger>(*this, p), p);
-      }
-      else if (board.getCell(p).getType() == 1)
-      {
-        // TODO: place trigger on player 1 server
       }
     }
   }
@@ -161,6 +185,27 @@ void GameState::moveLink(shared_ptr<Link> link, string direction)
 
   board.removeOccupant(link, oldPos);
   board.placeOccupant(link, newPos);
+}
+
+void GameState::serverLogic(shared_ptr<Link> link, Cell &cell)
+{
+  shared_ptr<ServerTrigger> serverTrigger;
+
+  for (auto &occupant : cell.getOccupants())
+  {
+    if (auto trigger = dynamic_pointer_cast<ServerTrigger>(occupant))
+    {
+      serverTrigger = trigger;
+      break;
+    }
+  }
+
+  if (serverTrigger)
+  {
+    Payload payload;
+    payload.add("link", to_string(link->getName()));
+    serverTrigger->trigger(payload);
+  }
 }
 
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)

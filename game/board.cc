@@ -11,32 +11,7 @@ Board::Board(int gridSize) : gridSize{gridSize}
     grid[i].resize(gridSize + 2);
     for (int j = 0; j < gridSize + 2; j++)
     {
-      if (j == 0 || j == gridSize + 1)
-      {
-        grid[i][j] = std::make_unique<Cell>(Position{i, j}, -1);
-        continue;
-      }
-      if (i == 0)
-      {
-        grid[i][j] = std::make_unique<Cell>(Position{i, j}, 11);
-      }
-      else if (i == gridSize + 1)
-      {
-        grid[i][j] = std::make_unique<Cell>(Position{i, j}, 12);
-      }
-      else
-      {
-        int type = 0;
-        if (i == 1 && (j == gridSize / 2 || j == gridSize / 2 - 1))
-        {
-          type = 1;
-        }
-        else if (i == gridSize && (j == gridSize / 2 || j == gridSize / 2 - 1))
-        {
-          type = 2;
-        }
-        grid[i][j] = std::make_unique<Cell>(Position{i, j}, type);
-      }
+      grid[i][j] = std::make_unique<Cell>(Position{i, j}, -1);
     }
   }
 }
