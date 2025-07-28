@@ -36,6 +36,8 @@ Board::Board(int gridSize) : gridSize{gridSize}
   }
 }
 
+Board::~Board() {};
+
 bool Board::isValidPosition(const Position &pos, int curPlayer)
 {
   // Check if position is on a server cell or out of bounds
@@ -55,6 +57,7 @@ Cell &Board::getCell(const Position &pos)
 void Board::placeOccupant(shared_ptr<Occupant> occupant, const Position &pos)
 {
   grid[pos.getPosition().first][pos.getPosition().second]->placeOccupant(occupant);
+  occupant->setPosition(pos);
 }
 
 void Board::removeOccupant(shared_ptr<Occupant> occupant, const Position &pos)
