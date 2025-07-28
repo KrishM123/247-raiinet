@@ -1,8 +1,9 @@
 #include "game_state.h"
 #include "player.h"
 #include "link.h"
+#include "occupant.h"
 #include "board.h"
-#include <vector>
+#include <stdexcept>
 
 using namespace std;
 
@@ -109,16 +110,21 @@ shared_ptr<Player> GameState::getWinner() const
   return nullptr;
 }
 
-void GameState::moveLink(std::shared_ptr<Link> link, const Position &delta)
+void GameState::moveLink(std::shared_ptr<Link> link, std::string direction)
 {
   Position oldPos = link->getPosition();
-  Position newPos = oldPos + delta;
-  if (board.isValidPosition(newPos, curPlayer->getPlayerNumber()))
+  map<string, Position> possibleMoves = link->getMoves();
+
+  if (possibleMoves.find(direction) == possibleMoves.end() || !board.isValidPosition(oldPos + possibleMoves[direction], curPlayer->getPlayerNumber()))
   {
-    board.removeOccupant(link, oldPos);
-    board.placeOccupant(link, newPos);
-    link->setPosition(newPos);
+    throw invalid_argument("Invalid move: " + direction);
   }
+
+  Position newPos = oldPos + possibleMoves[direction];
+
+  board.removeOccupant(link, oldPos);
+  board.placeOccupant(link, newPos);
+  link->setPosition(newPos);
 }
 
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)

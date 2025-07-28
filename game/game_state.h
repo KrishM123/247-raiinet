@@ -30,9 +30,10 @@ public:
     Player &getCurPlayer() const;
     bool isWon() const;
     std::shared_ptr<Player> getWinner() const;
-    void moveLink(std::shared_ptr<Link> link, const Position &delta);
+    void moveLink(std::shared_ptr<Link> link, std::string direction);
     void addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos);
     void removeOccupant(std::shared_ptr<Occupant> occupant, const Position &pos);
+    void endGame();
 };
 
 #endif // GAME_STATE_H

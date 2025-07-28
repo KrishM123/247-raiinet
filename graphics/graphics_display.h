@@ -4,14 +4,17 @@
 #include "view.h"
 #include "x_window.h"
 
+class GameState;
+class GameEvent;
+
 class GraphicsDisplay final : public View {
 public:
-    GraphicsDisplay();
+    GraphicsDisplay(const GameState& gameState);
     ~GraphicsDisplay() override;
 
     void notify(const GameEvent& event) override;
-    void printGame(const GameState& gameState) override;
-    void printAbilities(const GameState& gameState) override;
+    void printGame() override;
+    void printAbilities() override;
 
 private:
     XWindow window;

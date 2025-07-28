@@ -24,7 +24,7 @@ class Controller final {
     void executeCommand(std::unique_ptr<Command> command);
     void parseCommandLineArgs(int argc, char* argv[]);
     std::vector<std::string> loadLinkFiles();
-    void loadAbilities(const std::string& abilities, std::shared_ptr<Player> player);
+    void play(std::string filename);
 
 public:
     Controller(int numPlayers, int boardSize);

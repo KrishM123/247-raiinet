@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 #include "link.h"
 #include "occupant.h"
 #include "../ability/ability.h"
@@ -19,6 +20,8 @@ class Player
 public:
     Player(int playerNumber, string links, string abilities);
     ~Player();
+
+    std::map<char, int> linksMap;
 
     std::vector<std::shared_ptr<Link>> getLinks();
     std::vector<std::shared_ptr<Ability>> getAbilities();
