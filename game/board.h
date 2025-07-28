@@ -23,6 +23,7 @@ public:
   Cell& getCell(const Position& pos);
   void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
+  int getGridSize();
 };
 
 #endif // BOARD_H
