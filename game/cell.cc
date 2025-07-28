@@ -1,6 +1,7 @@
 #include "cell.h"
 #include "occupant.h"
 #include "../utils/position.h"
+#include <algorithm>
 
 Cell::Cell(const Position &position, int type) : position{position}, type{type} {}
 
