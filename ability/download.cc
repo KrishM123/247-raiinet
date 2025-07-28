@@ -5,12 +5,13 @@
 #include "../utils/payload.h"
 #include <vector>
 #include <utility>
+#include <sstream> // Added for stringstream
 
 using namespace std;
 
 // Constructor and Destructor
 Download::Download(Permission& permission, GameState& gameState) :
-    Ability(permission, gameState) {}
+    Ability("D", permission, gameState) {}
 
 Download::~Download() {}
 
@@ -29,12 +30,23 @@ pair<int, int> getTargetIndices(char linkId) {
 
 
 void Download::execute(const Payload& payload) {
-    // Assumption: The payload from the command "ability 3 C" will contain
-    // a key-value pair like {"target_link", "C"}
-    string linkIdStr = payload.get("target_link");
-    if (linkIdStr.empty()) return; // No target specified
+    // --- Input Format ---
+    // This ability expects a string containing a single character link identifier.
+    // Example: "C"
+    
+    string args = payload.get("args");
+    stringstream ss(args);
+    string linkIdStr;
+
+    ss >> linkIdStr;
+
+    // Check if we have exactly one argument
+    if (linkIdStr.length() != 1 || !ss.eof()) {
+        return; // Silently fail on incorrect input
+    }
     char linkId = linkIdStr[0];
 
+    // --- The rest of the logic remains the same ---
     pair<int, int> target = getTargetIndices(linkId);
     int targetPlayerIndex = target.first;
     int targetLinkIndex = target.second;

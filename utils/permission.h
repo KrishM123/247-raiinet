@@ -20,9 +20,10 @@ public:
   ~Permission();
 
   shared_ptr<Player> getOwner() const;
-  bool viewableBy(const Player &player) const;
   
+  bool viewableBy(const Player &player) const;
   void setVisibleTo(const vector<shared_ptr<Player>> &players);
+  
   void addViewer(shared_ptr<Player> player);
 
   void setOwner(const Player &newOwner);

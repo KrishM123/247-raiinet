@@ -10,9 +10,9 @@ public:
   Position position;
   Permission permission;
 
-  Occupant();
+  Occupant(const Permission &perm);
   Occupant(const Position &pos, const Permission &perm);
-  virtual ~Occupant();
+  virtual ~Occupant() = 0;
 
   Position getPosition();
   void setPosition(const Position &pos);

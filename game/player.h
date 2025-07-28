@@ -12,12 +12,13 @@
 
 class Player
 {
+    int playerNumber;
     std::vector<std::shared_ptr<Link>> links;
     std::vector<std::shared_ptr<Ability>> abilities;
     std::vector<std::shared_ptr<Link>> downloadedLinks;
 
 public:
-    Player();
+    Player(int playerNumber, string links, string abilities);
     ~Player();
 
     std::map<char, int> linksMap;
@@ -26,7 +27,7 @@ public:
     std::vector<std::shared_ptr<Ability>> getAbilities();
     std::vector<std::shared_ptr<Link>> getDownloadedLinks();
     std::pair<int, int> getScore() const;
-
+    int getPlayerNumber() const;
     void setLinks(const std::vector<std::shared_ptr<Link>> &links);
     void setAbilities(const std::vector<std::shared_ptr<Ability>> &abilities);
     void setDownloadedLinks(const std::vector<std::shared_ptr<Link>> &downloadedLinks);

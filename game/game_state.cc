@@ -2,6 +2,7 @@
 #include "player.h"
 #include "link.h"
 #include "occupant.h"
+#include "board.h"
 #include <stdexcept>
 
 using namespace std;
@@ -13,6 +14,37 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
     players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
   }
   curPlayer = players[0];
+
+  // place links on board
+  for (int i = 0; i < numPlayers; i++)
+  {
+    auto playerLinks = players[i]->getLinks();
+    for (int j = 0; j < playerLinks.size(); j++)
+    {
+      if (i == 0)
+      {
+        if (j == 3 || j == 4)
+        {
+          board.placeOccupant(playerLinks[j], Position{2, j});
+        }
+        else
+        {
+          board.placeOccupant(playerLinks[j], Position{1, j});
+        }
+      }
+      else if (i == 1)
+      {
+        if (j == 3 || j == 4)
+        {
+          board.placeOccupant(playerLinks[j], Position{boardSize - 1, j});
+        }
+        else
+        {
+          board.placeOccupant(playerLinks[j], Position{boardSize, j});
+        }
+      }
+    }
+  }
 }
 
 vector<shared_ptr<Link>> GameState::getLinks()
@@ -36,7 +68,7 @@ vector<shared_ptr<Player>> GameState::getPlayers()
   return players;
 }
 
-Player &GameState::getCurPlayer()
+Player &GameState::getCurPlayer() const
 {
   return *curPlayer;
 }
@@ -83,7 +115,7 @@ void GameState::moveLink(std::shared_ptr<Link> link, std::string direction)
   Position oldPos = link->getPosition();
   map<string, Position> possibleMoves = link->getMoves();
 
-  if (possibleMoves.find(direction) == possibleMoves.end() || !board.isValidPosition(oldPos + possibleMoves[direction]))
+  if (possibleMoves.find(direction) == possibleMoves.end() || !board.isValidPosition(oldPos + possibleMoves[direction], curPlayer->getPlayerNumber()))
   {
     throw invalid_argument("Invalid move: " + direction);
   }

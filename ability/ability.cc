@@ -3,8 +3,8 @@
 
 using namespace std;
 
-Ability::Ability(Permission& permission, GameState& gameState) :
-    permission{permission}, gameState{gameState} {}
+Ability::Ability(string name, Permission& permission, GameState& gameState) :
+    name{name}, permission{permission}, gameState{gameState} {}
 
 Ability::~Ability() {}
 
