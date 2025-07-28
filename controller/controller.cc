@@ -8,6 +8,9 @@
 #include "move_command.h"
 #include "ability_command.h"
 #include "../graphics/view.h"
+#include "../graphics/text_display.h"
+#include "../graphics/graphics_display.h"
+#include "../game/player.h"
 #include "../utils/payload.h"
 
 Controller::Controller(int numPlayers, int boardSize) : 
@@ -25,7 +28,13 @@ void Controller::init(int argc, char* argv[]) {
     }
 
     gameState = GameState(numPlayers, boardSize, loadLinkFiles(), abilities);
-    
+    for (int i = 0; i < numPlayers; i++) {
+        if (!graphicsEnabled) {
+            views.push_back(std::make_unique<TextDisplay>(gameState, i));
+        } else {
+            views.push_back(std::make_unique<GraphicsDisplay>(gameState, i));
+        }
+    }
 }
 
 void Controller::parseCommandLineArgs(int argc, char* argv[]) {
@@ -83,12 +92,29 @@ std::unique_ptr<Command> Controller::parseInput(const std::string& input) {
     ss >> command;
     if (command.find("move") != std::string::npos) {
         Payload payload(std::map<std::string, std::string>{{"command", command.substr(6)}});
+        abilityUsed = false;
+        gameState.nextTurn();
         return std::make_unique<MoveCommand>(gameState, payload);
     } else if (command.find("ability") != std::string::npos) {
-        Payload payload(std::map<std::string, std::string>{{"command", command.substr(8)}});
-        return std::make_unique<AbilityCommand>(gameState, payload);
+        if (!abilityUsed) {
+            Payload payload(std::map<std::string, std::string>{{"command", command.substr(8)}});
+            abilityUsed = true;
+            return std::make_unique<AbilityCommand>(gameState, payload);
+        }
     } else if (command.find("board") != std::string::npos) {
-        views[0].printGame();
+        for (int i = 0; i < numPlayers; i++) {
+            if (gameState.getPlayers().at(i)->getPlayerNumber() == gameState.getCurPlayer().getPlayerNumber()) {
+                views[i]->printGame();
+                break;
+            }
+        }
+    } else if (command.find("abilities") != std::string::npos) {
+        for (int i = 0; i < numPlayers; i++) {
+            if (gameState.getPlayers().at(i)->getPlayerNumber() == gameState.getCurPlayer().getPlayerNumber()) {
+                views[i]->printAbilities();
+                break;
+            }
+        }
     } else if (command.find("sequence") != std::string::npos) {
         play(command.substr(9));
     } else if (command.find("quit") != std::string::npos) {

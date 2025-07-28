@@ -13,11 +13,12 @@ class View;
 
 class Controller final {
     bool graphicsEnabled;
+    bool abilityUsed;
     int boardSize;
     int numPlayers;
     std::vector<std::string> linkFiles;
     std::vector<std::string> abilities;
-    std::vector<View> views;
+    std::vector<std::unique_ptr<View>> views;
     GameState gameState;
     
     std::unique_ptr<Command> parseInput(const std::string& input);

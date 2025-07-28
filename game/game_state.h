@@ -33,6 +33,7 @@ public:
     void moveLink(std::shared_ptr<Link> link, std::string direction);
     void addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos);
     void removeOccupant(std::shared_ptr<Occupant> occupant, const Position &pos);
+    void nextTurn();
     void endGame();
 };
 
