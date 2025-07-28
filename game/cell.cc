@@ -1,6 +1,9 @@
 #include "cell.h"
 #include "occupant.h"
 #include "../utils/position.h"
+#include "../ability/trigger.h"
+#include "../utils/payload.h"
+#include <string>
 #include <algorithm>
 
 Cell::Cell(const Position &position, int type) : position{position}, type{type} {}
@@ -30,6 +33,15 @@ void Cell::setType(int type)
 void Cell::placeOccupant(std::shared_ptr<Occupant> occupant)
 {
   occupants.push_back(occupant);
+  occupant->setPosition(position);
+  for (auto &occupant : occupants)
+  {
+    if (dynamic_pointer_cast<Trigger>(occupant))
+    {
+      shared_ptr<Trigger> trigger = dynamic_pointer_cast<Trigger>(occupant);
+      trigger->trigger();
+    }
+  }
 }
 
 void Cell::removeOccupant(std::shared_ptr<Occupant> occupant)

@@ -37,7 +37,6 @@ Cell &Board::getCell(const Position &pos)
 void Board::placeOccupant(shared_ptr<Occupant> occupant, const Position &pos)
 {
   grid[pos.getPosition().first][pos.getPosition().second]->placeOccupant(occupant);
-  occupant->setPosition(pos);
 }
 
 void Board::removeOccupant(shared_ptr<Occupant> occupant, const Position &pos)

@@ -5,7 +5,6 @@
 #include <functional>
 
 class Link;
-class Payload;
 class Position;
 class Permission;
 class GameState;
@@ -14,17 +13,17 @@ class Trigger : public Occupant
 {
 protected:
     GameState &gameState;
-    std::function<void(const Payload &)> triggerAction;
+    std::function<void()> triggerAction;
 
 private:
     void notifyRuleUsed();
 
 public:
     Trigger(GameState &gameState, const Position &pos, const Permission &perm);
-    Trigger(GameState &gameState, const Position &pos, const Permission &perm, std::function<void(const Payload &)> action);
+    Trigger(GameState &gameState, const Position &pos, const Permission &perm, std::function<void()> action);
     ~Trigger() override = default;
 
-    void trigger(const Payload &payload);
+    void trigger();
 };
 
 #endif // TRIGGER_H

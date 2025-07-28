@@ -86,11 +86,11 @@ void View::notify(const GameEvent& event) {
         int x = event.getPayload().get("x")[0] - '0';
         int y = event.getPayload().get("y")[0] - '0';
         string occupant = event.getPayload().get("occupant");
-        board[x][y] = occupant[0];
+        linksOnBoard[x][y] = occupant[0];
 
     } else if (event.getEventType() == EventType::OccupantRemoved) {
         int x = event.getPayload().get("x")[0] - '0';
         int y = event.getPayload().get("y")[0] - '0';
-        board[x][y] = "";
+        linksOnBoard[x][y] = "";
     }
 }
