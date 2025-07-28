@@ -1,16 +1,16 @@
 #include "trigger.h"
+#include "../utils/payload.h"
 
 using namespace std;
 
-Trigger::Trigger(function<void(Link&)> action) : Occupant{}, triggerAction{action} {}
+Trigger::Trigger(const Position& pos, const Permission& perm, function<void(const Payload&)> action) : 
+    Occupant{pos, perm}, triggerAction{action} {}
 
 Trigger::~Trigger() {}
 
-void Trigger::trigger(Link& triggeredBy) {
-    if (triggerAction) {
-        triggerAction(triggeredBy);
-        notifyRuleUsed();
-    }
+void Trigger::trigger(const Payload& payload) {
+    triggerAction(payload);
+    notifyRuleUsed();
 }
 
 void Trigger::notifyRuleUsed() {
