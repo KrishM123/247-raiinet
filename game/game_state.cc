@@ -12,6 +12,7 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
   for (int i = 0; i < numPlayers; i++)
   {
     players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
+    players[i]->initLinks(links[i], Permission(players[i]));
   }
   curPlayer = players[0];
 
@@ -46,6 +47,8 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
     }
   }
 }
+
+GameState::~GameState() {};
 
 vector<shared_ptr<Link>> GameState::getLinks()
 {
@@ -130,7 +133,6 @@ void GameState::moveLink(std::shared_ptr<Link> link, std::string direction)
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)
 {
   board.placeOccupant(occupant, pos);
-  occupant->setPosition(pos);
 }
 
 void GameState::removeOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)

@@ -1,7 +1,13 @@
 #include "link.h"
+#include "../utils/position.h"
+#include "../utils/permission.h"
+#include <map>
+#include <string>
+#include <algorithm>
+
 using namespace std;
 
-Link::Link(int type, int strength, const Permission &perm) : Occupant{perm}, type{type}, strength{strength}, moves{{Position{1, 0}, Position{-1, 0}, Position{0, 1}, Position{0, -1}}}, isDownloaded{false} {}
+Link::Link(int type, int strength, Permission perm) : Occupant{perm}, type{type}, strength{strength}, moves{{"up", Position{1, 0}}, {"down", Position{-1, 0}}, {"right", Position{0, 1}}, {"left", Position{0, -1}}}, isDownloaded{false} {}
 
 Link::~Link() {}
 
@@ -15,7 +21,7 @@ int Link::getStrength() const
   return strength;
 }
 
-const vector<Position> &Link::getMoves() const
+const map<string, Position> &Link::getMoves() const
 {
   return moves;
 }
@@ -25,12 +31,12 @@ bool Link::getIsDownloaded() const
   return isDownloaded;
 }
 
-bool Link::canMove(const Position &pos) const
+bool Link::canMove(const string &direction)
 {
-  return find(moves.begin(), moves.end(), pos) != moves.end();
+  return moves.find(direction) != moves.end();
 }
 
-void Link::setMoves(const vector<Position> &moves)
+void Link::setMoves(const map<string, Position> &moves)
 {
   this->moves = moves;
 }

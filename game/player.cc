@@ -12,6 +12,14 @@ using namespace std;
 
 Player::Player(int playerNumber, string links, string abilities) : playerNumber{playerNumber}
 {
+
+  // this->abilities = abilities;
+}
+
+Player::~Player() = default;
+
+void Player::initLinks(const string &links, Permission perm)
+{
   if (!links.empty())
   {
     istringstream linkStream(links);
@@ -20,7 +28,6 @@ Player::Player(int playerNumber, string links, string abilities) : playerNumber{
     {
       int strength = linkType[1] - '0';
       int type = (linkType[0] == 'V') ? 1 : 0;
-      auto perm = make_shared<Permission>(make_shared<Player>(*this));
       this->links.push_back(make_shared<Link>(type, strength, perm));
     }
   }
@@ -29,10 +36,7 @@ Player::Player(int playerNumber, string links, string abilities) : playerNumber{
     vector<shared_ptr<Link>> tempLinks;
     for (int strength = 1; strength <= 4; strength++)
     {
-      auto perm = make_shared<Permission>(make_shared<Player>(*this));
       tempLinks.push_back(make_shared<Link>(0, strength, perm));
-
-      perm = make_shared<Permission>(make_shared<Player>(*this));
       tempLinks.push_back(make_shared<Link>(1, strength, perm));
     }
     random_device rd;
@@ -41,10 +45,23 @@ Player::Player(int playerNumber, string links, string abilities) : playerNumber{
 
     this->links = tempLinks;
   }
-  // this->abilities = abilities;
+  if (this->playerNumber == 1)
+  {
+    this->linksMap['a'] = 0;
+    this->linksMap['b'] = 1;
+    this->linksMap['c'] = 2;
+    this->linksMap['d'] = 3;
+    this->linksMap['e'] = 4;
+  }
+  else if (this->playerNumber == 2)
+  {
+    this->linksMap['A'] = 0;
+    this->linksMap['B'] = 1;
+    this->linksMap['C'] = 2;
+    this->linksMap['D'] = 3;
+    this->linksMap['E'] = 4;
+  }
 }
-
-Player::~Player() = default;
 
 vector<shared_ptr<Link>> Player::getLinks()
 {

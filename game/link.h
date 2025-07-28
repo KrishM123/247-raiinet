@@ -8,6 +8,7 @@
 
 class Link final : public Occupant
 {
+    char name;
     int type;
     // 0: Data, 1: Virus
     int strength;
@@ -15,7 +16,7 @@ class Link final : public Occupant
     bool isDownloaded;
 
 public:
-    Link(int type, int strength, const std::map<std::string, Position> &moves, const Permission &perm);
+    Link(int type, int strength, Permission perm);
     ~Link();
 
     int getType() const;
@@ -23,6 +24,7 @@ public:
     const std::map<std::string, Position> &getMoves() const;
     bool getIsDownloaded() const;
 
+    bool canMove(const std::string &direction);
     void setMoves(const std::map<std::string, Position> &moves);
     void setStrength(int strength);
     void setType(int type);
