@@ -4,10 +4,12 @@
 #include <string>
 #include "command.h"
 
+class Payload;
+
 class MoveCommand final : public Command {
     std::string command;
 public:
-    MoveCommand(std::string command, GameState& gameState);
+    MoveCommand(GameState& gameState, Payload& payload);
     ~MoveCommand();
     void execute() override;
 };

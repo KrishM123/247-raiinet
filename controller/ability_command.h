@@ -4,10 +4,12 @@
 #include <string>
 #include "command.h"
 
+class Payload;
+
 class AbilityCommand final : public Command {
     std::string command;
 public:
-    AbilityCommand(std::string command, GameState& gameState);
+    AbilityCommand(GameState& gameState, Payload& payload);
     ~AbilityCommand();
     void execute() override;
 };

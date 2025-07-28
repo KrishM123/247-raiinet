@@ -6,7 +6,7 @@
 #include "../ability/ability.h"
 #include "../utils/payload.h"
 
-AbilityCommand::AbilityCommand(std::string command, GameState& gameState) : Command(gameState), command(command) {}
+AbilityCommand::AbilityCommand(GameState& gameState, Payload& payload) : Command(gameState), command(payload.get("command")) {}
 
 void AbilityCommand::execute() {
     std::string ability = command.substr(7, 1);

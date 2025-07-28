@@ -8,6 +8,7 @@
 #include "move_command.h"
 #include "ability_command.h"
 #include "../graphics/view.h"
+#include "../utils/payload.h"
 
 Controller::Controller(int numPlayers, int boardSize) : 
     graphicsEnabled{false},
@@ -81,9 +82,11 @@ std::unique_ptr<Command> Controller::parseInput(const std::string& input) {
     std::string command;
     ss >> command;
     if (command.find("move") != std::string::npos) {
-        return std::make_unique<MoveCommand>(command.substr(5), gameState);
+        Payload payload(std::map<std::string, std::string>{{"command", command.substr(6)}});
+        return std::make_unique<MoveCommand>(gameState, payload);
     } else if (command.find("ability") != std::string::npos) {
-        return std::make_unique<AbilityCommand>(command.substr(7), gameState);
+        Payload payload(std::map<std::string, std::string>{{"command", command.substr(8)}});
+        return std::make_unique<AbilityCommand>(gameState, payload);
     } else if (command.find("board") != std::string::npos) {
         views[0].printGame(gameState);
     } else if (command.find("sequence") != std::string::npos) {
