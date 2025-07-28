@@ -3,7 +3,10 @@
 #include "link.h"
 #include "occupant.h"
 #include "board.h"
+#include "cell.h"
+#include "gameTriggers/battleTrigger.h"
 #include <stdexcept>
+#include "../utils/permission.h"
 
 using namespace std;
 
@@ -43,6 +46,19 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
         {
           board.placeOccupant(playerLinks[j], Position{boardSize, j});
         }
+      }
+    }
+  }
+
+  // place triggers on board
+  for (int i = 1; i <= board.getGridSize(); ++i)
+  {
+    for (int j = 0; j < board.getGridSize(); ++j)
+    {
+      Position p{i, j};
+      if (board.getCell(p).getType() == 0)
+      {
+        board.placeOccupant(make_shared<BattleTrigger>(*this, p), p);
       }
     }
   }
