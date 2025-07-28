@@ -10,9 +10,6 @@ class BattleTrigger : public Trigger
 public:
   BattleTrigger(GameState &gameState, const Position &pos);
   ~BattleTrigger() override;
-
-private:
-  void handleBattle(const Payload &payload);
 };
 
 #endif // BATTLE_TRIGGER_H

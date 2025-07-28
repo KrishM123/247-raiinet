@@ -17,8 +17,6 @@ class GameState final
     std::shared_ptr<Player> curPlayer;
     bool isGameOver;
 
-    void battleLogic(std::shared_ptr<Link> attacker, Cell &cell);
-
     void notifyNextTurn();
     void notifyGameOver();
 

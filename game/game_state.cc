@@ -161,44 +161,6 @@ void GameState::moveLink(shared_ptr<Link> link, string direction)
 
   board.removeOccupant(link, oldPos);
   board.placeOccupant(link, newPos);
-  link->setPosition(newPos);
-
-  Cell &newCell = board.getCell(newPos);
-  if (newCell.getType() == 0)
-  {
-    battleLogic(link, newCell);
-  }
-}
-
-void GameState::battleLogic(shared_ptr<Link> attacker, Cell &cell)
-{
-  shared_ptr<BattleTrigger> battleTrigger;
-  shared_ptr<Link> defender;
-
-  for (auto &occupant : cell.getOccupants())
-  {
-    if (auto trigger = dynamic_pointer_cast<BattleTrigger>(occupant))
-    {
-      battleTrigger = trigger;
-    }
-    else if (auto link = dynamic_pointer_cast<Link>(occupant))
-    {
-      if (link->getName() != attacker->getName())
-      {
-        defender = link;
-        if (battleTrigger)
-          break;
-      }
-    }
-  }
-
-  if (defender && battleTrigger && defender->permission.getOwner() != attacker->permission.getOwner())
-  {
-    Payload payload;
-    payload.add("attacker", to_string(attacker->getName()));
-    payload.add("defender", to_string(defender->getName()));
-    battleTrigger->trigger(payload);
-  }
 }
 
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)
