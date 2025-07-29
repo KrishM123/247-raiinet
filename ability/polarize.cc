@@ -8,7 +8,8 @@
 
 using namespace std;
 
-// Helper function to parse the link character into player and link indices
+// Helper:
+// Parse link character into player and link indices
 pair<int, int> getPolarizeTargetIndices(char linkId) {
     if (linkId >= 'a' && linkId <= 'h') {
         return {0, linkId - 'a'};
@@ -25,8 +26,7 @@ Polarize::Polarize(Permission& permission, GameState& gameState) :
 Polarize::~Polarize() {}
 
 void Polarize::execute(const Payload& payload) {
-    // --- Input Format ---
-    // This ability expects a string containing a single character link identifier.
+    // Input: string (single char) representing a link
     // Example: "d"
     
     string args = payload.get("args");
@@ -36,8 +36,9 @@ void Polarize::execute(const Payload& payload) {
     ss >> linkIdStr;
 
     if (linkIdStr.length() != 1 || !ss.eof()) {
-        return; // Silently fail on incorrect input
-    }
+        return; 
+    }   
+    
     char linkId = linkIdStr[0];
 
     pair<int, int> target = getPolarizeTargetIndices(linkId);
@@ -49,12 +50,14 @@ void Polarize::execute(const Payload& payload) {
     shared_ptr<Player> targetPlayer = gameState.getPlayers()[targetPlayerIndex];
     vector<shared_ptr<Link>> targetPlayerLinks = targetPlayer->getLinks();
     
-    if (targetLinkIndex >= targetPlayerLinks.size()) return;
+    if (targetLinkIndex >= targetPlayerLinks.size()) {
+        return;
+    }
+    
     shared_ptr<Link> targetLink = targetPlayerLinks[targetLinkIndex];
 
-    // --- Apply the Polarity Change ---
+    // Apply polarity change
     int currentType = targetLink->getType();
-    // 0: Data, 1: Virus
     if (currentType == 0) {
         targetLink->setType(1); // Change Data to Virus
     } else if (currentType == 1) {

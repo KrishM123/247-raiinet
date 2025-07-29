@@ -2,7 +2,7 @@
 #include "../game/game_state.h"
 #include "../game/player.h"
 #include "../game/link.h"
-#include "trigger.h" // Corrected path
+#include "trigger.h" 
 #include "../game/board.h"
 #include "../game/cell.h"
 #include "../utils/payload.h"
@@ -35,7 +35,7 @@ Swaplinks::Swaplinks(Permission& permission, GameState& gameState) :
 Swaplinks::~Swaplinks() {}
 
 void Swaplinks::execute(const Payload& payload) {
-    // --- Input Format ---
+    // Input:
     // Example: "a d"
     string args = payload.get("args");
     stringstream ss(args);
@@ -55,17 +55,15 @@ void Swaplinks::execute(const Payload& payload) {
     Board& board = gameState.getBoard();
     
     // Swap
-    // Remove both links from their current positions on the board
+    // Remove both links from their current positions
     board.removeOccupant(link1, pos1);
     board.removeOccupant(link2, pos2);
 
-    // Place both links in their new positions.
-    // We assume the game's rules engine (triggered by placeOccupant) will
-    // handle any resulting battles or trap activations.
+    // Place both links in their new positions
     board.placeOccupant(link1, pos2);
     board.placeOccupant(link2, pos1);
 
-    // Update the internal position trackers of the links themselves
+    // Update internal position trackers of links
     link1->setPosition(pos2);
     link2->setPosition(pos1);
 
