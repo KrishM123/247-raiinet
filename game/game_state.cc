@@ -203,6 +203,19 @@ void GameState::downloadLink(shared_ptr<Link> link,
 
   link->setIsDownloaded(true);
   removeOccupant(link, link->getPosition());
+  notifyLinkDownloaded(link, downloader);
+}
+
+void GameState::notifyLinkDownloaded(shared_ptr<Link> link, shared_ptr<Player> downloader) {
+  auto queue = MessageQueue::getInstance();
+  map<string, string> payloadMap;
+  payloadMap["x"] = to_string(link->getPosition().getPosition().first);
+  payloadMap["y"] = to_string(link->getPosition().getPosition().second);
+  payloadMap["player"] = to_string(downloader->getPlayerNumber());
+  payloadMap["type"] = link->getType();
+  Payload payload{payloadMap};
+  EventType eventType = EventType::LinkDownloaded;
+  queue->enqueueEvent(GameEvent(eventType, payload));
 }
 
 void GameState::notifyNextTurn() {
