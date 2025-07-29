@@ -36,8 +36,9 @@ void Controller::init(int argc, char *argv[]) {
   for (int i = 0; i < numPlayers; i++) {
     if (graphicsEnabled) {
       views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
+    } else {
+      views.push_back(std::make_unique<TextDisplay>(*gameState, i));
     }
-    views.push_back(std::make_unique<TextDisplay>(*gameState, i));
   }
 
   MessageQueue::getInstance()->start();

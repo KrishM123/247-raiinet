@@ -17,6 +17,7 @@ private:
   Xwindow window;
   int gridSize;
   int cellSize;
+  void drawCell(int x, int y, string item);
 };
 
 #endif // GRAPHICS_DISPLAY_H

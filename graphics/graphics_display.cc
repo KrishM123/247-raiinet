@@ -3,8 +3,11 @@
 #include "../game/game_state.h"
 #include "../game/link.h"
 #include "../game/player.h"
+#include "../utils/payload.h"
 #include <iostream>
 #include <string>
+
+using namespace std;
 
 GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
     : View(gameState, playerView), window{420, 800},
@@ -125,5 +128,25 @@ GraphicsDisplay::~GraphicsDisplay() {
 
 void GraphicsDisplay::printGame() {
   // Graphics game printing implementation
-  std::cout << "Graphics display not fully implemented" << std::endl;
+  Payload diff = getDiff();
+  std::cout << "Diff: " << std::endl;
+  std::cout << "Number of changes: " << diff.get("n") << std::endl;
+  std::cout << "X coordinates: " << diff.get("x") << std::endl;
+  std::cout << "Y coordinates: " << diff.get("y") << std::endl;
+  std::cout << "New values: " << diff.get("news") << std::endl;
+
+  for (int i = 0; i < diff.get("n"); i++) {
+    int x = std::stoi(diff.get("x").at(i));
+    int y = std::stoi(diff.get("y").at(i));
+    std::string item = diff.get("news").at(i);
+
+    if (item == "D") {
+      drawCell(x, y, "D");
+    } else if (item == "V") {
+      drawCell(x, y, "V");
+    }
+    drawCell(x, y, item);
+  }
 }
+
+void GraphicsDisplay::drawCell(int x, int y, string item) {}

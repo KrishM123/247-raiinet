@@ -49,8 +49,8 @@ View::View(GameState &gameState, int playerView)
 
   for (int i = 0; i < gridSize; i++) {
     for (int j = 0; j < gridSize; j++) {
-      oldBoard[i][j] = (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
-                                             : board[i][j]);
+      oldBoard[i][j] =
+          (linksOnBoard[i][j] != "" ? linksOnBoard[i][j] : board[i][j]);
     }
   }
 }
@@ -58,8 +58,8 @@ View::View(GameState &gameState, int playerView)
 void View::storeOldboard() {
   for (int i = 0; i < gridSize; i++) {
     for (int j = 0; j < gridSize; j++) {
-      oldBoard[i][j] = (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
-                                             : board[i][j]);
+      oldBoard[i][j] =
+          (linksOnBoard[i][j] != "" ? linksOnBoard[i][j] : board[i][j]);
     }
   }
 }
@@ -128,24 +128,24 @@ Payload View::getDiff() {
   std::string news;
   std::string xs;
   std::string ys;
-  
+
   for (int i = 0; i < gridSize; i++) {
     for (int j = 0; j < gridSize; j++) {
-      if (oldBoard[i][j] != (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
-                                             : board[i][j])) {
+      if (oldBoard[i][j] !=
+          (linksOnBoard[i][j] != "" ? linksOnBoard[i][j] : board[i][j])) {
         xs += std::to_string(i + 1) + " ";
         ys += std::to_string(j + 1) + " ";
-        news += (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
-                                             : board[i][j]) + " ";
+        news +=
+            (linksOnBoard[i][j] != "" ? linksOnBoard[i][j] : board[i][j]) + " ";
       }
     }
   }
-  
-  diff.add("n", std::to_string(news.size()));
+
+  diff.add("n", std::to_string(news.size() / 2));
   diff.add("x", xs);
   diff.add("y", ys);
   diff.add("news", news);
-  
+
   return diff;
 }
 
