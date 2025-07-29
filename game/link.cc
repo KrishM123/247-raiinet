@@ -13,8 +13,8 @@ Link::Link(int type, int strength, Permission perm)
     : Occupant{perm},
       type{type},
       strength{strength},
-      moves{{"up", Position{1, 0}},
-            {"down", Position{-1, 0}},
+      moves{{"up", Position{-1, 0}},
+            {"down", Position{1, 0}},
             {"right", Position{0, 1}},
             {"left", Position{0, -1}}},
       isDownloaded{false} {}

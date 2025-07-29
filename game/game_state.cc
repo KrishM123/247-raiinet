@@ -1,5 +1,6 @@
 #include "game_state.h"
 
+#include <iostream>
 #include <stdexcept>
 
 #include "../controller/event_types.h"
