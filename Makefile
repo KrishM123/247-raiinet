@@ -1,8 +1,8 @@
 CXX = g++
 # -MMD -MP flags generate dependency files for headers
-CXXFLAGS = -std=c++17 -Wall -g -MMD -MP
+CXXFLAGS = -std=c++17 -Wall -g -MMD -MP -I/opt/X11/include
 # Linker flags. For X11 graphics, you'll likely need -lX11
-LDFLAGS = -lX11
+LDFLAGS = -L/opt/X11/lib -lX11
 
 BUILD_DIR = build
 EXEC = $(BUILD_DIR)/raiinet

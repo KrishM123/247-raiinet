@@ -23,7 +23,7 @@ void MoveCommand::execute() {
 
   std::shared_ptr<Link> link_ptr = gameState.getLink(link[0]);
   if (gameState.getCurPlayer().getPlayerNumber() != link_ptr->permission.getOwner()->getPlayerNumber()) {
-    throw std::invalid_argument("Cannot move link that belongs to the current player");
+    throw std::invalid_argument("Cannot move link that doesn't belong to the current player");
   }
   gameState.moveLink(link_ptr, direction);
   gameState.abilityUsed = false;

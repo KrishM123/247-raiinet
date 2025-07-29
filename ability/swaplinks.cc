@@ -40,6 +40,9 @@ void Swaplinks::execute(const Payload &payload) {
           currentPlayer.getPlayerNumber())
     throw std::invalid_argument("Cannot swap links that do not belong to the current player");
 
+  if (link1->getIsDownloaded() || link2->getIsDownloaded())
+    throw std::invalid_argument("Cannot swap a downloaded link.");
+
   if (!link1 || !link2 || link1 == link2)
     return;
 
