@@ -239,6 +239,24 @@ void GameState::notifyNextTurn()
   // TODO: Implement turn notification
 }
 
+void GameState::nextTurn()
+{
+  // Find the next player
+  int currentIndex = -1;
+  for (int i = 0; i < players.size(); i++) {
+    if (players[i] == curPlayer) {
+      currentIndex = i;
+      break;
+    }
+  }
+  
+  if (currentIndex != -1) {
+    int nextIndex = (currentIndex + 1) % players.size();
+    curPlayer = players[nextIndex];
+    notifyNextTurn();
+  }
+}
+
 void GameState::notifyGameOver()
 {
   // TODO: Implement game over notification

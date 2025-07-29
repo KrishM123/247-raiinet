@@ -30,3 +30,5 @@ EdgeTrigger::EdgeTrigger(GameState &gameState, const Position &pos, const Permis
     }
   };
 }
+
+EdgeTrigger::~EdgeTrigger() {}

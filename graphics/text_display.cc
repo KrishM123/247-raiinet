@@ -5,6 +5,10 @@
 
 TextDisplay::TextDisplay(GameState& gameState, int playerView) : View(gameState, playerView) {}
 
+TextDisplay::~TextDisplay() {
+    // Virtual destructor implementation
+}
+
 void TextDisplay::printGame() {
     printPlayer(0);
     printBoard();

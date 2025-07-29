@@ -36,6 +36,11 @@ string Link::getDetails() const
   return (type == 0 ? "D" : "V") + to_string(strength);
 }
 
+char Link::getName() const
+{
+  return name;
+}
+
 bool Link::canMove(const string &direction)
 {
   return moves.find(direction) != moves.end();

@@ -8,6 +8,10 @@
 
 AbilityCommand::AbilityCommand(GameState& gameState, Payload& payload) : Command(gameState), command(payload.get("command")) {}
 
+AbilityCommand::~AbilityCommand() {
+    // Virtual destructor implementation
+}
+
 void AbilityCommand::execute() {
     std::string ability = command.substr(0, 1);
     bool found = false;

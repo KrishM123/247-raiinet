@@ -6,6 +6,10 @@
 
 MoveCommand::MoveCommand(GameState& gameState, Payload& payload) : Command(gameState), command(payload.get("command")) {}
 
+MoveCommand::~MoveCommand() {
+    // Virtual destructor implementation
+}
+
 void MoveCommand::execute() {
     std::stringstream ss(command);
     std::string link;

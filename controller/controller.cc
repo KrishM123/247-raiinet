@@ -22,6 +22,10 @@ Controller::Controller(int numPlayers, int boardSize) : graphicsEnabled{false},
 {
 }
 
+Controller::~Controller() {
+    // Virtual destructor implementation
+}
+
 void Controller::init(int argc, char *argv[])
 {
     if (argc > 0 && argv != nullptr)

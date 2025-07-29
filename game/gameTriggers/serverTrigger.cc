@@ -32,3 +32,5 @@ ServerTrigger::ServerTrigger(GameState &gameState, const Position &pos, const Pe
     }
   };
 }
+
+ServerTrigger::~ServerTrigger() {}
