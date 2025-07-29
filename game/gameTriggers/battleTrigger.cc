@@ -1,12 +1,15 @@
 #include "battleTrigger.h"
 
 #include <memory>
+#include <iostream>
 
 #include "../../game/cell.h"
 #include "../../game/game_state.h"
 #include "../../game/player.h"
 #include "../../utils/payload.h"
 #include "../../utils/permission.h"
+#include "../../utils/message_queue.h"
+#include "../../controller/event_types.h"
 
 using namespace std;
 
@@ -34,14 +37,27 @@ BattleTrigger::BattleTrigger(GameState &gameState, const Position &pos)
 
       if (attacker->getStrength() >= defender->getStrength()) {
         this->gameState.downloadLink(defender, attackerOwner);
+        notifyBattleTriggered(attacker->getName(), this->position);
       } else {
         this->gameState.downloadLink(attacker, defenderOwner);
+        notifyBattleTriggered(defender->getName(), this->position);
       }
     }
     if (this->gameState.isWon()) {
       this->gameState.endGame();
     }
   };
+}
+
+void BattleTrigger::notifyBattleTriggered(char winner, Position& position) {
+  auto queue = MessageQueue::getInstance();
+  map<string, string> payloadMap = {
+      {"winner", string(1, winner)},
+      {"x", to_string(position.getPosition().first)},
+      {"y", to_string(position.getPosition().second)}};
+  Payload payload{payloadMap};
+  EventType eventType = EventType::BattleTriggered;
+  queue->enqueueEvent(GameEvent(eventType, payload));
 }
 
 BattleTrigger::~BattleTrigger() {}

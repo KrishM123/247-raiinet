@@ -107,6 +107,11 @@ void View::notify(GameEvent &event) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
     linksOnBoard[x][y] = "";
+  } else if (event.getEventType() == EventType::BattleTriggered) {
+    int x = std::stoi(event.getPayload().get("x")) - 1;
+    int y = std::stoi(event.getPayload().get("y")) - 1;
+    string winner = event.getPayload().get("winner");
+    linksOnBoard[x][y] = winner[0];
   }
 }
 

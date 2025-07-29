@@ -7,6 +7,7 @@ enum class EventType {
   AbilityUsed,
   AbilityPlaced,
   OccupantAdded,
-  OccupantRemoved
+  OccupantRemoved,
+  BattleTriggered
 };
 #endif // EVENT_TYPES_H
