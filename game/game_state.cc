@@ -160,11 +160,11 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
   }
 
   Position newPos = oldPos + possibleMoves[direction];
+  
+  notifyLinkMoved(link, oldPos, newPos);
 
   board.removeOccupant(link, oldPos);
   board.placeOccupant(link, newPos);
-
-  notifyLinkMoved(link, oldPos, newPos);
 }
 
 void GameState::notifyLinkMoved(shared_ptr<Link> link, Position oldPos,
