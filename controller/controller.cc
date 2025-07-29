@@ -70,7 +70,7 @@ void Controller::play() {
   std::cout << "Game started" << std::endl;
   while (!gameState->isWon()) {
     std::string input;
-    std::cin >> input;
+    std::getline(std::cin, input);
     std::unique_ptr<Command> command = parseInput(input);
     if (command != nullptr) {
       executeCommand(std::move(command));
@@ -91,23 +91,19 @@ void Controller::play(std::string filename) {
 }
 
 std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
-  std::stringstream ss(input);
-  std::string command;
-  ss >> command;
-  if (command.find("move") != std::string::npos) {
-    Payload payload(
-        std::map<std::string, std::string>{{"command", command.substr(6)}});
+  if (input.find("move") != std::string::npos) {
+    Payload payload(std::map<std::string, std::string>{{"command", input.substr(5)}});
     abilityUsed = false;
     gameState->nextTurn();
     return std::make_unique<MoveCommand>(*gameState, payload);
-  } else if (command.find("ability") != std::string::npos) {
+  } else if (input.find("ability") != std::string::npos) {
     if (!abilityUsed) {
       Payload payload(
-          std::map<std::string, std::string>{{"command", command.substr(8)}});
+          std::map<std::string, std::string>{{"command", input.substr(7)}});
       abilityUsed = true;
       return std::make_unique<AbilityCommand>(*gameState, payload);
     }
-  } else if (command.find("board") != std::string::npos) {
+  } else if (input.find("board") != std::string::npos) {
     for (int i = 0; i < numPlayers; i++) {
       if (gameState->getPlayers().at(i)->getPlayerNumber() ==
           gameState->getCurPlayer().getPlayerNumber()) {
@@ -115,7 +111,7 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
         break;
       }
     }
-  } else if (command.find("abilities") != std::string::npos) {
+  } else if (input.find("abilities") != std::string::npos) {
     for (int i = 0; i < numPlayers; i++) {
       if (gameState->getPlayers().at(i)->getPlayerNumber() ==
           gameState->getCurPlayer().getPlayerNumber()) {
@@ -123,9 +119,9 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
         break;
       }
     }
-  } else if (command.find("sequence") != std::string::npos) {
-    play(command.substr(9));
-  } else if (command.find("quit") != std::string::npos) {
+  } else if (input.find("sequence") != std::string::npos) {
+    play(input.substr(9));
+  } else if (input.find("quit") != std::string::npos) {
     gameState->endGame();
   }
   return nullptr;
