@@ -100,40 +100,48 @@ void Controller::play(std::string filename) {
 }
 
 std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
-  if (input.find("move") != std::string::npos) {
-    Payload payload(
-        std::map<std::string, std::string>{{"command", input.substr(5)}});
-    abilityUsed = false;
-    return std::make_unique<MoveCommand>(*gameState, payload);
-  } else if (input.find("ability") != std::string::npos) {
-    if (!abilityUsed) {
+  try {
+    if (input.find("move") != std::string::npos) {
       Payload payload(
-          std::map<std::string, std::string>{{"command", input.substr(8)}});
-      abilityUsed = true;
-      return std::make_unique<AbilityCommand>(*gameState, payload);
-    }
-  } else if (input.find("board") != std::string::npos) {
-    for (int i = 0; i < numPlayers; i++) {
-      if (gameState->getPlayers().at(i)->getPlayerNumber() ==
-          gameState->getCurPlayer().getPlayerNumber()) {
-        views[i]->printGame();
-        break;
+          std::map<std::string, std::string>{{"command", input.substr(5)}});
+      abilityUsed = false;
+      return std::make_unique<MoveCommand>(*gameState, payload);
+    } else if (input.find("ability") != std::string::npos) {
+      if (!abilityUsed) {
+        Payload payload(
+            std::map<std::string, std::string>{{"command", input.substr(8)}});
+        abilityUsed = true;
+        return std::make_unique<AbilityCommand>(*gameState, payload);
       }
-    }
-  } else if (input.find("abilities") != std::string::npos) {
-    for (int i = 0; i < numPlayers; i++) {
-      if (gameState->getPlayers().at(i)->getPlayerNumber() ==
-          gameState->getCurPlayer().getPlayerNumber()) {
-        views[i]->printAbilities();
-        break;
+    } else if (input.find("board") != std::string::npos) {
+      for (int i = 0; i < numPlayers; i++) {
+        if (gameState->getPlayers().at(i)->getPlayerNumber() ==
+            gameState->getCurPlayer().getPlayerNumber()) {
+          views[i]->printGame();
+          break;
+        }
       }
+    } else if (input.find("abilities") != std::string::npos) {
+      for (int i = 0; i < numPlayers; i++) {
+        if (gameState->getPlayers().at(i)->getPlayerNumber() ==
+            gameState->getCurPlayer().getPlayerNumber()) {
+          views[i]->printAbilities();
+          break;
+        }
+      }
+    } else if (input.find("sequence") != std::string::npos) {
+      play(input.substr(9));
+    } else if (input.find("quit") != std::string::npos) {
+      gameState->endGame();
     }
-  } else if (input.find("sequence") != std::string::npos) {
-    play(input.substr(9));
-  } else if (input.find("quit") != std::string::npos) {
-    gameState->endGame();
+    return nullptr;
+  } catch (const std::exception& e) {
+    std::cerr << "Error parsing command: " << e.what() << std::endl;
+    return nullptr;
+  } catch (...) {
+    std::cerr << "Unknown error occurred while parsing command" << std::endl;
+    return nullptr;
   }
-  return nullptr;
 }
 
 void Controller::notify(GameEvent &event) {
@@ -143,5 +151,11 @@ void Controller::notify(GameEvent &event) {
 }
 
 void Controller::executeCommand(std::unique_ptr<Command> command) {
-  command->execute();
+  try {
+    command->execute();
+  } catch (const std::exception& e) {
+    std::cerr << "Error executing command: " << e.what() << std::endl;
+  } catch (...) {
+    std::cerr << "Unknown error occurred while executing command" << std::endl;
+  }
 }
