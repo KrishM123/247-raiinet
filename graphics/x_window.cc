@@ -1,28 +1,75 @@
 #include "x_window.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <cstdlib>
 #include <iostream>
+#include <string>
+#include <unistd.h>
 
-XWindow::XWindow() {
-  // Basic constructor - X11 initialization would go here
+using namespace std;
+
+Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
+
+  d = XOpenDisplay(NULL);
+  if (d == NULL) {
+    cerr << "Cannot open display" << endl;
+    exit(1);
+  }
+  s = DefaultScreen(d);
+  w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, width, height, 1,
+                          BlackPixel(d, s), WhitePixel(d, s));
+  XSelectInput(d, w, ExposureMask | KeyPressMask);
+  XMapRaised(d, w);
+
+  Pixmap pix =
+      XCreatePixmap(d, w, width, height, DefaultDepth(d, DefaultScreen(d)));
+  gc = XCreateGC(d, pix, 0, (XGCValues *)0);
+
+  XFlush(d);
+  XFlush(d);
+
+  // Set up colours.
+  XColor xcolour;
+  Colormap cmap;
+  char color_vals[7][10] = {"white",  "seashell1", "brown1", "seagreen2",
+                            "gray30", "gray50",    "black"};
+
+  cmap = DefaultColormap(d, DefaultScreen(d));
+  for (int i = 0; i < 7; ++i) {
+    XParseColor(d, cmap, color_vals[i], &xcolour);
+    XAllocColor(d, cmap, &xcolour);
+    colours[i] = xcolour.pixel;
+  }
+
+  XSetForeground(d, gc, colours[Black]);
+
+  // Make window non-resizeable.
+  XSizeHints hints;
+  hints.flags = (USPosition | PSize | PMinSize | PMaxSize);
+  hints.height = hints.base_height = hints.min_height = hints.max_height =
+      height;
+  hints.width = hints.base_width = hints.min_width = hints.max_width = width;
+  XSetNormalHints(d, w, &hints);
+
+  XSynchronize(d, True);
+
+  usleep(1000);
 }
 
-XWindow::~XWindow() {
-  // Destructor - X11 cleanup would go here
+Xwindow::~Xwindow() {
+  XFreeGC(d, gc);
+  XCloseDisplay(d);
 }
 
-int XWindow::getWidth() const {
-  return 800; // Default width
+int Xwindow::getWidth() const { return width; }
+int Xwindow::getHeight() const { return height; }
+
+void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
+  XSetForeground(d, gc, colours[colour]);
+  XFillRectangle(d, w, gc, x, y, width, height);
+  XSetForeground(d, gc, colours[Black]);
 }
 
-int XWindow::getHeight() const {
-  return 600; // Default height
-}
-
-void XWindow::fillRectangle(int x, int y, int width, int height) {
-  // X11 rectangle drawing would go here
-}
-
-void XWindow::drawString(int x, int y, const std::string &msg) {
-  // X11 string drawing would go here
+void Xwindow::drawString(int x, int y, string msg) {
+  XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
 }

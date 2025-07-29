@@ -1,18 +1,39 @@
-#ifndef X_WINDOW_H
-#define X_WINDOW_H
-
+#ifndef __WINDOW_H__
+#define __WINDOW_H__
+#include <X11/Xlib.h>
+#include <iostream>
 #include <string>
 
-class XWindow final {
+class Xwindow {
+  Display *d;
+  Window w;
+  int s, width, height;
+  GC gc;
+  unsigned long colours[7];
+
 public:
-  XWindow();
-  virtual ~XWindow();
+  Xwindow(int width = 500,
+          int height = 500); // Constructor; displays the window.
+  ~Xwindow();                // Destructor; destroys the window.
+
+  enum {
+    White = 0,
+    Seashell1,
+    Brown1,
+    Seagreen2,
+    Gray30,
+    Gray50,
+    Black
+  }; // Available colours.
 
   int getWidth() const;
   int getHeight() const;
 
-  void fillRectangle(int x, int y, int width, int height);
-  void drawString(int x, int y, const std::string &msg);
+  // Draws a rectangle
+  void fillRectangle(int x, int y, int width, int height, int colour = Black);
+
+  // Draws a string
+  void drawString(int x, int y, std::string msg);
 };
 
-#endif // X_WINDOW_H
+#endif

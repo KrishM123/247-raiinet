@@ -16,11 +16,8 @@
 #include "move_command.h"
 
 Controller::Controller(int numPlayers, int boardSize)
-    : graphicsEnabled{false},
-      boardSize{boardSize},
-      numPlayers{numPlayers},
-      views{},
-      linkFiles{std::vector<std::string>(numPlayers)},
+    : graphicsEnabled{false}, boardSize{boardSize}, numPlayers{numPlayers},
+      views{}, linkFiles{std::vector<std::string>(numPlayers)},
       abilities{std::vector<std::string>(numPlayers)} {}
 
 Controller::~Controller() {
@@ -37,11 +34,10 @@ void Controller::init(int argc, char *argv[]) {
                                           loadLinkFiles(), abilities);
   gameState->init();
   for (int i = 0; i < numPlayers; i++) {
-    if (!graphicsEnabled) {
-      views.push_back(std::make_unique<TextDisplay>(*gameState, i));
-    } else {
+    if (graphicsEnabled) {
       views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
     }
+    views.push_back(std::make_unique<TextDisplay>(*gameState, i));
   }
 
   MessageQueue::getInstance()->start();
@@ -119,7 +115,11 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       for (int i = 0; i < numPlayers; i++) {
         if (gameState->getPlayers().at(i)->getPlayerNumber() ==
             gameState->getCurPlayer().getPlayerNumber()) {
+          std::cout << typeid(*views[i]).name() << std::endl;
           views[i]->printGame();
+          if (graphicsEnabled) {
+            views[2 * i + 1]->printGame();
+          }
           break;
         }
       }
@@ -137,7 +137,7 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       gameState->endGame();
     }
     return nullptr;
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     std::cerr << "Error parsing command: " << e.what() << std::endl;
     return nullptr;
   } catch (...) {
@@ -155,7 +155,7 @@ void Controller::notify(GameEvent &event) {
 void Controller::executeCommand(std::unique_ptr<Command> command) {
   try {
     command->execute();
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     std::cerr << "Error executing command: " << e.what() << std::endl;
   } catch (...) {
     std::cerr << "Unknown error occurred while executing command" << std::endl;
