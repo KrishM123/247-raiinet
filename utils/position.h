@@ -8,6 +8,7 @@ class Position
     int x, y;
 
 public:
+    Position();
     Position(int x, int y);
     Position(const Position &other);
     void operator=(const Position &other);

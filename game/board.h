@@ -18,6 +18,8 @@ class Board final
 public:
   Board(int gridSize);
   ~Board();
+  Board(const Board &other) = delete;
+  Board &operator=(const Board &other) = delete;
 
   bool isValidPosition(const Position &pos, int curPlayer);
   Cell &getCell(const Position &pos);

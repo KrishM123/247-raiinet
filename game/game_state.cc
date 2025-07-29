@@ -21,7 +21,7 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
   {
     players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
     players[i]->initLinks(links[i], Permission(players[i]));
-    players[i]->initAbilities(abilities[i], Permission(players[i]));
+    players[i]->initAbilities(abilities[i], Permission(players[i]), *this);
   }
   curPlayer = players[0];
 }

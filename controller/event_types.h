@@ -1,4 +1,8 @@
-enum class EventType {
+#ifndef EVENT_TYPES_H
+#define EVENT_TYPES_H
+
+enum class EventType
+{
     LinkMoved,
     LinkDownloaded,
     AbilityUsed,
@@ -6,3 +10,4 @@ enum class EventType {
     OccupantAdded,
     OccupantRemoved
 };
+#endif // EVENT_TYPES_H
