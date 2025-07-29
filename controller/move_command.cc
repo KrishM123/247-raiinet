@@ -22,8 +22,7 @@ void MoveCommand::execute() {
   std::cout << "debug: move command started" << std::endl;
   std::cout << link << " " << direction << std::endl;
 
-  std::shared_ptr<Link> link_ptr = gameState.getCurPlayer().getLinks().at(
-      gameState.getCurPlayer().linksMap.at(link[0]));
+  std::shared_ptr<Link> link_ptr = gameState.getLink(link[0]);
 
   gameState.moveLink(link_ptr, direction);
   std::cout << "debug: move command finished" << std::endl;
