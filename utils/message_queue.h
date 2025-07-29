@@ -26,14 +26,13 @@ private:
     std::thread workerThread;
     std::atomic<bool> running;
 
+    void processEvents();
+
+public:
     MessageQueue();
     ~MessageQueue();
     MessageQueue(const MessageQueue &) = delete;
     MessageQueue &operator=(const MessageQueue &) = delete;
-
-    void processEvents();
-
-public:
     static std::shared_ptr<MessageQueue> getInstance();
 
     void subscribe(View *view);
@@ -41,9 +40,6 @@ public:
     void enqueueEvent(const GameEvent &event);
     void start();
     void stop();
-
-private:
-    friend struct _Sp_make_shared_tag;
 };
 
 #endif // MESSAGE_QUEUE_H
