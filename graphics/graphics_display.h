@@ -15,7 +15,9 @@ public:
   void printAbilities() override;
 
 private:
-  XWindow window;
+  Xwindow window;
+  int gridSize;
+  int cellSize;
 };
 
 #endif // GRAPHICS_DISPLAY_H

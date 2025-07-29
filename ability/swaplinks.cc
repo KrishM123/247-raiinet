@@ -4,30 +4,16 @@
 #include "../game/game_state.h"
 #include "../game/link.h"
 #include "../game/player.h"
+#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "trigger.h"
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
 using namespace std;
-
-// Helper function to find a player's link by its character ID
-shared_ptr<Link> findLinkById(Player &player, char linkId) {
-  int playerNum = player.getPlayerNumber();
-  int linkIndex = -1;
-  if (playerNum == 0 && linkId >= 'a' && linkId <= 'h') {
-    linkIndex = linkId - 'a';
-  } else if (playerNum == 1 && linkId >= 'A' && linkId <= 'H') {
-    linkIndex = linkId - 'A';
-  }
-
-  if (linkIndex != -1 && linkIndex < player.getLinks().size()) {
-    return player.getLinks()[linkIndex];
-  }
-  return nullptr;
-}
 
 Swaplinks::Swaplinks(Permission &permission, GameState &gameState)
     : Ability("S", permission, gameState) {}
@@ -46,8 +32,13 @@ void Swaplinks::execute(const Payload &payload) {
     return;
 
   Player &currentPlayer = gameState.getCurPlayer();
-  shared_ptr<Link> link1 = findLinkById(currentPlayer, linkId1Str[0]);
-  shared_ptr<Link> link2 = findLinkById(currentPlayer, linkId2Str[0]);
+  shared_ptr<Link> link1 = gameState.getLink(linkId1Str[0]);
+  shared_ptr<Link> link2 = gameState.getLink(linkId2Str[0]);
+  if (link1->permission.getOwner()->getPlayerNumber() !=
+          currentPlayer.getPlayerNumber() ||
+      link2->permission.getOwner()->getPlayerNumber() !=
+          currentPlayer.getPlayerNumber())
+    throw std::invalid_argument("Cannot swap links that do not belong to the current player");
 
   if (!link1 || !link2 || link1 == link2)
     return;
@@ -68,6 +59,38 @@ void Swaplinks::execute(const Payload &payload) {
   // Update internal position trackers of links
   link1->setPosition(pos2);
   link2->setPosition(pos1);
+
+  std::shared_ptr<MessageQueue> queue = MessageQueue::getInstance();
+
+  map<string, string> payloadMap;
+  payloadMap["x"] = to_string(pos1.getPosition().first);
+  payloadMap["y"] = to_string(pos1.getPosition().second);
+  EventType eventType = EventType::OccupantRemoved;
+  Payload eventPayload{payloadMap};
+  queue->enqueueEvent(GameEvent(eventType, eventPayload));
+
+  map<string, string> payloadMap2;
+  payloadMap2["x"] = to_string(pos2.getPosition().first);
+  payloadMap2["y"] = to_string(pos2.getPosition().second);
+  EventType eventType2 = EventType::OccupantRemoved;
+  Payload eventPayload2{payloadMap2};
+  queue->enqueueEvent(GameEvent(eventType, eventPayload));
+
+  map<string, string> payloadMap3;
+  payloadMap3["x"] = to_string(pos1.getPosition().first);
+  payloadMap3["y"] = to_string(pos1.getPosition().second);
+  payloadMap3["occupant"] = link2->getName();
+  EventType eventType3 = EventType::OccupantAdded;
+  Payload eventPayload3{payloadMap3};
+  queue->enqueueEvent(GameEvent(eventType3, eventPayload3));
+
+  map<string, string> payloadMap4;
+  payloadMap4["x"] = to_string(pos2.getPosition().first);
+  payloadMap4["y"] = to_string(pos2.getPosition().second);
+  payloadMap4["occupant"] = link1->getName();
+  EventType eventType4 = EventType::OccupantAdded;
+  Payload eventPayload4{payloadMap4};
+  queue->enqueueEvent(GameEvent(eventType4, eventPayload4));
 
   notifyAbilityUsed();
 }
