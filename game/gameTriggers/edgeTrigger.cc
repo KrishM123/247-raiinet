@@ -1,4 +1,4 @@
-#include "serverTrigger.h"
+#include "edgeTrigger.h"
 #include "../../utils/payload.h"
 #include "../../game/game_state.h"
 #include "../../game/player.h"
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-ServerTrigger::ServerTrigger(GameState &gameState, const Position &pos, const Permission &perm) : Trigger{gameState, pos, perm}
+EdgeTrigger::EdgeTrigger(GameState &gameState, const Position &pos, const Permission &perm) : Trigger{gameState, pos, perm}
 {
   triggerAction = [this]()
   {
@@ -23,11 +23,9 @@ ServerTrigger::ServerTrigger(GameState &gameState, const Position &pos, const Pe
     }
     if (link)
     {
-      shared_ptr<Player> serverOwner = permission.getOwner();
-      shared_ptr<Player> linkOwner = link->permission.getOwner();
-      if (serverOwner != linkOwner)
+      if (permission.getOwner() != link->permission.getOwner())
       {
-        this->gameState.downloadLink(link, serverOwner);
+        this->gameState.downloadLink(link, permission.getOwner());
       }
     }
   };
