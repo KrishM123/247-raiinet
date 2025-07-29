@@ -4,11 +4,13 @@
 #include "../game/game_state.h"
 #include "../game/link.h"
 #include "../game/player.h"
+#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "../utils/position.h"
 #include "trigger.h" // Corrected path
 #include <sstream>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -34,8 +36,10 @@ void Firewall::execute(const Payload &payload) {
   }
 
   try {
-    int row = stoi(rowStr);
-    int col = stoi(colStr);
+    int row = stoi(rowStr) + 1;
+    int col = stoi(colStr) + 1;
+    std::cout << "row: " << row << std::endl;
+    std::cout << "col: " << col << std::endl;
     int gridSize = gameState.getBoard().getGridSize();
 
     if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
@@ -85,6 +89,24 @@ void Firewall::execute(const Payload &payload) {
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);
+
+    std::shared_ptr<MessageQueue> queue = MessageQueue::getInstance();
+
+    map<string, string> payloadMap;
+    payloadMap["x"] = to_string(targetPos.getPosition().first);
+    payloadMap["y"] = to_string(targetPos.getPosition().second);
+    payloadMap["ability"] = "F";
+    payloadMap["player"] = to_string(permission.getOwner()->getPlayerNumber() - 1);
+    if (permission.getOwner()->getPlayerNumber() == 1) {
+      payloadMap["marker"] = "m";
+    } else if (permission.getOwner()->getPlayerNumber() == 2) {
+      payloadMap["marker"] = "w";
+    } else {
+      payloadMap["marker"] = "-";
+    }
+    EventType eventType = EventType::AbilityPlaced;
+    Payload eventPayload{payloadMap};
+    queue->enqueueEvent(GameEvent(eventType, eventPayload));
 
     notifyAbilityUsed();
   } catch (const std::exception &e) {

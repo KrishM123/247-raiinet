@@ -1,7 +1,6 @@
 #include "view.h"
 
 #include <algorithm>
-#include <iostream>
 
 #include "../ability/ability.h"
 #include "../controller/game_event.h"
@@ -10,10 +9,13 @@
 #include "../game/game_state.h"
 #include "../game/link.h"
 #include "../game/player.h"
+#include "../utils/payload.h"
 
 View::View(GameState &gameState, int playerView)
     : playerView(playerView), gameState(gameState),
       gridSize(gameState.getBoard().getGridSize()),
+      oldBoard(std::vector<std::vector<std::string>>(
+          gridSize, std::vector<std::string>(gridSize, "."))),
       board(std::vector<std::vector<std::string>>(
           gridSize, std::vector<std::string>(gridSize, "."))),
       linksOnBoard(std::vector<std::vector<std::string>>(
@@ -53,9 +55,26 @@ View::View(GameState &gameState, int playerView)
       unusedAbilities[i][j] = ability.name;
     }
   }
+
+  for (int i = 0; i < gridSize; i++) {
+    for (int j = 0; j < gridSize; j++) {
+      oldBoard[i][j] = (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
+                                             : board[i][j]);
+    }
+  }
+}
+
+void View::storeOldboard() {
+  for (int i = 0; i < gridSize; i++) {
+    for (int j = 0; j < gridSize; j++) {
+      oldBoard[i][j] = (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
+                                             : board[i][j]);
+    }
+  }
 }
 
 void View::notify(GameEvent &event) {
+  storeOldboard();
   if (event.getEventType() == EventType::LinkMoved) {
     int oldX = std::stoi(event.getPayload().get("oldX")) - 1;
     int oldY = std::stoi(event.getPayload().get("oldY")) - 1;
@@ -92,11 +111,12 @@ void View::notify(GameEvent &event) {
     int y = std::stoi(event.getPayload().get("y")) - 1;
     string ability = event.getPayload().get("ability");
     int player = std::stoi(event.getPayload().get("player"));
+    string marker = event.getPayload().get("marker");
     usedAbilities[player].push_back(ability);
     unusedAbilities[player].erase(std::find(unusedAbilities[player].begin(),
                                             unusedAbilities[player].end(),
                                             ability));
-    board[x][y] = ability[0];
+    board[x][y] = marker[0];
 
   } else if (event.getEventType() == EventType::OccupantAdded) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
@@ -114,6 +134,23 @@ void View::notify(GameEvent &event) {
     string winner = event.getPayload().get("winner");
     linksOnBoard[x][y] = winner[0];
   }
+}
+
+Payload View::getDiff() {
+  Payload diff;
+  for (int i = 0; i < gridSize; i++) {
+    for (int j = 0; j < gridSize; j++) {
+      if (oldBoard[i][j] != (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
+                                             : board[i][j])) {
+        diff.add("x", std::to_string(i + 1));
+        diff.add("y", std::to_string(j + 1));
+        diff.add("old", oldBoard[i][j]);
+        diff.add("new", (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
+                                             : board[i][j]));
+      }
+    }
+  }
+  return diff;
 }
 
 View::~View() {}

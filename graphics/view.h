@@ -6,12 +6,14 @@
 
 class GameEvent;
 class GameState;
+class Payload;
 
 class View {
 protected:
   int playerView;
   GameState &gameState;
   int gridSize;
+  std::vector<std::vector<std::string>> oldBoard;
   std::vector<std::vector<std::string>> board;
   std::vector<std::vector<std::string>> linksOnBoard;
   std::vector<std::vector<std::string>> usedAbilities;
@@ -26,6 +28,8 @@ public:
   void notify(GameEvent &event);
   virtual void printGame() = 0;
   virtual void printAbilities() = 0;
+  void storeOldboard();
+  Payload getDiff();
 };
 
 #endif // VIEW_H
