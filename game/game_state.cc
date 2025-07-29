@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include "../utils/permission.h"
 #include "../utils/payload.h"
+#include "../utils/message_queue.h"
+#include "../controller/event_types.h"
 
 using namespace std;
 
@@ -18,6 +20,7 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links, vector
   {
     players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
     players[i]->initLinks(links[i], Permission(players[i]));
+    players[i]->initAbilities(abilities[i], Permission(players[i]));
   }
   curPlayer = players[0];
 }
@@ -188,6 +191,17 @@ void GameState::moveLink(shared_ptr<Link> link, string direction)
 
   board.removeOccupant(link, oldPos);
   board.placeOccupant(link, newPos);
+
+  notifyLinkMoved(link, oldPos, newPos);
+}
+
+void GameState::notifyLinkMoved(shared_ptr<Link> link, Position oldPos, Position newPos)
+{
+  auto queue = MessageQueue::getInstance();
+  map<string, string> payloadMap = {{"oldX", to_string(oldPos.getPosition().first)}, {"oldY", to_string(oldPos.getPosition().second)}, {"newX", to_string(newPos.getPosition().first)}, {"newY", to_string(newPos.getPosition().second)}};
+  Payload payload{payloadMap};
+  EventType eventType = EventType::LinkMoved;
+  queue->enqueueEvent(GameEvent(eventType, payload));
 }
 
 void GameState::addOccupant(std::shared_ptr<Occupant> occupant, const Position &pos)

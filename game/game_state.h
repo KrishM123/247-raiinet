@@ -20,6 +20,7 @@ class GameState final
 
     void notifyNextTurn();
     void notifyGameOver();
+    void notifyLinkMoved(std::shared_ptr<Link> link, Position oldPos, Position newPos);
 
 public:
     GameState();

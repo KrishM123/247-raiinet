@@ -7,6 +7,14 @@
 #include <sstream>
 #include <random>
 #include <algorithm>
+#include "../ability/barbed_wire.h"
+#include "../ability/download.h"
+#include "../ability/firewall.h"
+#include "../ability/link_boost.h"
+#include "../ability/polarize.h"
+#include "../ability/scan.h"
+#include "../ability/swaplinks.h"
+#include "../ability/telescope.h"
 
 using namespace std;
 
@@ -65,6 +73,51 @@ void Player::initLinks(const string &links, Permission perm)
     this->linksMap['F'] = 5;
     this->linksMap['G'] = 6;
     this->linksMap['H'] = 7;
+  }
+}
+
+void Player::initAbilities(const string &abilities, Permission perm)
+{
+  if (!abilities.empty())
+  {
+    for (char ability : abilities)
+    {
+      switch (ability)
+      {
+      case 'B':
+        this->abilities.push_back(make_shared<BarbedWire>(perm, *this));
+        break;
+      case 'D':
+        this->abilities.push_back(make_shared<Download>(perm, *this));
+        break;
+      case 'F':
+        this->abilities.push_back(make_shared<Firewall>(perm, *this));
+        break;
+      case 'L':
+        this->abilities.push_back(make_shared<LinkBoost>(perm, *this));
+        break;
+      case 'P':
+        this->abilities.push_back(make_shared<Polarize>(perm, *this));
+        break;
+      case 'A':
+        this->abilities.push_back(make_shared<Scan>(perm, *this));
+        break;
+      case 'S':
+        this->abilities.push_back(make_shared<Swaplinks>(perm, *this));
+        break;
+      case 'T':
+        this->abilities.push_back(make_shared<Telescope>(perm, *this));
+        break;
+      }
+    }
+  }
+  else
+  {
+    this->abilities.push_back(make_shared<LinkBoost>(perm, *this));
+    this->abilities.push_back(make_shared<Firewall>(perm, *this));
+    this->abilities.push_back(make_shared<Download>(perm, *this));
+    this->abilities.push_back(make_shared<Polarize>(perm, *this));
+    this->abilities.push_back(make_shared<BarbedWire>(perm, *this));
   }
 }
 
