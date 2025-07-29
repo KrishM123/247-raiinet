@@ -72,7 +72,9 @@ void Controller::play() {
     std::string input;
     std::cin >> input;
     std::unique_ptr<Command> command = parseInput(input);
-    executeCommand(std::move(command));
+    if (command != nullptr) {
+      executeCommand(std::move(command));
+    }
   }
   std::cout << "Game over" << std::endl;
 }
