@@ -127,8 +127,3 @@ void GraphicsDisplay::printGame() {
   // Graphics game printing implementation
   std::cout << "Graphics display not fully implemented" << std::endl;
 }
-
-void GraphicsDisplay::printAbilities() {
-  // Graphics abilities printing implementation
-  std::cout << "Graphics abilities display not fully implemented" << std::endl;
-}

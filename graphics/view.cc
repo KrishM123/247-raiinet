@@ -1,6 +1,7 @@
 #include "view.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "../ability/ability.h"
 #include "../controller/game_event.h"
@@ -20,12 +21,8 @@ View::View(GameState &gameState, int playerView)
           gridSize, std::vector<std::string>(gridSize, "."))),
       linksOnBoard(std::vector<std::vector<std::string>>(
           gridSize, std::vector<std::string>(gridSize, ""))),
-      usedAbilities(std::vector<std::vector<std::string>>(
-          gameState.getPlayers().size(), std::vector<std::string>(0, ""))),
-      unusedAbilities(std::vector<std::vector<std::string>>(
-          gameState.getPlayers().size(),
-          std::vector<std::string>(
-              gameState.getCurPlayer().getAbilities().size(), ""))),
+      usedAbilities(0),
+      unusedAbilities(gameState.getCurPlayer().getAbilities().size()),
       downloadedData(std::vector<int>(gameState.getPlayers().size(), 0)),
       downloadedVirus(std::vector<int>(gameState.getPlayers().size(), 0)) {
   for (int i = 0; i < gridSize; i++) {
@@ -47,12 +44,6 @@ View::View(GameState &gameState, int playerView)
       linksOnBoard[link.getPosition().getPosition().first - 1]
                   [link.getPosition().getPosition().second - 1] =
                       link.getName();
-    }
-  }
-  for (int i = 0; i < gameState.getPlayers().size(); i++) {
-    for (int j = 0; j < gameState.getPlayers()[i]->getAbilities().size(); j++) {
-      Ability &ability = *gameState.getPlayers()[i]->getAbilities()[j];
-      unusedAbilities[i][j] = ability.name;
     }
   }
 
@@ -101,10 +92,8 @@ void View::notify(GameEvent &event) {
   } else if (event.getEventType() == EventType::AbilityUsed) {
     int player = std::stoi(event.getPayload().get("player"));
     string ability = event.getPayload().get("ability");
-    usedAbilities[player].push_back(ability);
-    unusedAbilities[player].erase(std::find(unusedAbilities[player].begin(),
-                                            unusedAbilities[player].end(),
-                                            ability));
+    usedAbilities++;
+    unusedAbilities--;
 
   } else if (event.getEventType() == EventType::AbilityPlaced) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
@@ -112,10 +101,8 @@ void View::notify(GameEvent &event) {
     string ability = event.getPayload().get("ability");
     int player = std::stoi(event.getPayload().get("player"));
     string marker = event.getPayload().get("marker");
-    usedAbilities[player].push_back(ability);
-    unusedAbilities[player].erase(std::find(unusedAbilities[player].begin(),
-                                            unusedAbilities[player].end(),
-                                            ability));
+    usedAbilities++;
+    unusedAbilities--;
     board[x][y] = marker[0];
 
   } else if (event.getEventType() == EventType::OccupantAdded) {
@@ -160,6 +147,36 @@ Payload View::getDiff() {
   diff.add("news", news);
   
   return diff;
+}
+
+void View::printAbilities() {
+  Player &playerDisplay = *gameState.getPlayers()[playerView];
+  for (int i = 0; i < gameState.getPlayers().size(); i++) {
+    Player &curPlayer = *gameState.getPlayers()[i];
+    std::cout << "Player " << i + 1 << ":" << std::endl;
+    std::cout << "Used: ";
+    for (int j = 0; j < curPlayer.getAbilities().size(); j++) {
+      Ability &ability = *curPlayer.getAbilities()[j];
+      if (ability.used) {
+        std::cout << (ability.permission.viewableBy(playerDisplay)
+                          ? ability.name
+                          : "? ")
+                  << " ";
+      }
+    }
+    std::cout << std::endl;
+    std::cout << "Unused: ";
+    for (int j = 0; j < curPlayer.getAbilities().size(); j++) {
+      Ability &ability = *curPlayer.getAbilities()[j];
+      if (!ability.used) {
+        std::cout << (ability.permission.viewableBy(playerDisplay)
+                          ? ability.name
+                          : "? ")
+                  << " ";
+      }
+    }
+    std::cout << std::endl << std::endl;
+  }
 }
 
 View::~View() {}

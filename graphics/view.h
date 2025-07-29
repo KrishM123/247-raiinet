@@ -16,8 +16,8 @@ protected:
   std::vector<std::vector<std::string>> oldBoard;
   std::vector<std::vector<std::string>> board;
   std::vector<std::vector<std::string>> linksOnBoard;
-  std::vector<std::vector<std::string>> usedAbilities;
-  std::vector<std::vector<std::string>> unusedAbilities;
+  int usedAbilities;
+  int unusedAbilities;
   std::vector<int> downloadedData;
   std::vector<int> downloadedVirus;
 
@@ -27,7 +27,7 @@ public:
 
   void notify(GameEvent &event);
   virtual void printGame() = 0;
-  virtual void printAbilities() = 0;
+  void printAbilities();
   void storeOldboard();
   Payload getDiff();
 };

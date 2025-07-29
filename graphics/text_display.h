@@ -14,7 +14,6 @@ public:
   ~TextDisplay() override;
 
   void printGame() override;
-  void printAbilities() override;
 };
 
 #endif // TEXT_DISPLAY_H

@@ -114,9 +114,6 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
         if (gameState->getPlayers().at(i)->getPlayerNumber() ==
             gameState->getCurPlayer().getPlayerNumber()) {
           views[i]->printGame();
-          if (graphicsEnabled) {
-            views[2 * i + 1]->printGame();
-          }
           break;
         }
       }

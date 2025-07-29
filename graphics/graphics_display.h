@@ -12,7 +12,6 @@ public:
   ~GraphicsDisplay() override;
 
   void printGame() override;
-  void printAbilities() override;
 
 private:
   Xwindow window;

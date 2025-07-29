@@ -48,33 +48,3 @@ void TextDisplay::printPlayer(int player) {
   }
   std::cout << std::endl;
 }
-
-void TextDisplay::printAbilities() {
-  Player &playerDisplay = *gameState.getPlayers()[playerView];
-  for (int i = 0; i < gameState.getPlayers().size(); i++) {
-    Player &curPlayer = *gameState.getPlayers()[i];
-    std::cout << "Player " << i + 1 << ":" << std::endl;
-    std::cout << "Used: ";
-    for (int j = 0; j < curPlayer.getAbilities().size(); j++) {
-      Ability &ability = *curPlayer.getAbilities()[j];
-      if (ability.used) {
-        std::cout << (ability.permission.viewableBy(playerDisplay)
-                          ? ability.name
-                          : "? ")
-                  << " ";
-      }
-    }
-    std::cout << std::endl;
-    std::cout << "Unused: ";
-    for (int j = 0; j < curPlayer.getAbilities().size(); j++) {
-      Ability &ability = *curPlayer.getAbilities()[j];
-      if (!ability.used) {
-        std::cout << (ability.permission.viewableBy(playerDisplay)
-                          ? ability.name
-                          : "? ")
-                  << " ";
-      }
-    }
-    std::cout << std::endl << std::endl;
-  }
-}
