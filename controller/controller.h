@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "../game/game_state.h"
+#include "../utils/message_queue.h"
 #include "command.h"
 #include <algorithm>
 #include <memory>
@@ -11,7 +12,7 @@
 class Command;
 class View;
 
-class Controller final {
+class Controller final : public MessageSubscriber {
   bool graphicsEnabled;
   bool abilityUsed;
   int boardSize;
@@ -32,6 +33,8 @@ public:
   ~Controller();
   void init(int argc = 0, char *argv[] = nullptr);
   void play();
+  
+  void notify(GameEvent &event) override;
 };
 
 #endif // CONTROLLER_H

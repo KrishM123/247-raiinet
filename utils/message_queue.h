@@ -10,7 +10,13 @@
 #include <thread>
 #include <vector>
 
-class View;
+class GameEvent;
+
+class MessageSubscriber {
+public:
+    virtual ~MessageSubscriber() = default;
+    virtual void notify(GameEvent &event) = 0;
+};
 
 class MessageQueue {
 private:
@@ -18,7 +24,7 @@ private:
   static std::mutex instanceMutex;
 
   std::queue<GameEvent> eventQueue;
-  std::vector<View *> subscribers;
+  std::vector<MessageSubscriber *> subscribers;
   mutable std::mutex queueMutex;
   mutable std::mutex subscribersMutex;
   std::condition_variable cv;
@@ -34,8 +40,8 @@ public:
   MessageQueue &operator=(const MessageQueue &) = delete;
   static std::shared_ptr<MessageQueue> getInstance();
 
-  void subscribe(View *view);
-  void unsubscribe(View *view);
+  void subscribe(MessageSubscriber *subscriber);
+  void unsubscribe(MessageSubscriber *subscriber);
   void enqueueEvent(const GameEvent &event);
   void start();
   void stop();

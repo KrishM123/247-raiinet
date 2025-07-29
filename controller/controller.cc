@@ -19,7 +19,8 @@ Controller::Controller(int numPlayers, int boardSize)
       abilities{std::vector<std::string>(numPlayers)} {}
 
 Controller::~Controller() {
-  // Virtual destructor implementation
+  MessageQueue::getInstance()->unsubscribe(this);
+  MessageQueue::getInstance()->stop();
 }
 
 void Controller::init(int argc, char *argv[]) {
@@ -37,6 +38,9 @@ void Controller::init(int argc, char *argv[]) {
       views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
     }
   }
+  
+  MessageQueue::getInstance()->start();
+  MessageQueue::getInstance()->subscribe(this);
 }
 
 void Controller::parseCommandLineArgs(int argc, char *argv[]) {
@@ -125,6 +129,12 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
     gameState->endGame();
   }
   return nullptr;
+}
+
+void Controller::notify(GameEvent &event) {
+  for (auto &view : views) {
+    view->notify(event);
+  }
 }
 
 void Controller::executeCommand(std::unique_ptr<Command> command) {

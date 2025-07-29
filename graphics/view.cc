@@ -1,6 +1,7 @@
 #include "view.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "../ability/ability.h"
 #include "../controller/game_event.h"
@@ -9,7 +10,6 @@
 #include "../game/game_state.h"
 #include "../game/link.h"
 #include "../game/player.h"
-#include "../utils/message_queue.h"
 
 View::View(GameState &gameState, int playerView)
     : playerView(playerView),
@@ -54,22 +54,23 @@ View::View(GameState &gameState, int playerView)
       unusedAbilities[i][j] = ability.name;
     }
   }
-  subscribeToMessageQueue();
 }
 
 void View::notify(GameEvent &event) {
+  std::cout << "debug: event type: " << (int)event.getEventType() << std::endl;
   if (event.getEventType() == EventType::LinkMoved) {
-    int oldX = std::stoi(event.getPayload().get("oldX"));
-    int oldY = std::stoi(event.getPayload().get("oldY"));
-    int newX = std::stoi(event.getPayload().get("newX"));
-    int newY = std::stoi(event.getPayload().get("newY"));
+    std::cout << "debug: link moved" << std::endl;
+    int oldX = std::stoi(event.getPayload().get("oldX")) - 1;
+    int oldY = std::stoi(event.getPayload().get("oldY")) - 1;
+    int newX = std::stoi(event.getPayload().get("newX")) - 1;
+    int newY = std::stoi(event.getPayload().get("newY")) - 1;
     string oldLink = linksOnBoard[oldX][oldY];
     linksOnBoard[oldX][oldY] = "";
     linksOnBoard[newX][newY] = oldLink;
 
   } else if (event.getEventType() == EventType::LinkDownloaded) {
-    int x = event.getPayload().get("x")[0] - '0';
-    int y = event.getPayload().get("y")[0] - '0';
+    int x = std::stoi(event.getPayload().get("x")) - 1;
+    int y = std::stoi(event.getPayload().get("y")) - 1;
     int player = event.getPayload().get("player")[0] - '0';
     string type = event.getPayload().get("type");
     if (type == "D") {
@@ -88,8 +89,8 @@ void View::notify(GameEvent &event) {
                                             ability));
 
   } else if (event.getEventType() == EventType::AbilityPlaced) {
-    int x = event.getPayload().get("x")[0] - '0';
-    int y = event.getPayload().get("y")[0] - '0';
+    int x = std::stoi(event.getPayload().get("x")) - 1;
+    int y = std::stoi(event.getPayload().get("y")) - 1;
     string ability = event.getPayload().get("ability");
     int player = event.getPayload().get("player")[0] - '0';
     usedAbilities[player].push_back(ability);
@@ -99,24 +100,16 @@ void View::notify(GameEvent &event) {
     board[x][y] = ability[0];
 
   } else if (event.getEventType() == EventType::OccupantAdded) {
-    int x = event.getPayload().get("x")[0] - '0';
-    int y = event.getPayload().get("y")[0] - '0';
+    int x = std::stoi(event.getPayload().get("x")) - 1;
+    int y = std::stoi(event.getPayload().get("y")) - 1;
     string occupant = event.getPayload().get("occupant");
     linksOnBoard[x][y] = occupant[0];
 
   } else if (event.getEventType() == EventType::OccupantRemoved) {
-    int x = event.getPayload().get("x")[0] - '0';
-    int y = event.getPayload().get("y")[0] - '0';
+    int x = std::stoi(event.getPayload().get("x")) - 1;
+    int y = std::stoi(event.getPayload().get("y")) - 1;
     linksOnBoard[x][y] = "";
   }
 }
 
-View::~View() { unsubscribeFromMessageQueue(); }
-
-void View::subscribeToMessageQueue() {
-  MessageQueue::getInstance()->subscribe(this);
-}
-
-void View::unsubscribeFromMessageQueue() {
-  MessageQueue::getInstance()->unsubscribe(this);
-}
+View::~View() {}

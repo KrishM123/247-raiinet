@@ -1,6 +1,6 @@
 #include "message_queue.h"
-#include "../graphics/view.h"
 #include <algorithm>
+#include <iostream>
 
 std::shared_ptr<MessageQueue> MessageQueue::instance = nullptr;
 std::mutex MessageQueue::instanceMutex;
@@ -17,14 +17,14 @@ std::shared_ptr<MessageQueue> MessageQueue::getInstance() {
   return instance;
 }
 
-void MessageQueue::subscribe(View *view) {
+void MessageQueue::subscribe(MessageSubscriber *subscriber) {
   std::lock_guard<std::mutex> lock(subscribersMutex);
-  subscribers.push_back(view);
+  subscribers.push_back(subscriber);
 }
 
-void MessageQueue::unsubscribe(View *view) {
+void MessageQueue::unsubscribe(MessageSubscriber *subscriber) {
   std::lock_guard<std::mutex> lock(subscribersMutex);
-  subscribers.erase(std::remove(subscribers.begin(), subscribers.end(), view),
+  subscribers.erase(std::remove(subscribers.begin(), subscribers.end(), subscriber),
                     subscribers.end());
 }
 
@@ -64,9 +64,9 @@ void MessageQueue::processEvents() {
       // Notify all subscribers
       {
         std::lock_guard<std::mutex> subLock(subscribersMutex);
-        for (View *view : subscribers) {
-          if (view != nullptr) {
-            view->notify(event);
+        for (MessageSubscriber *subscriber : subscribers) {
+          if (subscriber != nullptr) {
+            subscriber->notify(event);
           }
         }
       }

@@ -26,9 +26,6 @@ public:
   void notify(GameEvent &event);
   virtual void printGame() = 0;
   virtual void printAbilities() = 0;
-
-  void subscribeToMessageQueue();
-  void unsubscribeFromMessageQueue();
 };
 
 #endif // VIEW_H
