@@ -67,9 +67,14 @@ void View::notify(GameEvent &event) {
     linksOnBoard[newX][newY] = oldLink;
 
   } else if (event.getEventType() == EventType::LinkDownloaded) {
+    std::cout << "debug: link downloaded" << std::endl;
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
     int player = std::stoi(event.getPayload().get("player")) - 1;
+    std::cout << "debug: player: " << player << std::endl;
+    std::cout << "debug: x: " << x << std::endl;
+    std::cout << "debug: y: " << y << std::endl;
+    std::cout << "debug: type: " << event.getPayload().get("type") << std::endl;
     string type = event.getPayload().get("type");
     if (type == "0") {
       downloadedData[player]++;
