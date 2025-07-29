@@ -6,6 +6,7 @@
 #include "cell.h"
 #include "gameTriggers/battleTrigger.h"
 #include "gameTriggers/serverTrigger.h"
+#include "gameTriggers/edgeTrigger.h"
 #include <stdexcept>
 #include "../utils/permission.h"
 #include "../utils/payload.h"
@@ -40,10 +41,12 @@ void GameState::init()
       if (i == 0)
       {
         board.getCell(Position{i, j}).setType(11);
+        board.placeOccupant(make_shared<EdgeTrigger>(*this, Position{i, j}, Permission(players[0])), Position{i, j});
       }
       else if (i == board.getGridSize() + 1)
       {
         board.getCell(Position{i, j}).setType(12);
+        board.placeOccupant(make_shared<EdgeTrigger>(*this, Position{i, j}, Permission(players[1])), Position{i, j});
       }
       else
       {
