@@ -36,14 +36,14 @@ void TextDisplay::printPlayer(int player) {
   for (int i = 0; i < curPlayer.getLinks().size() / 2; i++) {
     Link &link = *curPlayer.getLinks()[i];
     std::cout << link.getName() << ": "
-              << (link.permission.viewableBy(playerDisplay) ? link.getDetails()
+              << (link.permission.viewableBy(playerDisplay) ? link.getDetails() + " "
                                                             : "? ");
   }
   std::cout << std::endl;
-  for (int i = 3; i < curPlayer.getLinks().size(); i++) {
+  for (int i = 4; i < curPlayer.getLinks().size(); i++) {
     Link &link = *curPlayer.getLinks()[i];
     std::cout << link.getName() << ": "
-              << (link.permission.viewableBy(playerDisplay) ? link.getDetails()
+              << (link.permission.viewableBy(playerDisplay) ? link.getDetails() + " "
                                                             : "? ");
   }
   std::cout << std::endl;

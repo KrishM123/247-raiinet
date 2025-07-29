@@ -33,12 +33,10 @@ void Controller::init(int argc, char *argv[]) {
   for (int i = 0; i < numPlayers; i++) {
     if (!graphicsEnabled) {
       views.push_back(std::make_unique<TextDisplay>(*gameState, i));
-      std::cout << "text display initialized" << std::endl;
     } else {
       views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
     }
   }
-  std::cout << "views initialized" << std::endl;
 }
 
 void Controller::parseCommandLineArgs(int argc, char *argv[]) {

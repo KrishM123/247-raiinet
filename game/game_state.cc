@@ -1,6 +1,5 @@
 #include "game_state.h"
 
-#include <iostream>
 #include <stdexcept>
 
 #include "../controller/event_types.h"
@@ -31,7 +30,6 @@ GameState::GameState(int numPlayers, int boardSize, vector<string> links,
 
 void GameState::init() {
   // initialize board cells
-  std::cout << "initializing board" << std::endl;
   for (int i = 0; i < board.getGridSize() + 2; i++) {
     for (int j = 0; j < board.getGridSize() + 2; j++) {
       if (j == 0 || j == board.getGridSize() + 1) {
@@ -73,7 +71,6 @@ void GameState::init() {
       }
     }
   }
-  std::cout << "board initialized" << std::endl;
   // place links on board
   for (int i = 0; i < players.size(); i++) {
     auto playerLinks = players[i]->getLinks();
@@ -95,7 +92,6 @@ void GameState::init() {
       }
     }
   }
-  std::cout << "links placed" << std::endl;
 }
 
 GameState::~GameState() {};
