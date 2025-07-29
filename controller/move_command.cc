@@ -1,9 +1,11 @@
 #include "move_command.h"
+
+#include <iostream>
+#include <sstream>
+
 #include "../game/game_state.h"
 #include "../game/player.h"
 #include "../utils/payload.h"
-#include <iostream>
-#include <sstream>
 
 MoveCommand::MoveCommand(GameState &gameState, Payload &payload)
     : Command(gameState), command(payload.get("command")) {}
@@ -22,4 +24,5 @@ void MoveCommand::execute() {
   std::shared_ptr<Link> link_ptr = gameState.getLink(link[0]);
 
   gameState.moveLink(link_ptr, direction);
+  gameState.nextTurn();
 }

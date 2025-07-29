@@ -1,11 +1,5 @@
 #include "controller.h"
-#include "../game/player.h"
-#include "../graphics/graphics_display.h"
-#include "../graphics/text_display.h"
-#include "../graphics/view.h"
-#include "../utils/payload.h"
-#include "ability_command.h"
-#include "move_command.h"
+
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -13,9 +7,20 @@
 #include <string>
 #include <vector>
 
+#include "../game/player.h"
+#include "../graphics/graphics_display.h"
+#include "../graphics/text_display.h"
+#include "../graphics/view.h"
+#include "../utils/payload.h"
+#include "ability_command.h"
+#include "move_command.h"
+
 Controller::Controller(int numPlayers, int boardSize)
-    : graphicsEnabled{false}, boardSize{boardSize}, numPlayers{numPlayers},
-      views{}, linkFiles{std::vector<std::string>(numPlayers)},
+    : graphicsEnabled{false},
+      boardSize{boardSize},
+      numPlayers{numPlayers},
+      views{},
+      linkFiles{std::vector<std::string>(numPlayers)},
       abilities{std::vector<std::string>(numPlayers)} {}
 
 Controller::~Controller() {
@@ -38,7 +43,7 @@ void Controller::init(int argc, char *argv[]) {
       views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
     }
   }
-  
+
   MessageQueue::getInstance()->start();
   MessageQueue::getInstance()->subscribe(this);
 }
@@ -96,9 +101,9 @@ void Controller::play(std::string filename) {
 
 std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
   if (input.find("move") != std::string::npos) {
-    Payload payload(std::map<std::string, std::string>{{"command", input.substr(5)}});
+    Payload payload(
+        std::map<std::string, std::string>{{"command", input.substr(5)}});
     abilityUsed = false;
-    gameState->nextTurn();
     return std::make_unique<MoveCommand>(*gameState, payload);
   } else if (input.find("ability") != std::string::npos) {
     if (!abilityUsed) {
