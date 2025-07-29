@@ -20,7 +20,6 @@ void MoveCommand::execute() {
   ss >> direction;
 
   std::cout << "debug: move command started" << std::endl;
-  std::cout << link << " " << direction << std::endl;
 
   std::shared_ptr<Link> link_ptr = gameState.getLink(link[0]);
 
