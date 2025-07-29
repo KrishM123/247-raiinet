@@ -154,7 +154,8 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
 
   if (possibleMoves.find(direction) == possibleMoves.end() ||
       !board.isValidPosition(oldPos + possibleMoves[direction],
-                             curPlayer->getPlayerNumber())) {
+                             curPlayer->getPlayerNumber()) ||
+      link->getIsDownloaded()) {
     throw invalid_argument("Invalid move: " + direction);
   }
 
