@@ -19,7 +19,7 @@ View::View(GameState &gameState, int playerView)
       linksOnBoard(std::vector<std::vector<std::string>>(
           gridSize, std::vector<std::string>(gridSize, ""))),
       usedAbilities(std::vector<std::vector<std::string>>(
-          0, std::vector<std::string>(0, ""))),
+          gameState.getPlayers().size(), std::vector<std::string>(0, ""))),
       unusedAbilities(std::vector<std::vector<std::string>>(
           gameState.getPlayers().size(),
           std::vector<std::string>(

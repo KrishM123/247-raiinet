@@ -19,11 +19,11 @@ void AbilityCommand::execute() {
   std::string ability = command.substr(0, 1);
   bool found = false;
   for (auto &ability_ptr : gameState.getCurPlayer().getAbilities()) {
-    if (ability_ptr->name == ability && !ability_ptr->used) {
+    if (ability_ptr->name == ability && !ability_ptr->used && !found) {
       found = true;
       std::map<std::string, std::string> payload = {
           {"arguments", command.substr(2)}};
-      ability_ptr->execute(Payload(payload));
+        ability_ptr->execute(Payload(payload));
       std::map<std::string, std::string> eventPayloadMap = {
           {"player", std::to_string(gameState.getCurPlayer().getPlayerNumber() - 1)},
           {"ability", ability}};

@@ -8,7 +8,7 @@ protected:
   GameState &gameState;
 
 public:
-  Command(GameState &gameState) : gameState(gameState) {}
+  Command(GameState &gameState);
   virtual ~Command();
   virtual void execute() = 0;
 };
