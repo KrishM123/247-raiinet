@@ -29,14 +29,16 @@ void Controller::init(int argc, char *argv[]) {
 
   gameState = std::make_unique<GameState>(numPlayers, boardSize,
                                           loadLinkFiles(), abilities);
+  gameState->init();
   for (int i = 0; i < numPlayers; i++) {
     if (!graphicsEnabled) {
       views.push_back(std::make_unique<TextDisplay>(*gameState, i));
+      std::cout << "text display initialized" << std::endl;
     } else {
       views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
     }
   }
-  gameState->init();
+  std::cout << "views initialized" << std::endl;
 }
 
 void Controller::parseCommandLineArgs(int argc, char *argv[]) {
@@ -44,9 +46,9 @@ void Controller::parseCommandLineArgs(int argc, char *argv[]) {
     std::string arg = argv[i];
 
     if (arg.find("link") != std::string::npos) {
-      linkFiles[arg[arg.size() - 1] - '1'] = arg;
+      linkFiles[arg[arg.size() - 1] - '1'] = argv[++i];
     } else if (arg.find("ability") != std::string::npos) {
-      abilities[arg[arg.size() - 1] - '1'] = arg;
+      abilities[arg[arg.size() - 1] - '1'] = argv[++i];
     } else if (arg == "-graphics") {
       graphicsEnabled = true;
     }

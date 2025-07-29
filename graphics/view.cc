@@ -8,6 +8,7 @@
 #include "../game/player.h"
 #include "../utils/message_queue.h"
 #include <algorithm>
+#include <iostream>
 
 View::View(GameState &gameState, int playerView)
     : playerView(playerView), gameState(gameState),
@@ -24,6 +25,7 @@ View::View(GameState &gameState, int playerView)
               gameState.getCurPlayer().getAbilities().size(), ""))),
       downloadedData(std::vector<int>(gameState.getPlayers().size(), 0)),
       downloadedVirus(std::vector<int>(gameState.getPlayers().size(), 0)) {
+  std::cout << "view.cc constructor started" << std::endl;
   for (int i = 0; i < gridSize; i++) {
     for (int j = 0; j < gridSize; j++) {
       int type = gameState.getBoard().getCell(Position(i, j)).getType();
@@ -36,19 +38,22 @@ View::View(GameState &gameState, int playerView)
       }
     }
   }
+  std::cout << "board initialized" << std::endl;
   for (int i = 0; i < gameState.getPlayers().size(); i++) {
     for (int j = 0; j < gameState.getPlayers()[i]->getLinks().size(); j++) {
       Link &link = *gameState.getPlayers()[i]->getLinks()[j];
-      linksOnBoard[link.getPosition().getPosition().first]
-                  [link.getPosition().getPosition().second] = link.getName();
+      linksOnBoard[link.getPosition().getPosition().first - 1]
+                  [link.getPosition().getPosition().second - 1] = link.getName();
     }
   }
+  std::cout << "linksOnBoard initialized" << std::endl;
   for (int i = 0; i < gameState.getPlayers().size(); i++) {
     for (int j = 0; j < gameState.getPlayers()[i]->getAbilities().size(); j++) {
       Ability &ability = *gameState.getPlayers()[i]->getAbilities()[j];
       unusedAbilities[i][j] = ability.name;
     }
   }
+  std::cout << "view.cc constructor finished" << std::endl;
   subscribeToMessageQueue();
 }
 

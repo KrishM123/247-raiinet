@@ -9,7 +9,7 @@
 using namespace std;
 
 Scan::Scan(Permission &permission, GameState &gameState)
-    : Ability("S", permission, gameState) {}
+    : Ability("A", permission, gameState) {}
 
 Scan::~Scan() {}
 
