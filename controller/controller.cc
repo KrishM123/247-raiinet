@@ -111,11 +111,10 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       } else {
         throw std::invalid_argument("Ability already used");
       }
-    } else if (input.find("board") != std::string::npos) {
+    } else if (input == "board") {
       for (int i = 0; i < numPlayers; i++) {
         if (gameState->getPlayers().at(i)->getPlayerNumber() ==
             gameState->getCurPlayer().getPlayerNumber()) {
-          std::cout << typeid(*views[i]).name() << std::endl;
           views[i]->printGame();
           if (graphicsEnabled) {
             views[2 * i + 1]->printGame();
