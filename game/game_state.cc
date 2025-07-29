@@ -49,7 +49,7 @@ void GameState::init() {
       } else {
         int type = 0;
         if (i == 1 && (j == board.getGridSize() / 2 ||
-                       j == board.getGridSize() / 2 - 1)) {
+                       j == board.getGridSize() / 2 + 1)) {
           type = 1;
           board.placeOccupant(
               make_shared<ServerTrigger>(*this, Position{i, j},
@@ -57,7 +57,7 @@ void GameState::init() {
               Position{i, j});
         } else if (i == board.getGridSize() &&
                    (j == board.getGridSize() / 2 ||
-                    j == board.getGridSize() / 2 - 1)) {
+                    j == board.getGridSize() / 2 + 1)) {
           type = 2;
           board.placeOccupant(
               make_shared<ServerTrigger>(*this, Position{i, j},

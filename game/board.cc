@@ -1,4 +1,7 @@
 #include "board.h"
+
+#include <iostream>
+
 #include "../utils/position.h"
 #include "cell.h"
 #include "occupant.h"
@@ -41,3 +44,12 @@ void Board::removeOccupant(shared_ptr<Occupant> occupant, const Position &pos) {
 }
 
 int Board::getGridSize() { return gridSize; }
+
+void Board::print() {
+  for (int i = 0; i < gridSize + 2; i++) {
+    for (int j = 0; j < gridSize + 2; j++) {
+      std::cout << grid[i][j]->getType() << " ";
+    }
+    std::cout << std::endl;
+  }
+}

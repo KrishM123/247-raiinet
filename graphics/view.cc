@@ -27,9 +27,10 @@ View::View(GameState &gameState, int playerView)
               gameState.getCurPlayer().getAbilities().size(), ""))),
       downloadedData(std::vector<int>(gameState.getPlayers().size(), 0)),
       downloadedVirus(std::vector<int>(gameState.getPlayers().size(), 0)) {
+  gameState.getBoard().print();
   for (int i = 0; i < gridSize; i++) {
     for (int j = 0; j < gridSize; j++) {
-      int type = gameState.getBoard().getCell(Position(i, j)).getType();
+      int type = gameState.getBoard().getCell(Position(i + 1, j + 1)).getType();
       if (type >= 1 && type <= 10) {
         board[i][j] = "S";
       } else if (type >= 11 && type <= 20) {

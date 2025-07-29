@@ -14,7 +14,7 @@ class Board final {
   int gridSize;
   vector<vector<unique_ptr<Cell>>> grid;
 
-public:
+ public:
   Board(int gridSize);
   ~Board();
   Board(const Board &other) = delete;
@@ -25,6 +25,7 @@ public:
   void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   int getGridSize();
+  void print();
 };
 
-#endif // BOARD_H
+#endif  // BOARD_H
