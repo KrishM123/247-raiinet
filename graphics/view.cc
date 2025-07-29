@@ -57,9 +57,7 @@ View::View(GameState &gameState, int playerView)
 }
 
 void View::notify(GameEvent &event) {
-  std::cout << "debug: event type: " << (int)event.getEventType() << std::endl;
   if (event.getEventType() == EventType::LinkMoved) {
-    std::cout << "debug: link moved" << std::endl;
     int oldX = std::stoi(event.getPayload().get("oldX")) - 1;
     int oldY = std::stoi(event.getPayload().get("oldY")) - 1;
     int newX = std::stoi(event.getPayload().get("newX")) - 1;

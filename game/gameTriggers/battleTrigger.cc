@@ -1,10 +1,12 @@
 #include "battleTrigger.h"
+
+#include <memory>
+
 #include "../../game/cell.h"
 #include "../../game/game_state.h"
 #include "../../game/player.h"
 #include "../../utils/payload.h"
 #include "../../utils/permission.h"
-#include <memory>
 
 using namespace std;
 
@@ -25,10 +27,15 @@ BattleTrigger::BattleTrigger(GameState &gameState, const Position &pos)
       }
     }
     if (attacker && defender) {
+      shared_ptr<Player> attackerOwner = attacker->permission.getOwner();
+      shared_ptr<Player> defenderOwner = defender->permission.getOwner();
+      attacker->permission.addViewer(defenderOwner);
+      defender->permission.addViewer(attackerOwner);
+
       if (attacker->getStrength() >= defender->getStrength()) {
-        this->gameState.downloadLink(defender, attacker->permission.getOwner());
+        this->gameState.downloadLink(defender, attackerOwner);
       } else {
-        this->gameState.downloadLink(attacker, defender->permission.getOwner());
+        this->gameState.downloadLink(attacker, defenderOwner);
       }
     }
     if (this->gameState.isWon()) {
