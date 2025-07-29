@@ -76,7 +76,7 @@ void Player::initLinks(const string &links, Permission perm)
   }
 }
 
-void Player::initAbilities(const string &abilities, Permission perm)
+void Player::initAbilities(const string &abilities, Permission perm, GameState &gameState)
 {
   if (!abilities.empty())
   {
@@ -85,39 +85,39 @@ void Player::initAbilities(const string &abilities, Permission perm)
       switch (ability)
       {
       case 'B':
-        this->abilities.push_back(make_shared<BarbedWire>(perm, *this));
+        this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
         break;
       case 'D':
-        this->abilities.push_back(make_shared<Download>(perm, *this));
+        this->abilities.push_back(make_shared<Download>(perm, gameState));
         break;
       case 'F':
-        this->abilities.push_back(make_shared<Firewall>(perm, *this));
+        this->abilities.push_back(make_shared<Firewall>(perm, gameState));
         break;
       case 'L':
-        this->abilities.push_back(make_shared<LinkBoost>(perm, *this));
+        this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
         break;
       case 'P':
-        this->abilities.push_back(make_shared<Polarize>(perm, *this));
+        this->abilities.push_back(make_shared<Polarize>(perm, gameState));
         break;
       case 'A':
-        this->abilities.push_back(make_shared<Scan>(perm, *this));
+        this->abilities.push_back(make_shared<Scan>(perm, gameState));
         break;
       case 'S':
-        this->abilities.push_back(make_shared<Swaplinks>(perm, *this));
+        this->abilities.push_back(make_shared<Swaplinks>(perm, gameState));
         break;
       case 'T':
-        this->abilities.push_back(make_shared<Telescope>(perm, *this));
+        this->abilities.push_back(make_shared<Telescope>(perm, gameState));
         break;
       }
     }
   }
   else
   {
-    this->abilities.push_back(make_shared<LinkBoost>(perm, *this));
-    this->abilities.push_back(make_shared<Firewall>(perm, *this));
-    this->abilities.push_back(make_shared<Download>(perm, *this));
-    this->abilities.push_back(make_shared<Polarize>(perm, *this));
-    this->abilities.push_back(make_shared<BarbedWire>(perm, *this));
+    this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
+    this->abilities.push_back(make_shared<Firewall>(perm, gameState));
+    this->abilities.push_back(make_shared<Download>(perm, gameState));
+    this->abilities.push_back(make_shared<Polarize>(perm, gameState));
+    this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
   }
 }
 

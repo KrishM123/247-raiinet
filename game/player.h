@@ -24,7 +24,7 @@ public:
     ~Player();
 
     void initLinks(const std::string &links, Permission perm);
-    void initAbilities(const std::string &abilities, Permission perm);
+    void initAbilities(const std::string &abilities, Permission perm, GameState &gameState);
 
     std::vector<std::shared_ptr<Link>> getLinks();
     std::vector<std::shared_ptr<Ability>> getAbilities();
