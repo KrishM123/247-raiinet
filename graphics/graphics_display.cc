@@ -28,11 +28,25 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
 
   auto p1Links = player1->getLinks();
   for (int i = 0; i < 4; ++i) {
-    window.drawString(x + i * 100, y, p1Links[i]->getDetails());
+    auto link = p1Links[i];
+    std::string details;
+    if (playerView == 0) { // P1's view
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      details = std::string(1, link->getName()) + ": ??";
+    }
+    window.drawString(x + i * 100, y, details);
   }
   y += 25;
   for (int i = 4; i < 8; ++i) {
-    window.drawString(x + (i - 4) * 100, y, p1Links[i]->getDetails());
+    auto link = p1Links[i];
+    std::string details;
+    if (playerView == 0) {
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      details = std::string(1, link->getName()) + ": ??";
+    }
+    window.drawString(x + (i - 4) * 100, y, details);
   }
 
   // Draw board
@@ -43,39 +57,33 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
       int cellY = boardY + (i - 1) * cellSize;
       int color = Xwindow::White;
       Cell &cell = gameState.getBoard().getCell(Position{i, j});
-      if (cell.getType() == 1) { // P1 server
+      if (cell.getType() == 1 || cell.getType() == 2) { // Server port
         color = Xwindow::Gray30;
       }
 
-      // auto occupants = cell.getOccupants();
-      // bool p1HasLink = false;
-      // for (const auto &occupant : occupants) {
-      //   auto link = std::dynamic_pointer_cast<Link>(occupant);
-      //   if (link && link->permission.getOwner()->getPlayerNumber() == 1) {
-      //     p1HasLink = true;
-      //     break;
-      //   }
-      // }
-
-      // if (p1HasLink) {
-      //   color = Xwindow::Seagreen2;
-      //   if (cell.getType() == 2) { // P2 server
-      //     color = Xwindow::Brown1;
-      //   }
-      // }
+      if (cell.getOccupants().size() > 1) {
+        auto link = std::dynamic_pointer_cast<Link>(cell.getOccupants()[1]);
+        if (link->permission.getOwner()->getPlayerNumber() - 1 == playerView) {
+          if (link->getType() == 0) {
+            color = Xwindow::Seagreen2;
+          } else {
+            color = Xwindow::Brown1;
+          }
+        } else {
+          color = Xwindow::Gray50;
+        }
+      }
 
       window.fillRectangle(cellX, cellY, cellSize, cellSize, Xwindow::Black);
       window.fillRectangle(cellX + 1, cellY + 1, cellSize - 2, cellSize - 2,
                            color);
 
-      // for (const auto &occupant : occupants) {
-      //   auto link = std::dynamic_pointer_cast<Link>(occupant);
-      //   if (link) {
-      //     char linkName = link->getName();
-      //     window.drawString(cellX + cellSize / 2, cellY + cellSize / 2,
-      //                       std::string(1, linkName));
-      //   }
-      // }
+      if (cell.getOccupants().size() > 1) {
+        auto link = std::dynamic_pointer_cast<Link>(cell.getOccupants()[1]);
+        char linkName = link->getName();
+        window.drawString(cellX + cellSize / 2 - 4, cellY + cellSize / 2 + 4,
+                          std::string(1, linkName));
+      }
     }
   }
 
@@ -83,17 +91,31 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
   y = boardY + (gridSize + 1) * cellSize;
   window.drawString(x, y, "Player 2:");
   y += 25;
-  window.drawString(x, y, "Downloaded: 0D 0V");
+  window.drawString(x, y, "Downloaded: 0D 0V"); // Hardcoded
   y += 25;
-  window.drawString(x, y, "Abilities: 5");
+  window.drawString(x, y, "Abilities: 5"); // Hardcoded
   y += 25;
   auto p2Links = player2->getLinks();
   for (int i = 0; i < 4; ++i) {
-    window.drawString(x + i * 100, y, p2Links[i]->getDetails());
+    auto link = p2Links[i];
+    std::string details;
+    if (playerView == 1) { // P2's view
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else { // P1's view, hide P2's details
+      details = std::string(1, link->getName()) + ": ??";
+    }
+    window.drawString(x + i * 100, y, details);
   }
   y += 25;
   for (int i = 4; i < 8; ++i) {
-    window.drawString(x + (i - 4) * 100, y, p2Links[i]->getDetails());
+    auto link = p2Links[i];
+    std::string details;
+    if (playerView == 1) {
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      details = std::string(1, link->getName()) + ": ??";
+    }
+    window.drawString(x + (i - 4) * 100, y, details);
   }
 }
 
