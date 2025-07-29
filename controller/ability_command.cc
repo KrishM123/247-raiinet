@@ -2,6 +2,8 @@
 #include "../ability/ability.h"
 #include "../game/game_state.h"
 #include "../game/player.h"
+#include "../controller/event_types.h"
+#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include <map>
 #include <stdexcept>
@@ -20,8 +22,14 @@ void AbilityCommand::execute() {
     if (ability_ptr->name == ability && !ability_ptr->used) {
       found = true;
       std::map<std::string, std::string> payload = {
-          {"arguments", command.substr(1)}};
+          {"arguments", command.substr(2)}};
       ability_ptr->execute(Payload(payload));
+      std::map<std::string, std::string> eventPayloadMap = {
+          {"player", std::to_string(gameState.getCurPlayer().getPlayerNumber() - 1)},
+          {"ability", ability}};
+      Payload eventPayload(eventPayloadMap);
+      EventType eventType = EventType::AbilityUsed;
+      MessageQueue::getInstance()->enqueueEvent(GameEvent(eventType, eventPayload));
     }
   }
   if (!found) {

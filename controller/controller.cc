@@ -103,7 +103,7 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
   } else if (input.find("ability") != std::string::npos) {
     if (!abilityUsed) {
       Payload payload(
-          std::map<std::string, std::string>{{"command", input.substr(7)}});
+          std::map<std::string, std::string>{{"command", input.substr(8)}});
       abilityUsed = true;
       return std::make_unique<AbilityCommand>(*gameState, payload);
     }

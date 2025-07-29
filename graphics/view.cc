@@ -69,7 +69,7 @@ void View::notify(GameEvent &event) {
   } else if (event.getEventType() == EventType::LinkDownloaded) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
-    int player = event.getPayload().get("player")[0] - '0';
+    int player = std::stoi(event.getPayload().get("player"));
     string type = event.getPayload().get("type");
     if (type == "D") {
       downloadedData[player]++;
@@ -79,7 +79,7 @@ void View::notify(GameEvent &event) {
     linksOnBoard[x][y] = "";
 
   } else if (event.getEventType() == EventType::AbilityUsed) {
-    int player = event.getPayload().get("player")[0] - '0';
+    int player = std::stoi(event.getPayload().get("player"));
     string ability = event.getPayload().get("ability");
     usedAbilities[player].push_back(ability);
     unusedAbilities[player].erase(std::find(unusedAbilities[player].begin(),
@@ -90,7 +90,7 @@ void View::notify(GameEvent &event) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
     string ability = event.getPayload().get("ability");
-    int player = event.getPayload().get("player")[0] - '0';
+    int player = std::stoi(event.getPayload().get("player"));
     usedAbilities[player].push_back(ability);
     unusedAbilities[player].erase(std::find(unusedAbilities[player].begin(),
                                             unusedAbilities[player].end(),
