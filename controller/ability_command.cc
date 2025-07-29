@@ -7,6 +7,7 @@
 #include "../utils/payload.h"
 #include <map>
 #include <stdexcept>
+#include <iostream>
 
 AbilityCommand::AbilityCommand(GameState &gameState, Payload &payload)
     : Command(gameState), command(payload.get("command")) {}
@@ -22,14 +23,16 @@ void AbilityCommand::execute() {
     if (ability_ptr->name == ability && !ability_ptr->used && !found) {
       found = true;
       std::map<std::string, std::string> payload = {
-          {"arguments", command.substr(2)}};
+          {"args", command.substr(2)}};
         ability_ptr->execute(Payload(payload));
+      std::cout << "Ability: " << ability_ptr->name << std::endl;
       std::map<std::string, std::string> eventPayloadMap = {
           {"player", std::to_string(gameState.getCurPlayer().getPlayerNumber() - 1)},
           {"ability", ability}};
       Payload eventPayload(eventPayloadMap);
       EventType eventType = EventType::AbilityUsed;
       MessageQueue::getInstance()->enqueueEvent(GameEvent(eventType, eventPayload));
+      std::cout << "Ability used" << std::endl;
     }
   }
   if (!found) {
