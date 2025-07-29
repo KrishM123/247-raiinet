@@ -152,14 +152,27 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
   Position oldPos = link->getPosition();
   map<string, Position> possibleMoves = link->getMoves();
 
-  if (possibleMoves.find(direction) == possibleMoves.end() ||
-      !board.isValidPosition(oldPos + possibleMoves[direction],
-                             curPlayer->getPlayerNumber()) ||
-      link->getIsDownloaded()) {
+  if (possibleMoves.find(direction) == possibleMoves.end() || link->getIsDownloaded()) {
     throw invalid_argument("Invalid move: " + direction);
   }
 
   Position newPos = oldPos + possibleMoves[direction];
+
+  // Cap row and col to be in the board + 2 buffer (for link boost error)
+  int newRow = newPos.getPosition().first;
+  int curPlayerNum = getCurPlayer().getPlayerNumber();
+
+  if (curPlayerNum == 1) {
+    if (newRow > board.getGridSize() + 1) newRow = board.getGridSize() + 1;
+  } 
+  else if (curPlayerNum == 2) {
+    if (newRow < 0) newRow = 0;
+  }
+  newPos.setPosition(newRow, newPos.getPosition().second);
+
+  if (!board.isValidPosition(newPos, curPlayerNum)) {
+    throw invalid_argument("Invalid move: " + direction);
+  }
 
   notifyLinkMoved(link, oldPos, newPos);
 
