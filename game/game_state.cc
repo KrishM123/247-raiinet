@@ -1,4 +1,8 @@
 #include "game_state.h"
+
+#include <iostream>
+#include <stdexcept>
+
 #include "../controller/event_types.h"
 #include "../utils/message_queue.h"
 #include "../utils/payload.h"
@@ -11,8 +15,6 @@
 #include "link.h"
 #include "occupant.h"
 #include "player.h"
-#include <iostream>
-#include <stdexcept>
 
 using namespace std;
 
@@ -78,16 +80,17 @@ void GameState::init() {
     for (int j = 0; j < playerLinks.size(); j++) {
       if (i == 0) {
         if (j == 3 || j == 4) {
-          board.placeOccupant(playerLinks[j], Position{2, j});
+          board.placeOccupant(playerLinks[j], Position{2, j + 1});
         } else {
-          board.placeOccupant(playerLinks[j], Position{1, j});
+          board.placeOccupant(playerLinks[j], Position{1, j + 1});
         }
       } else if (i == 1) {
         if (j == 3 || j == 4) {
           board.placeOccupant(playerLinks[j],
-                              Position{board.getGridSize() - 1, j});
+                              Position{board.getGridSize() - 1, j + 1});
         } else {
-          board.placeOccupant(playerLinks[j], Position{board.getGridSize(), j});
+          board.placeOccupant(playerLinks[j],
+                              Position{board.getGridSize(), j + 1});
         }
       }
     }

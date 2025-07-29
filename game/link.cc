@@ -1,14 +1,18 @@
 #include "link.h"
-#include "../utils/permission.h"
-#include "../utils/position.h"
+
 #include <algorithm>
 #include <map>
 #include <string>
 
+#include "../utils/permission.h"
+#include "../utils/position.h"
+
 using namespace std;
 
 Link::Link(int type, int strength, Permission perm)
-    : Occupant{perm}, type{type}, strength{strength},
+    : Occupant{perm},
+      type{type},
+      strength{strength},
       moves{{"up", Position{1, 0}},
             {"down", Position{-1, 0}},
             {"right", Position{0, 1}},
@@ -30,6 +34,8 @@ string Link::getDetails() const {
 }
 
 char Link::getName() const { return name; }
+
+void Link::setName(char name) { this->name = name; }
 
 bool Link::canMove(const string &direction) {
   return moves.find(direction) != moves.end();

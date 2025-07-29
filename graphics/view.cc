@@ -1,4 +1,8 @@
 #include "view.h"
+
+#include <algorithm>
+#include <iostream>
+
 #include "../ability/ability.h"
 #include "../controller/game_event.h"
 #include "../game/board.h"
@@ -7,11 +11,10 @@
 #include "../game/link.h"
 #include "../game/player.h"
 #include "../utils/message_queue.h"
-#include <algorithm>
-#include <iostream>
 
 View::View(GameState &gameState, int playerView)
-    : playerView(playerView), gameState(gameState),
+    : playerView(playerView),
+      gameState(gameState),
       gridSize(gameState.getBoard().getGridSize()),
       board(std::vector<std::vector<std::string>>(
           gridSize, std::vector<std::string>(gridSize, "."))),
@@ -39,11 +42,13 @@ View::View(GameState &gameState, int playerView)
     }
   }
   std::cout << "board initialized" << std::endl;
+
   for (int i = 0; i < gameState.getPlayers().size(); i++) {
     for (int j = 0; j < gameState.getPlayers()[i]->getLinks().size(); j++) {
       Link &link = *gameState.getPlayers()[i]->getLinks()[j];
       linksOnBoard[link.getPosition().getPosition().first - 1]
-                  [link.getPosition().getPosition().second - 1] = link.getName();
+                  [link.getPosition().getPosition().second - 1] =
+                      link.getName();
     }
   }
   std::cout << "linksOnBoard initialized" << std::endl;

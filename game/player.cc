@@ -1,4 +1,9 @@
 #include "player.h"
+
+#include <algorithm>
+#include <random>
+#include <sstream>
+
 #include "../ability/ability.h"
 #include "../ability/barbed_wire.h"
 #include "../ability/download.h"
@@ -12,9 +17,6 @@
 #include "game_state.h"
 #include "link.h"
 #include "occupant.h"
-#include <algorithm>
-#include <random>
-#include <sstream>
 
 using namespace std;
 
@@ -47,6 +49,9 @@ void Player::initLinks(const string &links, Permission perm) {
     this->links = tempLinks;
   }
   if (this->playerNumber == 1) {
+    for (int i = 0; i < this->links.size(); i++) {
+      this->links[i]->setName('a' + i);
+    }
     this->linksMap['a'] = 0;
     this->linksMap['b'] = 1;
     this->linksMap['c'] = 2;
@@ -56,6 +61,9 @@ void Player::initLinks(const string &links, Permission perm) {
     this->linksMap['g'] = 6;
     this->linksMap['h'] = 7;
   } else if (this->playerNumber == 2) {
+    for (int i = 0; i < this->links.size(); i++) {
+      this->links[i]->setName('A' + i);
+    }
     this->linksMap['A'] = 0;
     this->linksMap['B'] = 1;
     this->linksMap['C'] = 2;
@@ -72,30 +80,30 @@ void Player::initAbilities(const string &abilities, Permission perm,
   if (!abilities.empty()) {
     for (char ability : abilities) {
       switch (ability) {
-      case 'B':
-        this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
-        break;
-      case 'D':
-        this->abilities.push_back(make_shared<Download>(perm, gameState));
-        break;
-      case 'F':
-        this->abilities.push_back(make_shared<Firewall>(perm, gameState));
-        break;
-      case 'L':
-        this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
-        break;
-      case 'P':
-        this->abilities.push_back(make_shared<Polarize>(perm, gameState));
-        break;
-      case 'A':
-        this->abilities.push_back(make_shared<Scan>(perm, gameState));
-        break;
-      case 'S':
-        this->abilities.push_back(make_shared<Swaplinks>(perm, gameState));
-        break;
-      case 'T':
-        this->abilities.push_back(make_shared<Telescope>(perm, gameState));
-        break;
+        case 'B':
+          this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
+          break;
+        case 'D':
+          this->abilities.push_back(make_shared<Download>(perm, gameState));
+          break;
+        case 'F':
+          this->abilities.push_back(make_shared<Firewall>(perm, gameState));
+          break;
+        case 'L':
+          this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
+          break;
+        case 'P':
+          this->abilities.push_back(make_shared<Polarize>(perm, gameState));
+          break;
+        case 'A':
+          this->abilities.push_back(make_shared<Scan>(perm, gameState));
+          break;
+        case 'S':
+          this->abilities.push_back(make_shared<Swaplinks>(perm, gameState));
+          break;
+        case 'T':
+          this->abilities.push_back(make_shared<Telescope>(perm, gameState));
+          break;
       }
     }
   } else {
