@@ -92,11 +92,12 @@ void View::notify(GameEvent &event) {
     int y = std::stoi(event.getPayload().get("y")) - 1;
     string ability = event.getPayload().get("ability");
     int player = std::stoi(event.getPayload().get("player"));
+    string marker = event.getPayload().get("marker");
     usedAbilities[player].push_back(ability);
     unusedAbilities[player].erase(std::find(unusedAbilities[player].begin(),
                                             unusedAbilities[player].end(),
                                             ability));
-    board[x][y] = ability[0];
+    board[x][y] = marker[0];
 
   } else if (event.getEventType() == EventType::OccupantAdded) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
