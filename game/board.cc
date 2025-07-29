@@ -25,8 +25,10 @@ bool Board::isValidPosition(const Position &pos, int curPlayer) {
     return false;
   }
 
-  return pos.getPosition().first >= 1 && pos.getPosition().first <= gridSize &&
-         pos.getPosition().second >= 0 && pos.getPosition().second < gridSize;
+  return pos.getPosition().first >= 0 &&
+         pos.getPosition().first <= gridSize + 1 &&
+         pos.getPosition().second >= 0 &&
+         pos.getPosition().second <= gridSize + 1;
 }
 
 Cell &Board::getCell(const Position &pos) {

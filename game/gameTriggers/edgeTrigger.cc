@@ -21,7 +21,7 @@ EdgeTrigger::EdgeTrigger(GameState &gameState, const Position &pos,
     }
     if (link) {
       if (permission.getOwner() != link->permission.getOwner()) {
-        this->gameState.downloadLink(link, permission.getOwner());
+        this->gameState.downloadLink(link, link->permission.getOwner());
       }
     }
   };

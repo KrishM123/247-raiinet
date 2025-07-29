@@ -160,7 +160,7 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
   }
 
   Position newPos = oldPos + possibleMoves[direction];
-  
+
   notifyLinkMoved(link, oldPos, newPos);
 
   board.removeOccupant(link, oldPos);
@@ -197,7 +197,12 @@ void GameState::endGame() {
 
 void GameState::downloadLink(shared_ptr<Link> link,
                              shared_ptr<Player> downloader) {
-  link->permission.addViewer(downloader);
+  for (auto player : players) {
+    if (player != downloader) {
+      link->permission.addViewer(player);
+    }
+  }
+
   vector<shared_ptr<Link>> downloadedLinks = downloader->getDownloadedLinks();
   downloadedLinks.push_back(link);
   downloader->setDownloadedLinks(downloadedLinks);
@@ -207,7 +212,8 @@ void GameState::downloadLink(shared_ptr<Link> link,
   notifyLinkDownloaded(link, downloader);
 }
 
-void GameState::notifyLinkDownloaded(shared_ptr<Link> link, shared_ptr<Player> downloader) {
+void GameState::notifyLinkDownloaded(shared_ptr<Link> link,
+                                     shared_ptr<Player> downloader) {
   auto queue = MessageQueue::getInstance();
   map<string, string> payloadMap;
   payloadMap["x"] = to_string(link->getPosition().getPosition().first);

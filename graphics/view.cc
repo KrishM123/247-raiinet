@@ -12,8 +12,7 @@
 #include "../game/player.h"
 
 View::View(GameState &gameState, int playerView)
-    : playerView(playerView),
-      gameState(gameState),
+    : playerView(playerView), gameState(gameState),
       gridSize(gameState.getBoard().getGridSize()),
       board(std::vector<std::vector<std::string>>(
           gridSize, std::vector<std::string>(gridSize, "."))),
@@ -64,8 +63,9 @@ void View::notify(GameEvent &event) {
     int newY = std::stoi(event.getPayload().get("newY")) - 1;
     string oldLink = linksOnBoard[oldX][oldY];
     linksOnBoard[oldX][oldY] = "";
-    linksOnBoard[newX][newY] = oldLink;
-
+    if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+      linksOnBoard[newX][newY] = oldLink;
+    }
   } else if (event.getEventType() == EventType::LinkDownloaded) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
@@ -76,8 +76,9 @@ void View::notify(GameEvent &event) {
     } else if (type == "1") {
       downloadedVirus[player]++;
     }
-    linksOnBoard[x][y] = "";
-
+    if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+      linksOnBoard[x][y] = "";
+    }
   } else if (event.getEventType() == EventType::AbilityUsed) {
     int player = std::stoi(event.getPayload().get("player"));
     string ability = event.getPayload().get("ability");
