@@ -20,7 +20,7 @@ Board::~Board() {};
 
 bool Board::isValidPosition(const Position &pos, int curPlayer) {
   // Check if position is on a server cell or out of bounds
-  if (getCell(pos).getType() == curPlayer % 10 ||
+  if (getCell(pos).getType()%10 == curPlayer % 10 ||
       getCell(pos).getType() == -1) {
     return false;
   }

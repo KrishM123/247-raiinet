@@ -112,6 +112,8 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
             std::map<std::string, std::string>{{"command", input.substr(8)}});
         abilityUsed = true;
         return std::make_unique<AbilityCommand>(*gameState, payload);
+      } else {
+        throw std::invalid_argument("Ability already used");
       }
     } else if (input.find("board") != std::string::npos) {
       for (int i = 0; i < numPlayers; i++) {
