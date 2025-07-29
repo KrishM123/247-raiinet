@@ -5,10 +5,10 @@
 
 class Swaplinks final : public Ability {
 public:
-    Swaplinks(Permission& permission, GameState& gameState);
-    ~Swaplinks() override;
+  Swaplinks(Permission &permission, GameState &gameState);
+  ~Swaplinks() override;
 
-    void execute(const Payload& payload) override;
+  void execute(const Payload &payload) override;
 };
 
 #endif // SWAPLINKS_H

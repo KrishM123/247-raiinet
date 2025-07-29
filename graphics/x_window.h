@@ -5,14 +5,14 @@
 
 class XWindow final {
 public:
-    XWindow();
-    virtual ~XWindow();
+  XWindow();
+  virtual ~XWindow();
 
-    int getWidth() const;
-    int getHeight() const;
+  int getWidth() const;
+  int getHeight() const;
 
-    void fillRectangle(int x, int y, int width, int height);
-    void drawString(int x, int y, const std::string& msg);
+  void fillRectangle(int x, int y, int width, int height);
+  void drawString(int x, int y, const std::string &msg);
 };
 
 #endif // X_WINDOW_H

@@ -5,8 +5,7 @@
 #include "../link.h"
 #include <memory>
 
-class BattleTrigger : public Trigger
-{
+class BattleTrigger : public Trigger {
 public:
   BattleTrigger(GameState &gameState, const Position &pos);
   ~BattleTrigger() override;

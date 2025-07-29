@@ -1,45 +1,44 @@
 #ifndef MESSAGE_QUEUE_H
 #define MESSAGE_QUEUE_H
 
-#include <queue>
-#include <vector>
-#include <mutex>
-#include <condition_variable>
-#include <thread>
-#include <atomic>
-#include <memory>
 #include "../controller/game_event.h"
+#include <atomic>
+#include <condition_variable>
+#include <memory>
+#include <mutex>
+#include <queue>
+#include <thread>
+#include <vector>
 
 class View;
 
-class MessageQueue
-{
+class MessageQueue {
 private:
-    static std::shared_ptr<MessageQueue> instance;
-    static std::mutex instanceMutex;
+  static std::shared_ptr<MessageQueue> instance;
+  static std::mutex instanceMutex;
 
-    std::queue<GameEvent> eventQueue;
-    std::vector<View *> subscribers;
-    mutable std::mutex queueMutex;
-    mutable std::mutex subscribersMutex;
-    std::condition_variable cv;
-    std::thread workerThread;
-    std::atomic<bool> running;
+  std::queue<GameEvent> eventQueue;
+  std::vector<View *> subscribers;
+  mutable std::mutex queueMutex;
+  mutable std::mutex subscribersMutex;
+  std::condition_variable cv;
+  std::thread workerThread;
+  std::atomic<bool> running;
 
-    void processEvents();
+  void processEvents();
 
 public:
-    MessageQueue();
-    ~MessageQueue();
-    MessageQueue(const MessageQueue &) = delete;
-    MessageQueue &operator=(const MessageQueue &) = delete;
-    static std::shared_ptr<MessageQueue> getInstance();
+  MessageQueue();
+  ~MessageQueue();
+  MessageQueue(const MessageQueue &) = delete;
+  MessageQueue &operator=(const MessageQueue &) = delete;
+  static std::shared_ptr<MessageQueue> getInstance();
 
-    void subscribe(View *view);
-    void unsubscribe(View *view);
-    void enqueueEvent(const GameEvent &event);
-    void start();
-    void stop();
+  void subscribe(View *view);
+  void unsubscribe(View *view);
+  void enqueueEvent(const GameEvent &event);
+  void start();
+  void stop();
 };
 
 #endif // MESSAGE_QUEUE_H

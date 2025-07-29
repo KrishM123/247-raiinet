@@ -5,10 +5,10 @@
 
 class Download final : public Ability {
 public:
-    Download(Permission& permission, GameState& gameState);
-    ~Download() override;
+  Download(Permission &permission, GameState &gameState);
+  ~Download() override;
 
-    void execute(const Payload& payload) override;
+  void execute(const Payload &payload) override;
 };
 
-#endif // DOWNLOAD_H 
+#endif // DOWNLOAD_H

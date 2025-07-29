@@ -6,14 +6,15 @@
 class GameState;
 
 class TextDisplay final : public View {
-    void printPlayer(int player);
-    void printBoard();
-public:
-    TextDisplay(GameState& gameState, int playerView);
-    ~TextDisplay() override;
+  void printPlayer(int player);
+  void printBoard();
 
-    void printGame() override;
-    void printAbilities() override;
+public:
+  TextDisplay(GameState &gameState, int playerView);
+  ~TextDisplay() override;
+
+  void printGame() override;
+  void printAbilities() override;
 };
 
 #endif // TEXT_DISPLAY_H

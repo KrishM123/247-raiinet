@@ -4,10 +4,10 @@
 #include "../../ability/trigger.h"
 #include <memory>
 
-class ServerTrigger : public Trigger
-{
+class ServerTrigger : public Trigger {
 public:
-  ServerTrigger(GameState &gameState, const Position &pos, const Permission &perm);
+  ServerTrigger(GameState &gameState, const Position &pos,
+                const Permission &perm);
   ~ServerTrigger() override;
 };
 

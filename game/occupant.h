@@ -1,11 +1,10 @@
 #ifndef OCCUPANT_H
 #define OCCUPANT_H
 
-#include "../utils/position.h"
 #include "../utils/permission.h"
+#include "../utils/position.h"
 
-class Occupant
-{
+class Occupant {
 public:
   Position position;
   Permission permission;

@@ -1,12 +1,5 @@
 #include "player.h"
-#include "game_state.h"
-#include "link.h"
-#include "occupant.h"
 #include "../ability/ability.h"
-#include "../utils/permission.h"
-#include <sstream>
-#include <random>
-#include <algorithm>
 #include "../ability/barbed_wire.h"
 #include "../ability/download.h"
 #include "../ability/firewall.h"
@@ -15,34 +8,35 @@
 #include "../ability/scan.h"
 #include "../ability/swaplinks.h"
 #include "../ability/telescope.h"
+#include "../utils/permission.h"
+#include "game_state.h"
+#include "link.h"
+#include "occupant.h"
+#include <algorithm>
+#include <random>
+#include <sstream>
 
 using namespace std;
 
-Player::Player(int playerNumber, string links, string abilities) : playerNumber{playerNumber}
-{
+Player::Player(int playerNumber, string links, string abilities)
+    : playerNumber{playerNumber} {
   // this->abilities = abilities;
 }
 
 Player::~Player() = default;
 
-void Player::initLinks(const string &links, Permission perm)
-{
-  if (!links.empty())
-  {
+void Player::initLinks(const string &links, Permission perm) {
+  if (!links.empty()) {
     istringstream linkStream(links);
     string linkType;
-    while (linkStream >> linkType)
-    {
+    while (linkStream >> linkType) {
       int strength = linkType[1] - '0';
       int type = (linkType[0] == 'V') ? 1 : 0;
       this->links.push_back(make_shared<Link>(type, strength, perm));
     }
-  }
-  else
-  {
+  } else {
     vector<shared_ptr<Link>> tempLinks;
-    for (int strength = 1; strength <= 4; strength++)
-    {
+    for (int strength = 1; strength <= 4; strength++) {
       tempLinks.push_back(make_shared<Link>(0, strength, perm));
       tempLinks.push_back(make_shared<Link>(1, strength, perm));
     }
@@ -52,8 +46,7 @@ void Player::initLinks(const string &links, Permission perm)
 
     this->links = tempLinks;
   }
-  if (this->playerNumber == 1)
-  {
+  if (this->playerNumber == 1) {
     this->linksMap['a'] = 0;
     this->linksMap['b'] = 1;
     this->linksMap['c'] = 2;
@@ -62,9 +55,7 @@ void Player::initLinks(const string &links, Permission perm)
     this->linksMap['f'] = 5;
     this->linksMap['g'] = 6;
     this->linksMap['h'] = 7;
-  }
-  else if (this->playerNumber == 2)
-  {
+  } else if (this->playerNumber == 2) {
     this->linksMap['A'] = 0;
     this->linksMap['B'] = 1;
     this->linksMap['C'] = 2;
@@ -76,14 +67,11 @@ void Player::initLinks(const string &links, Permission perm)
   }
 }
 
-void Player::initAbilities(const string &abilities, Permission perm, GameState &gameState)
-{
-  if (!abilities.empty())
-  {
-    for (char ability : abilities)
-    {
-      switch (ability)
-      {
+void Player::initAbilities(const string &abilities, Permission perm,
+                           GameState &gameState) {
+  if (!abilities.empty()) {
+    for (char ability : abilities) {
+      switch (ability) {
       case 'B':
         this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
         break;
@@ -110,9 +98,7 @@ void Player::initAbilities(const string &abilities, Permission perm, GameState &
         break;
       }
     }
-  }
-  else
-  {
+  } else {
     this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
     this->abilities.push_back(make_shared<Firewall>(perm, gameState));
     this->abilities.push_back(make_shared<Download>(perm, gameState));
@@ -121,39 +107,24 @@ void Player::initAbilities(const string &abilities, Permission perm, GameState &
   }
 }
 
-vector<shared_ptr<Link>> Player::getLinks()
-{
-  return links;
-}
+vector<shared_ptr<Link>> Player::getLinks() { return links; }
 
-vector<shared_ptr<Ability>> Player::getAbilities()
-{
-  return abilities;
-}
+vector<shared_ptr<Ability>> Player::getAbilities() { return abilities; }
 
-vector<shared_ptr<Link>> Player::getDownloadedLinks()
-{
+vector<shared_ptr<Link>> Player::getDownloadedLinks() {
   return downloadedLinks;
 }
 
-int Player::getPlayerNumber() const
-{
-  return playerNumber;
-}
+int Player::getPlayerNumber() const { return playerNumber; }
 
-pair<int, int> Player::getScore() const
-{
+pair<int, int> Player::getScore() const {
   int dataCount = 0;
   int virusCount = 0;
 
-  for (const auto &link : downloadedLinks)
-  {
-    if (link->getType() == 0)
-    {
+  for (const auto &link : downloadedLinks) {
+    if (link->getType() == 0) {
       dataCount++;
-    }
-    else
-    {
+    } else {
       virusCount++;
     }
   }
@@ -161,17 +132,15 @@ pair<int, int> Player::getScore() const
   return make_pair(dataCount, virusCount);
 }
 
-void Player::setLinks(const vector<shared_ptr<Link>> &links)
-{
+void Player::setLinks(const vector<shared_ptr<Link>> &links) {
   this->links = links;
 }
 
-void Player::setAbilities(const vector<shared_ptr<Ability>> &abilities)
-{
+void Player::setAbilities(const vector<shared_ptr<Ability>> &abilities) {
   this->abilities = abilities;
 }
 
-void Player::setDownloadedLinks(const vector<shared_ptr<Link>> &downloadedLinks)
-{
+void Player::setDownloadedLinks(
+    const vector<shared_ptr<Link>> &downloadedLinks) {
   this->downloadedLinks = downloadedLinks;
 }

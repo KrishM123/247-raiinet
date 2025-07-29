@@ -5,10 +5,10 @@
 #include "../link.h"
 #include <memory>
 
-class EdgeTrigger : public Trigger
-{
+class EdgeTrigger : public Trigger {
 public:
-  EdgeTrigger(GameState &gameState, const Position &pos, const Permission &perm);
+  EdgeTrigger(GameState &gameState, const Position &pos,
+              const Permission &perm);
   ~EdgeTrigger() override;
 };
 

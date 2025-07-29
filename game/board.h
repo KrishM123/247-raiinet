@@ -1,8 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 using namespace std;
 
@@ -10,8 +10,7 @@ class Cell;
 class Occupant;
 class Position;
 
-class Board final
-{
+class Board final {
   int gridSize;
   vector<vector<unique_ptr<Cell>>> grid;
 

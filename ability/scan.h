@@ -5,10 +5,10 @@
 
 class Scan final : public Ability {
 public:
-    Scan(Permission& permission, GameState& gameState);
-    ~Scan() override;
+  Scan(Permission &permission, GameState &gameState);
+  ~Scan() override;
 
-    void execute(const Payload& payload) override;
+  void execute(const Payload &payload) override;
 };
 
-#endif // SCAN_H    
+#endif // SCAN_H

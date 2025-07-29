@@ -3,18 +3,19 @@
 
 using namespace std;
 
-Trigger::Trigger(GameState &gameState, const Position &pos, const Permission &perm) : Occupant{pos, perm}, gameState{gameState} {}
+Trigger::Trigger(GameState &gameState, const Position &pos,
+                 const Permission &perm)
+    : Occupant{pos, perm}, gameState{gameState} {}
 
-Trigger::Trigger(GameState &gameState, const Position &pos, const Permission &perm, function<void()> action) : 
-    Occupant{pos, perm}, gameState{gameState}, triggerAction{action} {}
+Trigger::Trigger(GameState &gameState, const Position &pos,
+                 const Permission &perm, function<void()> action)
+    : Occupant{pos, perm}, gameState{gameState}, triggerAction{action} {}
 
-void Trigger::trigger()
-{
-    triggerAction();
-    notifyRuleUsed();
+void Trigger::trigger() {
+  triggerAction();
+  notifyRuleUsed();
 }
 
-void Trigger::notifyRuleUsed()
-{
-    // Implement this later
+void Trigger::notifyRuleUsed() {
+  // Implement this later
 }

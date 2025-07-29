@@ -5,10 +5,10 @@
 
 class LinkBoost final : public Ability {
 public:
-    LinkBoost(Permission& permission, GameState& gameState);
-    ~LinkBoost() override;
+  LinkBoost(Permission &permission, GameState &gameState);
+  ~LinkBoost() override;
 
-    void execute(const Payload& payload) override;
+  void execute(const Payload &payload) override;
 };
 
-#endif // LINK_BOOST_H 
+#endif // LINK_BOOST_H

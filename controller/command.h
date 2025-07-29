@@ -5,11 +5,12 @@ class GameState;
 
 class Command {
 protected:
-    GameState& gameState;
+  GameState &gameState;
+
 public:
-    Command(GameState& gameState) : gameState(gameState) {}
-    virtual ~Command();
-    virtual void execute() = 0;
+  Command(GameState &gameState) : gameState(gameState) {}
+  virtual ~Command();
+  virtual void execute() = 0;
 };
 
 #endif // COMMAND_H

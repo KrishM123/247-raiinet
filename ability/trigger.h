@@ -9,21 +9,21 @@ class Position;
 class Permission;
 class GameState;
 
-class Trigger : public Occupant
-{
+class Trigger : public Occupant {
 protected:
-    GameState &gameState;
-    std::function<void()> triggerAction;
+  GameState &gameState;
+  std::function<void()> triggerAction;
 
 private:
-    void notifyRuleUsed();
+  void notifyRuleUsed();
 
 public:
-    Trigger(GameState &gameState, const Position &pos, const Permission &perm);
-    Trigger(GameState &gameState, const Position &pos, const Permission &perm, std::function<void()> action);
-    ~Trigger() override = default;
+  Trigger(GameState &gameState, const Position &pos, const Permission &perm);
+  Trigger(GameState &gameState, const Position &pos, const Permission &perm,
+          std::function<void()> action);
+  ~Trigger() override = default;
 
-    void trigger();
+  void trigger();
 };
 
 #endif // TRIGGER_H
