@@ -32,6 +32,7 @@ void AbilityCommand::execute() {
       Payload eventPayload(eventPayloadMap);
       EventType eventType = EventType::AbilityUsed;
       MessageQueue::getInstance()->enqueueEvent(GameEvent(eventType, eventPayload));
+      gameState.abilityUsed = true;
       std::cout << "Ability used" << std::endl;
     }
   }
