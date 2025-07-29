@@ -35,12 +35,12 @@ void Scan::execute(const Payload &payload) {
   // 2. Get current player's shared_ptr
   Player &currentPlayer = gameState.getCurPlayer();
   shared_ptr<Player> currentPlayerPtr =
-      gameState.getPlayers()[currentPlayer.getPlayerNumber()];
+      gameState.getPlayers()[currentPlayer.getPlayerNumber() - 1];
 
   // 3. Add the current player to the link's visibility list
   if (currentPlayerPtr) {
     targetLink->permission.addViewer(currentPlayerPtr);
   }
-
+  
   notifyAbilityUsed();
 }
