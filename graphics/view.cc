@@ -7,6 +7,7 @@
 #include "../game/link.h"
 #include "../ability/ability.h"
 #include "../controller/game_event.h"
+#include "../utils/message_queue.h"
 
 View::View(GameState& gameState, int playerView) : 
     playerView(playerView),
@@ -42,6 +43,7 @@ View::View(GameState& gameState, int playerView) :
                 unusedAbilities[i][j] = ability.name;
             }
         }
+        subscribeToMessageQueue();
     }
 
 
@@ -93,4 +95,16 @@ void View::notify(const GameEvent& event) {
         int y = event.getPayload().get("y")[0] - '0';
         linksOnBoard[x][y] = "";
     }
+}
+
+View::~View() {
+    unsubscribeFromMessageQueue();
+}
+
+void View::subscribeToMessageQueue() {
+    MessageQueue::getInstance()->subscribe(this);
+}
+
+void View::unsubscribeFromMessageQueue() {
+    MessageQueue::getInstance()->unsubscribe(this);
 }

@@ -35,6 +35,7 @@ void Controller::init(int argc, char* argv[]) {
             views.push_back(std::make_unique<GraphicsDisplay>(gameState, i));
         }
     }
+    gameState.init();
 }
 
 void Controller::parseCommandLineArgs(int argc, char* argv[]) {

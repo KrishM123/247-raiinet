@@ -21,11 +21,14 @@ protected:
 
 public:
     View(GameState& gameState, int playerView);
-    virtual ~View() = default;
+    virtual ~View();
 
     void notify(const GameEvent& event);
     virtual void printGame() = 0;
     virtual void printAbilities() = 0;
+    
+    void subscribeToMessageQueue();
+    void unsubscribeFromMessageQueue();
 };
 
 #endif // VIEW_H
