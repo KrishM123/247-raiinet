@@ -138,18 +138,27 @@ void View::notify(GameEvent &event) {
 
 Payload View::getDiff() {
   Payload diff;
+  std::string news;
+  std::string xs;
+  std::string ys;
+  
   for (int i = 0; i < gridSize; i++) {
     for (int j = 0; j < gridSize; j++) {
       if (oldBoard[i][j] != (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
                                              : board[i][j])) {
-        diff.add("x", std::to_string(i + 1));
-        diff.add("y", std::to_string(j + 1));
-        diff.add("old", oldBoard[i][j]);
-        diff.add("new", (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
-                                             : board[i][j]));
+        xs += std::to_string(i + 1) + " ";
+        ys += std::to_string(j + 1) + " ";
+        news += (linksOnBoard[i][j] != "" ? linksOnBoard[i][j]
+                                             : board[i][j]) + " ";
       }
     }
   }
+  
+  diff.add("n", std::to_string(news.size()));
+  diff.add("x", xs);
+  diff.add("y", ys);
+  diff.add("news", news);
+  
   return diff;
 }
 
