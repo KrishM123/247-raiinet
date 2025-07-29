@@ -43,10 +43,13 @@ void BarbedWire::execute(const Payload& payload) {
 
         Position targetPos{row, col};
         
-        // TODO: Check if the target cell is empty and not a server port
+        Cell& targetCell = gameState.getBoard().getCell(targetPos);
+        if (!targetCell.getOccupants().empty() || targetCell.getType() == 1 || targetCell.getType() == 2) {
+            return;
+        }
 
         // Define the lambda function for the Barbed Wire's action
-        auto barbed_wire_action = [this, targetPos](const Payload& payload) {
+        auto barbed_wire_action = [this, targetPos]() {
             // Find the link that triggered this action
             Cell& myCell = this->gameState.getBoard().getCell(targetPos);
             shared_ptr<Link> triggeredLink = nullptr;
@@ -75,7 +78,7 @@ void BarbedWire::execute(const Payload& payload) {
         };
 
         // Create a Trigger with the defined action
-        auto trigger = make_shared<Trigger>(targetPos, this->permission, barbed_wire_action);
+        auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, barbed_wire_action);
 
         // Place the trigger on the board
         gameState.addOccupant(trigger, targetPos);
@@ -83,6 +86,6 @@ void BarbedWire::execute(const Payload& payload) {
         notifyAbilityUsed();
 
     } catch (const std::exception& e) {
-        return; // Silently fail on bad input
+        return;
     }
 } 

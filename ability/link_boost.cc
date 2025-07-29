@@ -9,15 +9,16 @@
 
 using namespace std;
 
-// Helper function to parse the link character into player and link indices
+// Helper:
+// Parse link character into player and link indices
 pair<int, int> getBoostTargetIndices(char linkId) {
     if (linkId >= 'a' && linkId <= 'h') {
-        return {0, linkId - 'a'};
+        return {0, linkId - 'a'}; // Player 0, link index
     }
     if (linkId >= 'A' && linkId <= 'H') {
-        return {1, linkId - 'A'};
+        return {1, linkId - 'A'}; // Player 1, link index
     }
-    return {-1, -1};
+    return {-1, -1};    
 }
 
 
@@ -27,8 +28,7 @@ LinkBoost::LinkBoost(Permission& permission, GameState& gameState) :
 LinkBoost::~LinkBoost() {}
 
 void LinkBoost::execute(const Payload& payload) {
-    // --- Input Format ---
-    // This ability expects a string containing a single character link identifier.
+    // Input: string (single char) representing a link
     // Example: "a"
     
     string args = payload.get("args");
@@ -38,7 +38,7 @@ void LinkBoost::execute(const Payload& payload) {
     ss >> linkIdStr;
 
     if (linkIdStr.length() != 1 || !ss.eof()) {
-        return; // Silently fail on incorrect input
+        return; 
     }
     char linkId = linkIdStr[0];
 
@@ -59,7 +59,7 @@ void LinkBoost::execute(const Payload& payload) {
     if (targetLinkIndex >= targetPlayerLinks.size()) return;
     shared_ptr<Link> targetLink = targetPlayerLinks[targetLinkIndex];
 
-    // --- Apply the Boost ---
+    // Apply boost      
     map<string, Position> currentMoves = targetLink->getMoves();
     map<string, Position> boostedMoves;
 

@@ -19,8 +19,7 @@ Firewall::Firewall(Permission& permission, GameState& gameState) :
 Firewall::~Firewall() {}
 
 void Firewall::execute(const Payload& payload) {
-    // --- Input Format ---
-    // This ability expects a string of two integers representing row and column.
+    // Input: string of two integers (row, col)
     // Example: "3 4"
     
     string args = payload.get("args");
@@ -29,9 +28,9 @@ void Firewall::execute(const Payload& payload) {
 
     ss >> rowStr >> colStr;
 
-    // Check if we have exactly two arguments
+    // Exactly 2 args
     if (rowStr.empty() || colStr.empty() || !ss.eof()) {
-        return; // Silently fail on incorrect number of arguments
+        return; 
     }
     
     try {
@@ -45,11 +44,8 @@ void Firewall::execute(const Payload& payload) {
 
         Position targetPos{row, col};
         
-        // TODO: We need a way to check if the target cell is empty.
-        // Assuming it's always empty for now.
-
         // Define the lambda function for the firewall's action
-        auto firewall_action = [this, targetPos](const Payload& payload) {
+        auto firewall_action = [this, targetPos]() {
             // The firewall needs to find the link that triggered it.
             // It's the other link on the same cell that isn't owned by the firewall's owner.
             Cell& myCell = this->gameState.getBoard().getCell(targetPos);
@@ -74,38 +70,20 @@ void Firewall::execute(const Payload& payload) {
             if (triggeredLink->getType() == 1) { // 1 == Virus
                 shared_ptr<Player> owner = triggeredLink->permission.getOwner();
                 if (owner) {
-                    // Manually implement the download logic using get/set
-                    vector<shared_ptr<Link>> ownerDownloads = owner->getDownloadedLinks();
-                    ownerDownloads.push_back(triggeredLink);
-                    owner->setDownloadedLinks(ownerDownloads);
-
-                    // Also remove from owner's active links
-                    vector<shared_ptr<Link>> ownerLinks = owner->getLinks();
-                    for (auto it = ownerLinks.begin(); it != ownerLinks.end(); ++it) {
-                        if (*it == triggeredLink) {
-                            ownerLinks.erase(it);
-                            break;
-                        }
-                    }
-                    owner->setLinks(ownerLinks);
-
-                    // Finally, remove from the board
-                    this->gameState.removeOccupant(triggeredLink, triggeredLink->getPosition());
+                    this->gameState.downloadLink(triggeredLink, owner);
                 }
             }
         };
 
         // Create a Trigger with the defined action, providing the necessary
         // Position and the Permission from the ability itself.
-        auto trigger = make_shared<Trigger>(targetPos, this->permission, firewall_action);
+        auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, firewall_action);
 
         // Place the trigger on the board
         gameState.addOccupant(trigger, targetPos);
 
         notifyAbilityUsed();
     } catch (const std::exception& e) {
-        // This will catch errors from stoi if the arguments are not valid integers.
-        // Silently fail on bad input.
         return;
     }
 } 
