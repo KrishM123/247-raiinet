@@ -69,11 +69,11 @@ void View::notify(GameEvent &event) {
   } else if (event.getEventType() == EventType::LinkDownloaded) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
-    int player = std::stoi(event.getPayload().get("player"));
+    int player = std::stoi(event.getPayload().get("player")) - 1;
     string type = event.getPayload().get("type");
-    if (type == "D") {
+    if (type == "0") {
       downloadedData[player]++;
-    } else if (type == "V") {
+    } else if (type == "1") {
       downloadedVirus[player]++;
     }
     linksOnBoard[x][y] = "";
