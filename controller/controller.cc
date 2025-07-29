@@ -100,13 +100,11 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
     if (input.find("move") != std::string::npos) {
       Payload payload(
           std::map<std::string, std::string>{{"command", input.substr(5)}});
-      abilityUsed = false;
       return std::make_unique<MoveCommand>(*gameState, payload);
     } else if (input.find("ability") != std::string::npos) {
-      if (!abilityUsed) {
+      if (!(gameState->abilityUsed)) {
         Payload payload(
             std::map<std::string, std::string>{{"command", input.substr(8)}});
-        abilityUsed = true;
         return std::make_unique<AbilityCommand>(*gameState, payload);
       } else {
         throw std::invalid_argument("Ability already used");

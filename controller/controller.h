@@ -14,7 +14,6 @@ class View;
 
 class Controller final : public MessageSubscriber {
   bool graphicsEnabled;
-  bool abilityUsed;
   int boardSize;
   int numPlayers;
   std::vector<std::string> linkFiles;

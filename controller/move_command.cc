@@ -26,5 +26,6 @@ void MoveCommand::execute() {
     throw std::invalid_argument("Cannot move link that belongs to the current player");
   }
   gameState.moveLink(link_ptr, direction);
+  gameState.abilityUsed = false;
   gameState.nextTurn();
 }

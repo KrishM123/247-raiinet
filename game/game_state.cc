@@ -198,7 +198,7 @@ void GameState::endGame() {
 void GameState::downloadLink(shared_ptr<Link> link,
                              shared_ptr<Player> downloader) {
   for (auto player : players) {
-    if (player != downloader) {
+    if (player == downloader) {
       link->permission.addViewer(player);
     }
   }

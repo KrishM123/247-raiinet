@@ -31,6 +31,8 @@ public:
 
   void init();
 
+  bool abilityUsed = false;
+
   std::vector<std::shared_ptr<Link>> getLinks();
   std::shared_ptr<Link> getLink(char name);
   Board &getBoard();
