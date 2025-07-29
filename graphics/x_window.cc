@@ -52,8 +52,7 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   XSetNormalHints(d, w, &hints);
 
   XSynchronize(d, True);
-
-  usleep(1000);
+  usleep(20000);
 }
 
 Xwindow::~Xwindow() {
