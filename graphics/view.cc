@@ -47,12 +47,12 @@ View::View(GameState& gameState, int playerView) :
     }
 
 
-void View::notify(const GameEvent& event) {
+void View::notify(GameEvent& event) {
     if (event.getEventType() == EventType::LinkMoved) {
-        int oldX = event.getPayload().get("oldX")[0] - '0';
-        int oldY = event.getPayload().get("oldY")[0] - '0';
-        int newX = event.getPayload().get("newX")[0] - '0';
-        int newY = event.getPayload().get("newY")[0] - '0';
+        int oldX = std::stoi(event.getPayload().get("oldX"));
+        int oldY = std::stoi(event.getPayload().get("oldY")); 
+        int newX = std::stoi(event.getPayload().get("newX"));
+        int newY = std::stoi(event.getPayload().get("newY"));
         string oldLink = linksOnBoard[oldX][oldY];
         linksOnBoard[oldX][oldY] = "";
         linksOnBoard[newX][newY] = oldLink;

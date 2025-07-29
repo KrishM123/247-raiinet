@@ -23,7 +23,7 @@ public:
     View(GameState& gameState, int playerView);
     virtual ~View();
 
-    void notify(const GameEvent& event);
+    void notify(GameEvent& event);
     virtual void printGame() = 0;
     virtual void printAbilities() = 0;
     

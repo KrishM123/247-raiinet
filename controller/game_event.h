@@ -8,10 +8,10 @@ class GameEvent final {
     EventType eventType;
     Payload payload;
 public:
-    GameEvent();
+    GameEvent(EventType& eventType, Payload& payload);
     ~GameEvent();
-    EventType getEventType() const;
-    Payload& getPayload() const;
+    EventType getEventType();
+    Payload& getPayload();
     void setPayload(const Payload& payload);
 };
 
