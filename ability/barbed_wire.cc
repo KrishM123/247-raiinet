@@ -1,16 +1,16 @@
 #include "../ability/barbed_wire.h"
+#include "../controller/game_event.h"
 #include "../game/board.h"
 #include "../game/cell.h"
 #include "../game/game_state.h"
 #include "../game/link.h"
+#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "../utils/position.h"
-#include "../controller/game_event.h"
-#include "../utils/message_queue.h"
 #include "trigger.h"
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <iostream>
 
 using namespace std;
 
@@ -40,7 +40,7 @@ void BarbedWire::execute(const Payload &payload) {
     int col = stoi(colStr) + 1;
     int gridSize = gameState.getBoard().getGridSize();
 
-    if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+    if (row < 0 || row > gridSize || col < 0 || col > gridSize) {
       return; // Out of bounds
     }
 
