@@ -20,8 +20,10 @@
 using namespace std;
 
 GameState::GameState(int numPlayers, int boardSize, vector<string> links,
-                     vector<string> abilities)
-    : board{Board{boardSize}}, isGameOver{false} {
+                     vector<string> abilities, bool obstaclesEnabled,
+                     bool sideMovesEnabled)
+    : board{Board{boardSize}}, isGameOver{false},
+      obstaclesEnabled{obstaclesEnabled}, sideMovesEnabled{sideMovesEnabled} {
   for (int i = 0; i < numPlayers; i++) {
     players.push_back(make_shared<Player>(i + 1, links[i], abilities[i]));
     players[i]->initLinks(links[i], Permission(players[i]));
@@ -35,12 +37,14 @@ void GameState::init() {
   for (int i = 0; i < board.getGridSize() + 2; i++) {
     for (int j = 0; j < board.getGridSize() + 2; j++) {
       if (j == 0 || j == board.getGridSize() + 1) {
-        board.getCell(Position{i, j}).setType(0);
-        board.placeOccupant(make_shared<SideTrigger>(*this, Position{i, j}),
-                            Position{i, j});
-        continue;
-      }
-      if (i == 0) {
+        if (sideMovesEnabled) {
+          board.getCell(Position{i, j}).setType(0);
+          board.placeOccupant(make_shared<SideTrigger>(*this, Position{i, j}),
+                              Position{i, j});
+        } else {
+          board.getCell(Position{i, j}).setType(-1);
+        }
+      } else if (i == 0) {
         board.getCell(Position{i, j}).setType(11);
         board.placeOccupant(make_shared<EdgeTrigger>(*this, Position{i, j},
                                                      Permission(players[0])),
@@ -75,20 +79,22 @@ void GameState::init() {
       }
     }
   }
-  // Set 3 random spaces to be empty (-1), avoiding first and last rows
-  srand(time(nullptr));
-  int count = 0;
-  while (count < 3) {
-    int i =
-        (rand() % (board.getGridSize() - 5)) + 3; // Range from row 3 to size-1
-    int j = (rand() % board.getGridSize()) + 1;
-    Cell &cell = board.getCell(Position{i, j});
-    // Skip if cell is a server
-    if (cell.getType() == -1) {
-      continue;
+  if (obstaclesEnabled) {
+    // Set 3 random spaces to be empty (-1), avoiding first and last rows
+    srand(time(nullptr));
+    int count = 0;
+    while (count < 3) {
+      int i = (rand() % (board.getGridSize() - 5)) +
+              3; // Range from row 3 to size-1
+      int j = (rand() % board.getGridSize()) + 1;
+      Cell &cell = board.getCell(Position{i, j});
+      // Skip if cell is a server
+      if (cell.getType() == -1) {
+        continue;
+      }
+      cell.setType(-1);
+      count++;
     }
-    cell.setType(-1);
-    count++;
   }
   // place links on board
   for (int i = 0; i < players.size(); i++) {

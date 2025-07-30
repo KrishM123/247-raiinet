@@ -41,6 +41,16 @@ SideTrigger::SideTrigger(GameState &gameState, const Position &pos)
         this->gameState.removeOccupant(link, this->position);
         this->gameState.addOccupant(link, newPos);
         notifySideTriggered(link->getName(), newPos);
+      } else {
+        if (this->position.getPosition().second == 0) {
+          newPos.setPosition(this->position.getPosition().first, 1);
+        } else {
+          newPos.setPosition(this->position.getPosition().first, boardSize);
+        }
+        this->gameState.removeOccupant(link, this->position);
+        this->gameState.addOccupant(link, newPos);
+        notifySideTriggered(link->getName(), newPos);
+        throw invalid_argument("Invalid move");
       }
     }
   };
@@ -48,7 +58,6 @@ SideTrigger::SideTrigger(GameState &gameState, const Position &pos)
 
 void SideTrigger::notifySideTriggered(char link, Position &newPos) {
   auto queue = MessageQueue::getInstance();
-  std::cout << "Link: " << link << std::endl;
   map<string, string> payloadMap = {
       {"occupant", string(1, link)},
       {"x", to_string(newPos.getPosition().first)},

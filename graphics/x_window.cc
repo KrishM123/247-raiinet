@@ -53,8 +53,12 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   hints.width = hints.base_width = hints.min_width = hints.max_width = width;
   XSetNormalHints(d, w, &hints);
 
-  XSynchronize(d, True);
-  usleep(80000);
+  // XSynchronize(d, True);
+  // usleep(50000);
+  XEvent event;
+  do {
+    XNextEvent(d, &event);
+  } while (event.type != Expose);
 }
 
 Xwindow::~Xwindow() {
@@ -69,8 +73,10 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
   XSetForeground(d, gc, colours[colour]);
   XFillRectangle(d, w, gc, x, y, width, height);
   XSetForeground(d, gc, colours[Black]);
+  XFlush(d);
 }
 
 void Xwindow::drawString(int x, int y, string msg) {
   XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
+  XFlush(d);
 }

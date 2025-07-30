@@ -16,6 +16,8 @@ class GameState final {
   std::vector<std::shared_ptr<Player>> players;
   std::shared_ptr<Player> curPlayer;
   bool isGameOver;
+  bool obstaclesEnabled;
+  bool sideMovesEnabled;
 
   void notifyNextTurn();
   void notifyGameOver();
@@ -27,7 +29,8 @@ class GameState final {
 public:
   GameState();
   GameState(int numPlayers, int boardSize, vector<string> links,
-            vector<string> abilities);
+            vector<string> abilities, bool obstaclesEnabled,
+            bool sideMovesEnabled);
   ~GameState();
 
   void init();
