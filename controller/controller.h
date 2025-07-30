@@ -13,6 +13,7 @@ class Command;
 class View;
 
 class Controller final : public MessageSubscriber {
+  bool playing;
   bool graphicsEnabled;
   int boardSize;
   int numPlayers;

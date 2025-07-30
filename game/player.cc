@@ -17,6 +17,7 @@
 #include "game_state.h"
 #include "link.h"
 #include "occupant.h"
+#include <iostream>
 
 using namespace std;
 
@@ -25,7 +26,9 @@ Player::Player(int playerNumber, string links, string abilities)
   // this->abilities = abilities;
 }
 
-Player::~Player() = default;
+Player::~Player() {
+  std::cout << "Player destroyed" << std::endl;
+}
 
 void Player::initLinks(const string &links, Permission perm) {
   if (!links.empty()) {

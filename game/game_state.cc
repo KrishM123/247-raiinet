@@ -95,7 +95,9 @@ void GameState::init() {
   }
 }
 
-GameState::~GameState() {};
+GameState::~GameState() {
+  std::cout << "GameState destroyed" << std::endl;
+};
 
 vector<shared_ptr<Link>> GameState::getLinks() {
   vector<shared_ptr<Link>> links;

@@ -18,7 +18,7 @@
 Controller::Controller(int numPlayers, int boardSize)
     : graphicsEnabled{false}, boardSize{boardSize}, numPlayers{numPlayers},
       views{}, linkFiles{std::vector<std::string>(numPlayers)},
-      abilities{std::vector<std::string>(numPlayers)} {}
+      abilities{std::vector<std::string>(numPlayers)}, playing{true} {}
 
 Controller::~Controller() {
   MessageQueue::getInstance()->unsubscribe(this);
@@ -74,7 +74,7 @@ std::vector<std::string> Controller::loadLinkFiles() {
 
 void Controller::play() {
   std::cout << "Game started" << std::endl;
-  while (!gameState->isWon()) {
+  while (!gameState->isWon() && playing) {
     std::string input;
     std::getline(std::cin, input);
     std::unique_ptr<Command> command = parseInput(input);
@@ -88,7 +88,7 @@ void Controller::play() {
 void Controller::play(std::string filename) {
   std::ifstream file(filename);
   std::string line;
-  while (std::getline(file, line) && !gameState->isWon()) {
+  while (std::getline(file, line) && !gameState->isWon() && playing) {
     std::unique_ptr<Command> command = parseInput(line);
     if (command != nullptr) {
       executeCommand(std::move(command));
@@ -130,6 +130,7 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       play(input.substr(9));
     } else if (input.find("quit") != std::string::npos) {
       gameState->endGame();
+      playing = false;
     }
     return nullptr;
   } catch (const std::exception &e) {
