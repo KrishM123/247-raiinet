@@ -30,7 +30,16 @@ void TextDisplay::printPlayer(int player) {
   std::cout << "Player " << player + 1 << ":" << std::endl;
   std::cout << "Downloaded: " << downloadedData[player] << "D, "
             << downloadedVirus[player] << "V" << std::endl;
-  std::cout << "Abilities: " << unusedAbilities << std::endl;
+  
+  int ununsedAbilityCount = 0;
+  std::vector<std::shared_ptr<Ability>> abilities = gameState.getPlayers()[player]->getAbilities();
+  for (int i = 0; i < abilities.size(); ++i) {
+    if (!abilities[i]->used) {
+      ununsedAbilityCount++;
+    }
+  }
+  std::cout << "Abilities: " << ununsedAbilityCount << std::endl;
+
   Player &playerDisplay = *gameState.getPlayers()[playerView];
   Player &curPlayer = *gameState.getPlayers()[player];
   for (int i = 0; i < curPlayer.getLinks().size() / 2; i++) {
