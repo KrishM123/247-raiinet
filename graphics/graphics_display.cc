@@ -246,7 +246,6 @@ void GraphicsDisplay::printGame() {
   string x = diff.get("x");
   string y = diff.get("y");
   string news = diff.get("news");
-  std::cout << "Diff: " << x << " " << y << " " << news << std::endl;
   std::istringstream xStream(x);
   std::istringstream yStream(y);
   std::istringstream newsStream(news);
@@ -262,8 +261,6 @@ void GraphicsDisplay::printGame() {
 }
 
 void GraphicsDisplay::drawCell(int x, int y, char item) {
-
-  cout << "Drawing cell: " << x << ", " << y << ", " << item << endl;
 
   int xPos = (y - 1) * cellSize + 10;
   int yPos = (x - 1) * cellSize + 175;

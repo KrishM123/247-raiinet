@@ -46,7 +46,7 @@ void BarbedWire::execute(const Payload &payload) {
     Position targetPos{row, col};
 
     Cell &targetCell = gameState.getBoard().getCell(targetPos);
-    if (!targetCell.getOccupants().empty() || targetCell.getType() == 1 ||
+    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
         targetCell.getType() == 2) {
       return;
     }

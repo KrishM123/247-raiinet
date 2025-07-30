@@ -38,8 +38,6 @@ void Firewall::execute(const Payload &payload) {
   try {
     int row = stoi(rowStr) + 1;
     int col = stoi(colStr) + 1;
-    std::cout << "row: " << row << std::endl;
-    std::cout << "col: " << col << std::endl;
     int gridSize = gameState.getBoard().getGridSize();
 
     if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {

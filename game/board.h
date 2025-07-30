@@ -25,7 +25,6 @@ class Board final {
   void placeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   void removeOccupant(shared_ptr<Occupant> occupant, const Position &pos);
   int getGridSize();
-  void print();
 };
 
 #endif  // BOARD_H
