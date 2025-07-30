@@ -2,6 +2,7 @@
 #define MESSAGE_QUEUE_H
 
 #include "game_event.h"
+#include "message_subscriber.h"
 #include <condition_variable>
 #include <memory>
 #include <mutex>
@@ -10,12 +11,6 @@
 #include <vector>
 
 class GameEvent;
-
-class MessageSubscriber {
-public:
-  virtual ~MessageSubscriber() = default;
-  virtual void notify(GameEvent &event) = 0;
-};
 
 class MessageQueue {
   static std::shared_ptr<MessageQueue> instance;

@@ -1,67 +1,54 @@
 #include "link.h"
-
-#include <algorithm>
-#include <map>
-#include <string>
-
 #include "../utils/permission.h"
 #include "../utils/position.h"
+#include <map>
+#include <string>
 
 using namespace std;
 
 Link::Link(int type, int strength, Permission perm)
-    : Occupant{perm},
-      type{type},
-      strength{strength},
+    : Occupant{perm}, type{type}, strength{strength},
       moves{{"up", Position{-1, 0}},
             {"down", Position{1, 0}},
             {"right", Position{0, 1}},
             {"left", Position{0, -1}}},
       isDownloaded{false} {}
 
-Link::~Link() {}
-
+// Get the type of the link
 int Link::getType() const { return type; }
 
+// Get the strength of the link
 int Link::getStrength() const { return strength; }
 
+// Get the moves of the link
 const map<string, Position> &Link::getMoves() const { return moves; }
 
+// Get if the link is downloaded
 bool Link::getIsDownloaded() const { return isDownloaded; }
 
+// Get the details of the link
 string Link::getDetails() const {
   return (type == 0 ? "D" : "V") + to_string(strength);
 }
 
+// Get the name of the link
 char Link::getName() const { return name; }
 
+// Set the name of the link
 void Link::setName(char name) { this->name = name; }
 
-bool Link::canMove(const string &direction) {
-  return moves.find(direction) != moves.end();
-}
-
+// Set the moves of the link
 void Link::setMoves(const map<string, Position> &moves) { this->moves = moves; }
 
+// Set the strength of the link
 void Link::setStrength(int strength) {
   this->strength = strength;
-  notifyLinkStrengthChanged();
 }
 
+// Set the type of the link
 void Link::setType(int type) { this->type = type; }
 
+// Set if the link is downloaded
 void Link::setIsDownloaded(bool isDownloaded) {
   this->isDownloaded = isDownloaded;
-}
-
-void Link::notifyLinkDownloaded() {
-  // Implementation for link downloaded notification
-}
-
-void Link::notifyLinkRevived() {
-  // Implementation for link revived notification
-}
-
-void Link::notifyLinkStrengthChanged() {
-  // Implementation for strength change notification
 }

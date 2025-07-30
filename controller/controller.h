@@ -2,7 +2,7 @@
 #define CONTROLLER_H
 
 #include "../game/game_state.h"
-#include "../utils/message_queue.h"
+#include "../utils/message_subscriber.h"
 #include "command.h"
 #include <algorithm>
 #include <memory>

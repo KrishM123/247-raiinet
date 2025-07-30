@@ -16,13 +16,13 @@ class Cell {
 
 public:
   Cell(const Position &position, int type);
-  ~Cell();
 
   std::vector<std::shared_ptr<Occupant>> getOccupants() const;
   Position getPosition() const;
-  int getType() const;
 
+  int getType() const;
   void setType(int type);
+  
   void placeOccupant(std::shared_ptr<Occupant> occupant);
   void removeOccupant(std::shared_ptr<Occupant> occupant);
 };

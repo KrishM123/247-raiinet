@@ -8,8 +8,10 @@
 
 #include "../game/player.h"
 #include "../graphics/graphics_display.h"
+#include "../game/game_state.h"
 #include "../graphics/text_display.h"
 #include "../graphics/view.h"
+#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "ability_command.h"
 #include "move_command.h"
@@ -145,8 +147,6 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
           break;
         }
       }
-      // Print game
-      gameState->printGame();
     } else if (input.find("abilities") != std::string::npos) {
       // For each player, if player number matches current player, print
       // abilities

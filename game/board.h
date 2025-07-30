@@ -3,10 +3,10 @@
 
 #include <memory>
 #include <vector>
+#include "cell.h"
 
 using namespace std;
 
-class Cell;
 class Occupant;
 class Position;
 
@@ -14,9 +14,8 @@ class Board final {
   int gridSize;
   vector<vector<unique_ptr<Cell>>> grid;
 
- public:
+public:
   Board(int gridSize);
-  ~Board();
   Board(const Board &other) = delete;
   Board &operator=(const Board &other) = delete;
 
@@ -27,4 +26,4 @@ class Board final {
   int getGridSize();
 };
 
-#endif  // BOARD_H
+#endif // BOARD_H

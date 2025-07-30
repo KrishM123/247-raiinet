@@ -1,12 +1,11 @@
 #ifndef LINK_H
 #define LINK_H
 
-#include <map>
-#include <string>
-
 #include "../utils/permission.h"
 #include "../utils/position.h"
 #include "occupant.h"
+#include <map>
+#include <string>
 
 class Link final : public Occupant {
   char name;
@@ -16,27 +15,22 @@ class Link final : public Occupant {
   std::map<std::string, Position> moves;
   bool isDownloaded;
 
- public:
+public:
   Link(int type, int strength, Permission perm);
-  ~Link();
 
   int getType() const;
   int getStrength() const;
   const std::map<std::string, Position> &getMoves() const;
   bool getIsDownloaded() const;
+
   std::string getDetails() const;
   char getName() const;
   void setName(char name);
 
-  bool canMove(const std::string &direction);
   void setMoves(const std::map<std::string, Position> &moves);
   void setStrength(int strength);
   void setType(int type);
   void setIsDownloaded(bool isDownloaded);
-
-  void notifyLinkDownloaded();
-  void notifyLinkRevived();
-  void notifyLinkStrengthChanged();
 };
 
-#endif  // LINK_H
+#endif // LINK_H

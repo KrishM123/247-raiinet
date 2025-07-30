@@ -20,7 +20,6 @@ public:
   std::map<char, int> linksMap;
 
   Player(int playerNumber, string links, string abilities);
-  ~Player();
 
   void initLinks(const std::string &links, Permission perm);
   void initAbilities(const std::string &abilities, Permission perm,
@@ -32,10 +31,7 @@ public:
   std::pair<int, int> getScore() const;
   int getPlayerNumber() const;
 
-  void setLinks(const std::vector<std::shared_ptr<Link>> &links);
-  void setAbilities(const std::vector<std::shared_ptr<Ability>> &abilities);
-  void
-  setDownloadedLinks(const std::vector<std::shared_ptr<Link>> &downloadedLinks);
+  void setDownloadedLinks(const std::vector<std::shared_ptr<Link>> &downloadedLinks);
 };
 
 #endif // PLAYER_H

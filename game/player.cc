@@ -1,9 +1,4 @@
 #include "player.h"
-
-#include <algorithm>
-#include <random>
-#include <sstream>
-
 #include "../ability/ability.h"
 #include "../ability/barbed_wire.h"
 #include "../ability/download.h"
@@ -16,21 +11,19 @@
 #include "../utils/permission.h"
 #include "game_state.h"
 #include "link.h"
-#include "occupant.h"
-#include <iostream>
+#include <algorithm>
+#include <random>
+#include <sstream>
 
 using namespace std;
 
+// Constructor
 Player::Player(int playerNumber, string links, string abilities)
-    : playerNumber{playerNumber} {
-  // this->abilities = abilities;
-}
+    : playerNumber{playerNumber} {}
 
-Player::~Player() {
-  std::cout << "Player destroyed" << std::endl;
-}
-
+// Initialize the links of the player
 void Player::initLinks(const string &links, Permission perm) {
+  // If the links are not empty, parse the links
   if (!links.empty()) {
     istringstream linkStream(links);
     string linkType;
@@ -40,6 +33,7 @@ void Player::initLinks(const string &links, Permission perm) {
       this->links.push_back(make_shared<Link>(type, strength, perm));
     }
   } else {
+    // If the links are empty, generate 8 random links
     vector<shared_ptr<Link>> tempLinks;
     for (int strength = 1; strength <= 4; strength++) {
       tempLinks.push_back(make_shared<Link>(0, strength, perm));
@@ -51,10 +45,12 @@ void Player::initLinks(const string &links, Permission perm) {
 
     this->links = tempLinks;
   }
+  // If the player is player 1
   if (this->playerNumber == 1) {
     for (int i = 0; i < this->links.size(); i++) {
       this->links[i]->setName('a' + i);
     }
+    // Set the links map
     this->linksMap['a'] = 0;
     this->linksMap['b'] = 1;
     this->linksMap['c'] = 2;
@@ -63,6 +59,7 @@ void Player::initLinks(const string &links, Permission perm) {
     this->linksMap['f'] = 5;
     this->linksMap['g'] = 6;
     this->linksMap['h'] = 7;
+    // If the player is player 2
   } else if (this->playerNumber == 2) {
     for (int i = 0; i < this->links.size(); i++) {
       this->links[i]->setName('A' + i);
@@ -78,35 +75,36 @@ void Player::initLinks(const string &links, Permission perm) {
   }
 }
 
+// Initialize the abilities of the player
 void Player::initAbilities(const string &abilities, Permission perm,
                            GameState &gameState) {
   if (!abilities.empty()) {
     for (char ability : abilities) {
       switch (ability) {
-        case 'B':
-          this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
-          break;
-        case 'D':
-          this->abilities.push_back(make_shared<Download>(perm, gameState));
-          break;
-        case 'F':
-          this->abilities.push_back(make_shared<Firewall>(perm, gameState));
-          break;
-        case 'L':
-          this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
-          break;
-        case 'P':
-          this->abilities.push_back(make_shared<Polarize>(perm, gameState));
-          break;
-        case 'A':
-          this->abilities.push_back(make_shared<Scan>(perm, gameState));
-          break;
-        case 'S':
-          this->abilities.push_back(make_shared<Swaplinks>(perm, gameState));
-          break;
-        case 'T':
-          this->abilities.push_back(make_shared<Telescope>(perm, gameState));
-          break;
+      case 'B':
+        this->abilities.push_back(make_shared<BarbedWire>(perm, gameState));
+        break;
+      case 'D':
+        this->abilities.push_back(make_shared<Download>(perm, gameState));
+        break;
+      case 'F':
+        this->abilities.push_back(make_shared<Firewall>(perm, gameState));
+        break;
+      case 'L':
+        this->abilities.push_back(make_shared<LinkBoost>(perm, gameState));
+        break;
+      case 'P':
+        this->abilities.push_back(make_shared<Polarize>(perm, gameState));
+        break;
+      case 'A':
+        this->abilities.push_back(make_shared<Scan>(perm, gameState));
+        break;
+      case 'S':
+        this->abilities.push_back(make_shared<Swaplinks>(perm, gameState));
+        break;
+      case 'T':
+        this->abilities.push_back(make_shared<Telescope>(perm, gameState));
+        break;
       }
     }
   } else {
@@ -118,16 +116,21 @@ void Player::initAbilities(const string &abilities, Permission perm,
   }
 }
 
+// Get the links of the player
 vector<shared_ptr<Link>> Player::getLinks() { return links; }
 
+// Get the abilities of the player
 vector<shared_ptr<Ability>> Player::getAbilities() { return abilities; }
 
+// Get the downloaded links of the player
 vector<shared_ptr<Link>> Player::getDownloadedLinks() {
   return downloadedLinks;
 }
 
+// Get the player number
 int Player::getPlayerNumber() const { return playerNumber; }
 
+// Get the score of the player
 pair<int, int> Player::getScore() const {
   int dataCount = 0;
   int virusCount = 0;
@@ -143,14 +146,7 @@ pair<int, int> Player::getScore() const {
   return make_pair(dataCount, virusCount);
 }
 
-void Player::setLinks(const vector<shared_ptr<Link>> &links) {
-  this->links = links;
-}
-
-void Player::setAbilities(const vector<shared_ptr<Ability>> &abilities) {
-  this->abilities = abilities;
-}
-
+// Set the downloaded links of the player
 void Player::setDownloadedLinks(
     const vector<shared_ptr<Link>> &downloadedLinks) {
   this->downloadedLinks = downloadedLinks;
