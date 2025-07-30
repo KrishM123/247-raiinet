@@ -7,13 +7,7 @@ Permission::Permission(shared_ptr<Player> owner) : owner{owner} {
   visibleTo.push_back(owner);
 }
 
-Permission::~Permission() {
-  owner.reset();
-  for (auto viewer : visibleTo) {
-    viewer.reset();
-  }
-  visibleTo.clear();
-}
+// Permission::~Permission() {}
 
 shared_ptr<Player> Permission::getOwner() const { return owner; }
 
