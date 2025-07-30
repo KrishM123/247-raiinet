@@ -137,6 +137,7 @@ shared_ptr<Link> GameState::getLink(char name) {
       return player->getLinks()[it->second];
     }
   }
+  throw invalid_argument("Link not found");
   return nullptr;
 }
 
