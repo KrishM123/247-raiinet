@@ -11,18 +11,6 @@
 
 using namespace std;
 
-// Helper:
-// Parse link character into player and link indices
-pair<int, int> getPolarizeTargetIndices(char linkId) {
-  if (linkId >= 'a' && linkId <= 'h') {
-    return {0, linkId - 'a'};
-  }
-  if (linkId >= 'A' && linkId <= 'H') {
-    return {1, linkId - 'A'};
-  }
-  return {-1, -1};
-}
-
 Polarize::Polarize(Permission &permission, GameState &gameState)
     : Ability("P", permission, gameState) {}
 
@@ -38,27 +26,18 @@ void Polarize::execute(const Payload &payload) {
 
   ss >> linkIdStr;
 
-  if (linkIdStr.length() != 1 || !ss.eof()) {
+  if (linkIdStr.length() != 1) {
     return;
   }
 
   char linkId = linkIdStr[0];
 
-  pair<int, int> target = getPolarizeTargetIndices(linkId);
-  int targetPlayerIndex = target.first;
-  int targetLinkIndex = target.second;
+  Player &currentPlayer = gameState.getCurPlayer();
+  shared_ptr<Link> targetLink = gameState.getLink(linkId);
 
-  if (targetPlayerIndex == -1)
-    return;
-
-  shared_ptr<Player> targetPlayer = gameState.getPlayers()[targetPlayerIndex];
-  vector<shared_ptr<Link>> targetPlayerLinks = targetPlayer->getLinks();
-
-  if (targetLinkIndex >= targetPlayerLinks.size()) {
+  if (!targetLink || targetLink->permission.getOwner().get() != &currentPlayer) {
     return;
   }
-
-  shared_ptr<Link> targetLink = targetPlayerLinks[targetLinkIndex];
 
   // Apply polarity change
   int currentType = targetLink->getType();

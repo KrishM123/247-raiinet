@@ -31,7 +31,7 @@ void Firewall::execute(const Payload &payload) {
   ss >> rowStr >> colStr;
 
   // Exactly 2 args
-  if (rowStr.empty() || colStr.empty() || !ss.eof()) {
+  if (rowStr.empty() || colStr.empty()) {
     return;
   }
 
@@ -51,11 +51,8 @@ void Firewall::execute(const Payload &payload) {
       throw invalid_argument("Position is not empty");
     }
 
-    // Define the lambda function for the firewall's action
-    auto firewall_action = [this, targetPos]() {
-      // The firewall needs to find the link that triggered it.
-      // It's the other link on the same cell that isn't owned by the firewall's
-      // owner.
+    // Lambda function for firewall
+    auto firewallAction = [this, targetPos]() {
       Cell &myCell = this->gameState.getBoard().getCell(targetPos);
       shared_ptr<Link> triggeredLink = nullptr;
 
@@ -68,16 +65,18 @@ void Firewall::execute(const Payload &payload) {
         }
       }
 
-      if (!triggeredLink)
-        return; // Should not happen in normal gameplay
+      if (!triggeredLink) {
+        return;
+      }
 
       // Reveal the link to all players
       vector<shared_ptr<Player>> allPlayers = this->gameState.getPlayers();
       triggeredLink->permission.setVisibleTo(allPlayers);
 
-      // If the link is a virus, its owner downloads it
-      if (triggeredLink->getType() == 1) { // 1 == Virus
+      // If the link is a virus (Virus = 1), its owner downloads it
+      if (triggeredLink->getType() == 1) { 
         shared_ptr<Player> owner = triggeredLink->permission.getOwner();
+        
         if (owner) {
           this->gameState.downloadLink(triggeredLink, owner);
         }
@@ -86,7 +85,7 @@ void Firewall::execute(const Payload &payload) {
 
     // Create a Trigger with the defined action, providing the necessary
     // Position and the Permission from the ability itself.
-    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, firewall_action);
+    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, firewallAction);
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);

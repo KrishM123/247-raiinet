@@ -20,7 +20,7 @@ void Download::execute(const Payload &payload) {
   string linkIdStr;
   ss >> linkIdStr;
 
-  if (linkIdStr.length() != 1 || !ss.eof()) {
+  if (linkIdStr.length() != 1) {
     throw std::invalid_argument("Invalid link ID");
   }
   char linkId = linkIdStr[0];
