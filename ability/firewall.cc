@@ -46,6 +46,12 @@ void Firewall::execute(const Payload &payload) {
 
     Position targetPos{row, col};
 
+    Cell &targetCell = gameState.getBoard().getCell(targetPos);
+    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
+        targetCell.getType() == 2) {
+      throw invalid_argument("Position is not empty");
+    }
+
     // Define the lambda function for the firewall's action
     auto firewall_action = [this, targetPos]() {
       // The firewall needs to find the link that triggered it.
@@ -106,6 +112,6 @@ void Firewall::execute(const Payload &payload) {
 
     notifyAbilityUsed();
   } catch (const std::exception &e) {
-    return;
+    throw;
   }
 }

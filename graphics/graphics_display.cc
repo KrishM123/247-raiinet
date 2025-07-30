@@ -14,7 +14,7 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
     : View(gameState, playerView), window{420, 800},
       gridSize{gameState.getBoard().getGridSize()}, cellSize{50} {
 
-  window.fillRectangle(0, 0, 420, 800, Xwindow::Seashell1);
+  window.fillRectangle(0, 0, 420, 800, Xwindow::Slategray1);
 
   auto players = gameState.getPlayers();
   auto player1 = players[0];
@@ -23,7 +23,7 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
   // Player 1 info
   int x = 15;
   int y = 50;
-  window.drawString(x, y, "Player 1:");
+  window.drawString(x, y, "Player 1: *");
   y += 25;
   window.drawString(x, y, "Downloaded: 0D 0V");
   y += 25;
@@ -60,9 +60,18 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
       int cellX = (j - 1) * cellSize + 10;
       int cellY = boardY + (i - 1) * cellSize;
       int color = Xwindow::White;
+      window.fillRectangle(cellX, cellY, cellSize, cellSize, Xwindow::Black);
+
       Cell &cell = gameState.getBoard().getCell(Position{i, j});
       if (cell.getType() == 1 || cell.getType() == 2) { // Server port
         color = Xwindow::Gray30;
+        window.fillRectangle(cellX + 1, cellY + 1, cellSize - 2, cellSize - 2,
+                             color);
+        window.drawString(cellX + cellSize / 2 - 4, cellY + cellSize / 2 + 4,
+                          std::string(1, 'S'));
+        continue;
+      } else if (cell.getType() == -1) {
+        continue;
       }
 
       if (cell.getOccupants().size() > 1) {
@@ -78,7 +87,6 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
         }
       }
 
-      window.fillRectangle(cellX, cellY, cellSize, cellSize, Xwindow::Black);
       window.fillRectangle(cellX + 1, cellY + 1, cellSize - 2, cellSize - 2,
                            color);
 
@@ -129,8 +137,8 @@ GraphicsDisplay::~GraphicsDisplay() {
 
 void GraphicsDisplay::updatePlayerInfo() {
   // Clear existing player info areas
-  window.fillRectangle(0, 0, 420, 150, Xwindow::Seashell1);
-  window.fillRectangle(0, 600, 420, 200, Xwindow::Seashell1);
+  window.fillRectangle(0, 0, 420, 150, Xwindow::Slategray1);
+  window.fillRectangle(0, 600, 420, 200, Xwindow::Slategray1);
 
   auto players = gameState.getPlayers();
   auto player1 = players[0];
@@ -147,13 +155,13 @@ void GraphicsDisplay::updatePlayerInfo() {
   window.drawString(x, y, p1Title);
 
   y += 25;
-  std::string p1Downloads =
+  string p1Downloads =
       "Downloaded: " + std::to_string(player1->getScore().first) + "D " +
       std::to_string(player1->getScore().second) + "V";
   window.drawString(x, y, p1Downloads);
 
   y += 25;
-  std::string p1Abilities =
+  string p1Abilities =
       "Abilities: " + std::to_string(player1->getAbilities().size());
   window.drawString(x, y, p1Abilities);
 
@@ -161,14 +169,14 @@ void GraphicsDisplay::updatePlayerInfo() {
   auto p1Links = player1->getLinks();
   for (int i = 0; i < 4; ++i) {
     auto link = p1Links[i];
-    std::string details;
+    string details;
     if (playerView == 0) {
-      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      details = string(1, link->getName()) + ": " + (link->getDetails());
     } else {
       if (link->permission.viewableBy(*player2)) {
-        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+        details = string(1, link->getName()) + ": " + (link->getDetails());
       } else {
-        details = std::string(1, link->getName()) + ": ??";
+        details = string(1, link->getName()) + ": ??";
       }
     }
     window.drawString(x + i * 100, y, details);
@@ -176,35 +184,35 @@ void GraphicsDisplay::updatePlayerInfo() {
   y += 25;
   for (int i = 4; i < 8; ++i) {
     auto link = p1Links[i];
-    std::string details;
+    string details;
     if (playerView == 0) {
-      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      details = string(1, link->getName()) + ": " + (link->getDetails());
     } else {
       if (link->permission.viewableBy(*player2)) {
-        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+        details = string(1, link->getName()) + ": " + (link->getDetails());
       } else {
-        details = std::string(1, link->getName()) + ": ??";
+        details = string(1, link->getName()) + ": ??";
       }
     }
     window.drawString(x + (i - 4) * 100, y, details);
   }
 
   // Player 2 info
-  y = 650;
-  std::string p2Title = "Player 2:";
+  y = 625;
+  string p2Title = "Player 2:";
   if (curPlayerNum == 2) {
     p2Title += " *";
   }
   window.drawString(x, y, p2Title);
 
   y += 25;
-  std::string p2Downloads =
+  string p2Downloads =
       "Downloaded: " + std::to_string(player2->getScore().first) + "D " +
       std::to_string(player2->getScore().second) + "V";
   window.drawString(x, y, p2Downloads);
 
   y += 25;
-  std::string p2Abilities =
+  string p2Abilities =
       "Abilities: " + std::to_string(player2->getAbilities().size());
   window.drawString(x, y, p2Abilities);
 
@@ -212,14 +220,14 @@ void GraphicsDisplay::updatePlayerInfo() {
   auto p2Links = player2->getLinks();
   for (int i = 0; i < 4; ++i) {
     auto link = p2Links[i];
-    std::string details;
+    string details;
     if (playerView == 1) {
-      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      details = string(1, link->getName()) + ": " + (link->getDetails());
     } else {
       if (link->permission.viewableBy(*player1)) {
-        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+        details = string(1, link->getName()) + ": " + (link->getDetails());
       } else {
-        details = std::string(1, link->getName()) + ": ??";
+        details = string(1, link->getName()) + ": ??";
       }
     }
     window.drawString(x + i * 100, y, details);
@@ -227,14 +235,14 @@ void GraphicsDisplay::updatePlayerInfo() {
   y += 25;
   for (int i = 4; i < 8; ++i) {
     auto link = p2Links[i];
-    std::string details;
+    string details;
     if (playerView == 1) {
-      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      details = string(1, link->getName()) + ": " + (link->getDetails());
     } else {
       if (link->permission.viewableBy(*player1)) {
-        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+        details = string(1, link->getName()) + ": " + (link->getDetails());
       } else {
-        details = std::string(1, link->getName()) + ": ??";
+        details = string(1, link->getName()) + ": ??";
       }
     }
     window.drawString(x + (i - 4) * 100, y, details);
@@ -275,7 +283,8 @@ void GraphicsDisplay::drawCell(int x, int y, char item) {
     auto link = gameState.getLink(item);
     auto players = gameState.getPlayers();
     auto curPlayer = players[playerView];
-    if (link->permission.viewableBy(*curPlayer)) {
+
+    if (link->permission.getOwner()->getPlayerNumber() - 1 == playerView) {
       if (link->getType() == 0) {
         window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
                              Xwindow::Seagreen2);
@@ -284,13 +293,28 @@ void GraphicsDisplay::drawCell(int x, int y, char item) {
                              Xwindow::Brown1);
       }
     } else {
-      window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
-                           Xwindow::Gray50);
+      if (link->permission.viewableBy(*curPlayer)) {
+        if (link->getType() == 0) {
+          window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                               Xwindow::Darkseagreen1);
+        } else {
+          window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                               Xwindow::Lightcoral);
+        }
+      } else {
+        window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                             Xwindow::Gray50);
+      }
     }
-
   } else if (item == 'S') {
     window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
                          Xwindow::Gray30);
+  } else if (item == 'w' || item == 'm') {
+    window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                         Xwindow::Darkorange);
+  } else if (item == 'x') {
+    window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                         Xwindow::Gray75);
   }
   window.drawString(xPos + cellSize / 2 - 4, yPos + cellSize / 2 + 4,
                     std::string(1, item));
