@@ -1,15 +1,15 @@
 #include "battleTrigger.h"
 
-#include <memory>
 #include <iostream>
+#include <memory>
 
+#include "../../controller/event_types.h"
 #include "../../game/cell.h"
 #include "../../game/game_state.h"
 #include "../../game/player.h"
+#include "../../utils/message_queue.h"
 #include "../../utils/payload.h"
 #include "../../utils/permission.h"
-#include "../../utils/message_queue.h"
-#include "../../controller/event_types.h"
 
 using namespace std;
 
@@ -49,7 +49,7 @@ BattleTrigger::BattleTrigger(GameState &gameState, const Position &pos)
   };
 }
 
-void BattleTrigger::notifyBattleTriggered(char winner, Position& position) {
+void BattleTrigger::notifyBattleTriggered(char winner, Position &position) {
   auto queue = MessageQueue::getInstance();
   map<string, string> payloadMap = {
       {"winner", string(1, winner)},

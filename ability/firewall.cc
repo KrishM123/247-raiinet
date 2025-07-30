@@ -8,9 +8,9 @@
 #include "../utils/payload.h"
 #include "../utils/position.h"
 #include "trigger.h" // Corrected path
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <iostream>
 
 using namespace std;
 
@@ -40,7 +40,7 @@ void Firewall::execute(const Payload &payload) {
     int col = stoi(colStr) + 1;
     int gridSize = gameState.getBoard().getGridSize();
 
-    if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+    if (row < 0 || row > gridSize || col < 0 || col > gridSize) {
       return; // Out of bounds
     }
 

@@ -83,6 +83,10 @@ void Controller::play() {
     }
   }
   std::cout << "Game over" << std::endl;
+  if (playing) {
+    std::shared_ptr<Player> winner = gameState->getWinner();
+    std::cout << "Winner: Player " << winner->getPlayerNumber() << std::endl;
+  }
 }
 
 void Controller::play(std::string filename) {
@@ -118,6 +122,7 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
           break;
         }
       }
+      gameState->printGame();
     } else if (input.find("abilities") != std::string::npos) {
       for (int i = 0; i < numPlayers; i++) {
         if (gameState->getPlayers().at(i)->getPlayerNumber() ==

@@ -21,7 +21,8 @@ class GameState final {
   void notifyGameOver();
   void notifyLinkMoved(std::shared_ptr<Link> link, Position oldPos,
                        Position newPos);
-  void notifyLinkDownloaded(std::shared_ptr<Link> link, std::shared_ptr<Player> downloader);
+  void notifyLinkDownloaded(std::shared_ptr<Link> link,
+                            std::shared_ptr<Player> downloader);
 
 public:
   GameState();
@@ -48,6 +49,9 @@ public:
   void endGame();
   void downloadLink(std::shared_ptr<Link> link,
                     std::shared_ptr<Player> downloader);
+  void notifySideTriggered(char winner, Position &oldPos, Position &newPos);
+
+  void printGame();
 };
 
 #endif // GAME_STATE_H

@@ -12,6 +12,7 @@
 #include "gameTriggers/battleTrigger.h"
 #include "gameTriggers/edgeTrigger.h"
 #include "gameTriggers/serverTrigger.h"
+#include "gameTriggers/sideTrigger.h"
 #include "link.h"
 #include "occupant.h"
 #include "player.h"
@@ -34,7 +35,9 @@ void GameState::init() {
   for (int i = 0; i < board.getGridSize() + 2; i++) {
     for (int j = 0; j < board.getGridSize() + 2; j++) {
       if (j == 0 || j == board.getGridSize() + 1) {
-        board.getCell(Position{i, j}).setType(-1);
+        board.getCell(Position{i, j}).setType(0);
+        board.placeOccupant(make_shared<SideTrigger>(*this, Position{i, j}),
+                            Position{i, j});
         continue;
       }
       if (i == 0) {
@@ -110,9 +113,7 @@ void GameState::init() {
   }
 }
 
-GameState::~GameState() {
-  std::cout << "GameState destroyed" << std::endl;
-};
+GameState::~GameState() {};
 
 vector<shared_ptr<Link>> GameState::getLinks() {
   vector<shared_ptr<Link>> links;
@@ -280,4 +281,17 @@ void GameState::nextTurn() {
 
 void GameState::notifyGameOver() {
   // TODO: Implement game over notification
+}
+
+void GameState::printGame() {
+  for (int i = 0; i < board.getGridSize() + 2; i++) {
+    for (int j = 0; j < board.getGridSize() + 2; j++) {
+      cout << board.getCell(Position{i, j}).getType() << " ";
+    }
+    cout << endl;
+  }
+  for (auto link : getLinks()) {
+    cout << link->getName() << " " << link->getPosition().getPosition().first
+         << " " << link->getPosition().getPosition().second << endl;
+  }
 }
