@@ -22,9 +22,15 @@ void AbilityCommand::execute() {
   for (auto &ability_ptr : gameState.getCurPlayer().getAbilities()) {
     if (ability_ptr->name == ability && !ability_ptr->used && !found) {
       found = true;
-      std::map<std::string, std::string> payload = {
-          {"args", command.substr(2)}};
-        ability_ptr->execute(Payload(payload));
+      
+      std::string args = "";
+      // Only try to get arguments if the command is longer than just the ability name
+      if (command.length() > 1) {
+        args = command.substr(2);
+      }
+      
+      std::map<std::string, std::string> payloadMap = {{"args", args}};
+      ability_ptr->execute(Payload(payloadMap));
       std::cout << "Ability: " << ability_ptr->name << std::endl;
       std::map<std::string, std::string> eventPayloadMap = {
           {"player", std::to_string(gameState.getCurPlayer().getPlayerNumber() - 1)},
