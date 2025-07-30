@@ -60,8 +60,7 @@ void BarbedWire::execute(const Payload &payload) {
 
       for (auto &occupant : myCell.getOccupants()) {
         if (auto link = dynamic_pointer_cast<Link>(occupant)) {
-          if (link->permission.getOwner().get() !=
-              this->permission.getOwner().get()) {
+          if (link->permission.getOwner().get() != this->permission.getOwner().get()) {
             triggeredLink = link;
             break;
           }
@@ -84,8 +83,7 @@ void BarbedWire::execute(const Payload &payload) {
     };
 
     // Create a Trigger with the defined action
-    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission,
-                                        barbed_wire_action);
+    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, barbed_wire_action);
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);

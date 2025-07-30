@@ -30,15 +30,12 @@ void Download::execute(const Payload &payload) {
 
   // 2. Validate the link and ownership
   Player &currentPlayer = gameState.getCurPlayer();
-  if (!targetLink ||
-      targetLink->permission.getOwner()->getPlayerNumber() ==
-          currentPlayer.getPlayerNumber()) {
+  if (!targetLink || targetLink->permission.getOwner()->getPlayerNumber() == currentPlayer.getPlayerNumber()) {
     throw std::invalid_argument("Cannot download link that does not belong to the current player");
   }
 
   // 3. Get the current player's shared_ptr and download
-  shared_ptr<Player> currentPlayerPtr =
-      gameState.getPlayers()[currentPlayer.getPlayerNumber() - 1];
+  shared_ptr<Player> currentPlayerPtr = gameState.getPlayers()[currentPlayer.getPlayerNumber() - 1];
   gameState.downloadLink(targetLink, currentPlayerPtr);
 
   notifyAbilityUsed();

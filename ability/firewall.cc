@@ -47,8 +47,7 @@ void Firewall::execute(const Payload &payload) {
     Position targetPos{row, col};
 
     Cell &targetCell = gameState.getBoard().getCell(targetPos);
-    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
-        targetCell.getType() == 2) {
+    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 || targetCell.getType() == 2) {
       throw invalid_argument("Position is not empty");
     }
 
@@ -62,8 +61,7 @@ void Firewall::execute(const Payload &payload) {
 
       for (auto &occupant : myCell.getOccupants()) {
         if (auto link = dynamic_pointer_cast<Link>(occupant)) {
-          if (link->permission.getOwner().get() !=
-              this->permission.getOwner().get()) {
+          if (link->permission.getOwner().get() != this->permission.getOwner().get()) {
             triggeredLink = link;
             break;
           }
@@ -88,8 +86,7 @@ void Firewall::execute(const Payload &payload) {
 
     // Create a Trigger with the defined action, providing the necessary
     // Position and the Permission from the ability itself.
-    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission,
-                                        firewall_action);
+    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, firewall_action);
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);
