@@ -9,7 +9,7 @@ class Xwindow {
   Window w;
   int s, width, height;
   GC gc;
-  unsigned long colours[9];
+  unsigned long colours[12];
 
 public:
   Xwindow(int width = 500,
@@ -25,7 +25,10 @@ public:
     Gray50,
     Black,
     Darkseagreen1,
-    Lightcoral
+    Lightcoral,
+    Darkorange,
+    Gray75,
+    Slategray1
   }; // Available colours.
 
   int getWidth() const;
