@@ -8,10 +8,10 @@ class Payload;
 
 class AbilityCommand final : public Command {
   std::string command;
+  void notifyAbilityUsed();
 
 public:
   AbilityCommand(GameState &gameState, Payload &payload);
-  ~AbilityCommand();
   void execute() override;
 };
 

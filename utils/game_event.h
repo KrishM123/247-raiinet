@@ -1,7 +1,7 @@
 #ifndef GAME_EVENT_H
 #define GAME_EVENT_H
 
-#include "../utils/payload.h"
+#include "payload.h"
 #include "event_types.h"
 
 class GameEvent final {

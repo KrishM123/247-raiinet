@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../controller/event_types.h"
+#include "../utils/event_types.h"
 #include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "../utils/permission.h"

@@ -3,9 +3,9 @@
 #include "../game/link.h"
 #include "../game/player.h"
 #include "../utils/payload.h"
-#include "../controller/event_types.h"
+#include "../utils/event_types.h"
 #include "../utils/message_queue.h"
-#include "../controller/game_event.h"
+#include "../utils/game_event.h"
 #include <sstream>
 #include <string>
 

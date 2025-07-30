@@ -1,7 +1,7 @@
 #ifndef MESSAGE_QUEUE_H
 #define MESSAGE_QUEUE_H
 
-#include "../controller/game_event.h"
+#include "game_event.h"
 #include <atomic>
 #include <condition_variable>
 #include <memory>

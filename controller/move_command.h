@@ -11,7 +11,6 @@ class MoveCommand final : public Command {
 
 public:
   MoveCommand(GameState &gameState, Payload &payload);
-  ~MoveCommand();
   void execute() override;
 };
 

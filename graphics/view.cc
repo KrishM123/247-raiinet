@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "../ability/ability.h"
-#include "../controller/game_event.h"
+#include "../utils/game_event.h"
 #include "../game/board.h"
 #include "../game/cell.h"
 #include "../game/game_state.h"
@@ -91,7 +91,6 @@ void View::notify(GameEvent &event) {
     }
   } else if (event.getEventType() == EventType::AbilityUsed) {
     int player = std::stoi(event.getPayload().get("player"));
-    string ability = event.getPayload().get("ability");
     usedAbilities++;
     unusedAbilities--;
 

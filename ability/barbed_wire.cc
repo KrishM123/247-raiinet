@@ -1,5 +1,5 @@
 #include "../ability/barbed_wire.h"
-#include "../controller/game_event.h"
+#include "../utils/game_event.h"
 #include "../game/board.h"
 #include "../game/cell.h"
 #include "../game/game_state.h"

@@ -3,6 +3,4 @@
 
 Command::Command(GameState &gameState) : gameState(gameState) {}
 
-Command::~Command() {
-  // Virtual destructor implementation
-}
+Command::~Command() {}

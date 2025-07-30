@@ -3,7 +3,7 @@
 #include <iostream>
 #include <memory>
 
-#include "../../controller/event_types.h"
+#include "../../utils/event_types.h"
 #include "../../game/cell.h"
 #include "../../game/game_state.h"
 #include "../../game/link.h"
