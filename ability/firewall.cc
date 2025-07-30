@@ -95,8 +95,6 @@ void Firewall::execute(const Payload &payload) {
     map<string, string> payloadMap;
     payloadMap["x"] = to_string(targetPos.getPosition().first);
     payloadMap["y"] = to_string(targetPos.getPosition().second);
-    payloadMap["ability"] = "F";
-    payloadMap["player"] = to_string(permission.getOwner()->getPlayerNumber() - 1);
     if (permission.getOwner()->getPlayerNumber() == 1) {
       payloadMap["marker"] = "m";
     } else if (permission.getOwner()->getPlayerNumber() == 2) {

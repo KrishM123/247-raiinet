@@ -98,8 +98,6 @@ void View::notify(GameEvent &event) {
   } else if (event.getEventType() == EventType::AbilityPlaced) {
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
-    string ability = event.getPayload().get("ability");
-    int player = std::stoi(event.getPayload().get("player"));
     string marker = event.getPayload().get("marker");
     usedAbilities++;
     unusedAbilities--;

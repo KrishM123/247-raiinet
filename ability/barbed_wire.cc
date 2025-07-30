@@ -5,6 +5,8 @@
 #include "../game/link.h"
 #include "../utils/payload.h"
 #include "../utils/position.h"
+#include "../controller/game_event.h"
+#include "../utils/message_queue.h"
 #include "trigger.h"
 #include <sstream>
 #include <string>
@@ -33,8 +35,8 @@ void BarbedWire::execute(const Payload &payload) {
   }
 
   try {
-    int row = stoi(rowStr);
-    int col = stoi(colStr);
+    int row = stoi(rowStr) + 1;
+    int col = stoi(colStr) + 1;
     int gridSize = gameState.getBoard().getGridSize();
 
     if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
@@ -86,6 +88,16 @@ void BarbedWire::execute(const Payload &payload) {
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);
+
+    std::shared_ptr<MessageQueue> queue = MessageQueue::getInstance();
+
+    map<string, string> payloadMap;
+    payloadMap["x"] = to_string(targetPos.getPosition().first);
+    payloadMap["y"] = to_string(targetPos.getPosition().second);
+    payloadMap["marker"] = "x";
+    EventType eventType = EventType::AbilityPlaced;
+    Payload eventPayload{payloadMap};
+    queue->enqueueEvent(GameEvent(eventType, eventPayload));
 
     notifyAbilityUsed();
 
