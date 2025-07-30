@@ -11,7 +11,6 @@ class TextDisplay final : public View {
 
 public:
   TextDisplay(GameState &gameState, int playerView);
-  ~TextDisplay() override;
 
   void printGame() override;
 };

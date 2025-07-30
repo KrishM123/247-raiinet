@@ -6,13 +6,11 @@
 TextDisplay::TextDisplay(GameState &gameState, int playerView)
     : View(gameState, playerView) {}
 
-TextDisplay::~TextDisplay() {
-  // Virtual destructor implementation
-}
-
 void TextDisplay::printGame() {
   printPlayer(0);
+  std::cout << "========" << std::endl;
   printBoard();
+  std::cout << "========" << std::endl;
   printPlayer(1);
 }
 
@@ -30,9 +28,10 @@ void TextDisplay::printPlayer(int player) {
   std::cout << "Player " << player + 1 << ":" << std::endl;
   std::cout << "Downloaded: " << downloadedData[player] << "D, "
             << downloadedVirus[player] << "V" << std::endl;
-  
+
   int ununsedAbilityCount = 0;
-  std::vector<std::shared_ptr<Ability>> abilities = gameState.getPlayers()[player]->getAbilities();
+  std::vector<std::shared_ptr<Ability>> abilities =
+      gameState.getPlayers()[player]->getAbilities();
   for (int i = 0; i < abilities.size(); ++i) {
     if (!abilities[i]->used) {
       ununsedAbilityCount++;

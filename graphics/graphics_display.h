@@ -9,7 +9,6 @@ class GameState;
 class GraphicsDisplay final : public View {
 public:
   GraphicsDisplay(GameState &gameState, int playerView);
-  ~GraphicsDisplay() override;
 
   void printGame() override;
 

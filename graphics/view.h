@@ -23,8 +23,6 @@ protected:
 
 public:
   View(GameState &gameState, int playerView);
-  virtual ~View();
-
   void notify(GameEvent &event);
   virtual void printGame() = 0;
   void printAbilities();
