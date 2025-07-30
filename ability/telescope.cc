@@ -1,14 +1,11 @@
 #include "telescope.h"
 #include "../game/game_state.h"
 #include "../game/player.h"
-#include <vector>
 
 using namespace std;
 
 Telescope::Telescope(Permission &permission, GameState &gameState)
     : Ability("T", permission, gameState) {}
-
-Telescope::~Telescope() {}
 
 void Telescope::execute(const Payload &payload) {
   Player &currentPlayer = gameState.getCurPlayer();

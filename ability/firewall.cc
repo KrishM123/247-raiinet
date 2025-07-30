@@ -4,21 +4,16 @@
 #include "../game/game_state.h"
 #include "../game/link.h"
 #include "../game/player.h"
-#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "../utils/position.h"
-#include "trigger.h" // Corrected path
-#include <iostream>
+#include "trigger.h"
 #include <sstream>
 #include <string>
 
 using namespace std;
 
-// Constructor and Destructor
 Firewall::Firewall(Permission &permission, GameState &gameState)
     : Ability("F", permission, gameState) {}
-
-Firewall::~Firewall() {}
 
 void Firewall::execute(const Payload &payload) {
   // Input: string of two integers (row, col)
@@ -41,24 +36,25 @@ void Firewall::execute(const Payload &payload) {
     int gridSize = gameState.getBoard().getGridSize();
 
     if (row < 0 || row > gridSize || col < 0 || col > gridSize) {
-      return; // Out of bounds
+      return;
     }
 
     Position targetPos{row, col};
 
     Cell &targetCell = gameState.getBoard().getCell(targetPos);
-    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 || targetCell.getType() == 2) {
+    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
+        targetCell.getType() == 2) {
       throw invalid_argument("Position is not empty");
     }
 
-    // Lambda function for firewall
     auto firewallAction = [this, targetPos]() {
       Cell &myCell = this->gameState.getBoard().getCell(targetPos);
       shared_ptr<Link> triggeredLink = nullptr;
 
       for (auto &occupant : myCell.getOccupants()) {
         if (auto link = dynamic_pointer_cast<Link>(occupant)) {
-          if (link->permission.getOwner().get() != this->permission.getOwner().get()) {
+          if (link->permission.getOwner().get() !=
+              this->permission.getOwner().get()) {
             triggeredLink = link;
             break;
           }
@@ -74,9 +70,9 @@ void Firewall::execute(const Payload &payload) {
       triggeredLink->permission.setVisibleTo(allPlayers);
 
       // If the link is a virus (Virus = 1), its owner downloads it
-      if (triggeredLink->getType() == 1) { 
+      if (triggeredLink->getType() == 1) {
         shared_ptr<Player> owner = triggeredLink->permission.getOwner();
-        
+
         if (owner) {
           this->gameState.downloadLink(triggeredLink, owner);
         }
@@ -85,28 +81,23 @@ void Firewall::execute(const Payload &payload) {
 
     // Create a Trigger with the defined action, providing the necessary
     // Position and the Permission from the ability itself.
-    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, firewallAction);
+    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission,
+                                        firewallAction);
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);
 
-    std::shared_ptr<MessageQueue> queue = MessageQueue::getInstance();
-
-    map<string, string> payloadMap;
-    payloadMap["x"] = to_string(targetPos.getPosition().first);
-    payloadMap["y"] = to_string(targetPos.getPosition().second);
+    string marker;
     if (permission.getOwner()->getPlayerNumber() == 1) {
-      payloadMap["marker"] = "m";
+      marker = "m";
     } else if (permission.getOwner()->getPlayerNumber() == 2) {
-      payloadMap["marker"] = "w";
+      marker = "w";
     } else {
-      payloadMap["marker"] = "-";
+      marker = "-";
     }
-    EventType eventType = EventType::AbilityPlaced;
-    Payload eventPayload{payloadMap};
-    queue->enqueueEvent(GameEvent(eventType, eventPayload));
 
     notifyAbilityUsed();
+    notifyAbilityPlaced(targetPos, marker);
   } catch (const std::exception &e) {
     throw;
   }

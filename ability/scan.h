@@ -6,7 +6,6 @@
 class Scan final : public Ability {
 public:
   Scan(Permission &permission, GameState &gameState);
-  ~Scan() override;
 
   void execute(const Payload &payload) override;
 };

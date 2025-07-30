@@ -6,7 +6,6 @@
 class Firewall final : public Ability {
 public:
   Firewall(Permission &permission, GameState &gameState);
-  ~Firewall() override;
 
   void execute(const Payload &payload) override;
 };
