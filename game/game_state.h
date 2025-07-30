@@ -3,7 +3,7 @@
 
 #include "board.h"
 #include <memory>
-#include <vector>
+
 using namespace std;
 
 class Player;
@@ -13,18 +13,15 @@ class Position;
 
 class GameState final {
   Board board;
-  std::vector<std::shared_ptr<Player>> players;
-  std::shared_ptr<Player> curPlayer;
+  vector<shared_ptr<Player>> players;
+  shared_ptr<Player> curPlayer;
   bool isGameOver;
   bool obstaclesEnabled;
   bool sideMovesEnabled;
 
-  void notifyNextTurn();
-  void notifyGameOver();
-  void notifyLinkMoved(std::shared_ptr<Link> link, Position oldPos,
-                       Position newPos);
-  void notifyLinkDownloaded(std::shared_ptr<Link> link,
-                            std::shared_ptr<Player> downloader);
+  void notifyLinkMoved(shared_ptr<Link> link, Position oldPos, Position newPos);
+  void notifyLinkDownloaded(shared_ptr<Link> link,
+                            shared_ptr<Player> downloader);
 
 public:
   GameState();

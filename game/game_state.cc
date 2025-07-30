@@ -229,10 +229,7 @@ void GameState::removeOccupant(std::shared_ptr<Occupant> occupant,
   board.removeOccupant(occupant, pos);
 }
 
-void GameState::endGame() {
-  isGameOver = true;
-  notifyGameOver();
-}
+void GameState::endGame() { isGameOver = true; }
 
 void GameState::downloadLink(shared_ptr<Link> link,
                              shared_ptr<Player> downloader) {
@@ -264,10 +261,6 @@ void GameState::notifyLinkDownloaded(shared_ptr<Link> link,
   queue->enqueueEvent(GameEvent(eventType, payload));
 }
 
-void GameState::notifyNextTurn() {
-  // TODO: Implement turn notification
-}
-
 void GameState::nextTurn() {
   // Find the next player
   int currentIndex = -1;
@@ -281,12 +274,7 @@ void GameState::nextTurn() {
   if (currentIndex != -1) {
     int nextIndex = (currentIndex + 1) % players.size();
     curPlayer = players[nextIndex];
-    notifyNextTurn();
   }
-}
-
-void GameState::notifyGameOver() {
-  // TODO: Implement game over notification
 }
 
 void GameState::printGame() {
