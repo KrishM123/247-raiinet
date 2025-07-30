@@ -10,8 +10,8 @@ class Player;
 
 class Permission {
 private:
-  shared_ptr<Player> owner;
-  vector<shared_ptr<Player>> visibleTo;
+  weak_ptr<Player> owner;
+  vector<weak_ptr<Player>> visibleTo;
 
 public:
   Permission();
@@ -25,7 +25,7 @@ public:
 
   void addViewer(shared_ptr<Player> player);
 
-  void setOwner(const Player &newOwner);
+  void setOwner(shared_ptr<Player> newOwner);
 };
 
 #endif // PERMISSION_H
