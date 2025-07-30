@@ -49,7 +49,7 @@ void BarbedWire::execute(const Payload &payload) {
     Cell &targetCell = gameState.getBoard().getCell(targetPos);
     if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
         targetCell.getType() == 2) {
-      std::cerr << "Position not empty" << std::endl;
+      throw invalid_argument("Position is not empty");
     }
 
     // Define the lambda function for the Barbed Wire's action
@@ -103,6 +103,6 @@ void BarbedWire::execute(const Payload &payload) {
     notifyAbilityUsed();
 
   } catch (const std::exception &e) {
-    return;
+    throw;
   }
 }
