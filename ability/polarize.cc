@@ -3,6 +3,9 @@
 #include "../game/link.h"
 #include "../game/player.h"
 #include "../utils/payload.h"
+#include "../controller/event_types.h"
+#include "../utils/message_queue.h"
+#include "../controller/game_event.h"
 #include <sstream>
 #include <string>
 
@@ -64,6 +67,15 @@ void Polarize::execute(const Payload &payload) {
   } else if (currentType == 1) {
     targetLink->setType(0); // Change Virus to Data
   }
+
+  std::shared_ptr<MessageQueue> queue = MessageQueue::getInstance();
+
+  map<string, string> payloadMap;
+  payloadMap["x"] = to_string(targetLink->getPosition().getPosition().first);
+  payloadMap["y"] = to_string(targetLink->getPosition().getPosition().second);
+  EventType eventType = EventType::Polarize;
+  Payload eventPayload{payloadMap};
+  queue->enqueueEvent(GameEvent(eventType, eventPayload));
 
   notifyAbilityUsed();
 }
