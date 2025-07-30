@@ -11,5 +11,4 @@ Ability::~Ability() {}
 void Ability::notifyAbilityUsed() {
   this->used = true;
   this->permission.setVisibleTo(gameState.getPlayers());
-  // TODO: Fire a GameEvent if necessary
 }
