@@ -11,8 +11,6 @@ void Position::operator=(const Position &other) {
   y = other.y;
 }
 
-Position::~Position() {}
-
 const std::pair<int, int> Position::getPosition() const {
   return std::make_pair(x, y);
 }

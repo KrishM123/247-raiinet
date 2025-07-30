@@ -11,7 +11,6 @@ public:
   Position(int x, int y);
   Position(const Position &other);
   void operator=(const Position &other);
-  ~Position();
 
   const std::pair<int, int> getPosition() const;
   void setPosition(int x, int y);

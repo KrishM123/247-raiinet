@@ -2,7 +2,6 @@
 #define MESSAGE_QUEUE_H
 
 #include "game_event.h"
-#include <atomic>
 #include <condition_variable>
 #include <memory>
 #include <mutex>
@@ -14,12 +13,11 @@ class GameEvent;
 
 class MessageSubscriber {
 public:
-    virtual ~MessageSubscriber() = default;
-    virtual void notify(GameEvent &event) = 0;
+  virtual ~MessageSubscriber() = default;
+  virtual void notify(GameEvent &event) = 0;
 };
 
 class MessageQueue {
-private:
   static std::shared_ptr<MessageQueue> instance;
   static std::mutex instanceMutex;
 
@@ -29,7 +27,7 @@ private:
   mutable std::mutex subscribersMutex;
   std::condition_variable cv;
   std::thread workerThread;
-  std::atomic<bool> running;
+  bool running;
 
   void processEvents();
 

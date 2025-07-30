@@ -1,6 +1,5 @@
 #include "message_queue.h"
 #include <algorithm>
-#include <iostream>
 
 std::shared_ptr<MessageQueue> MessageQueue::instance = nullptr;
 std::mutex MessageQueue::instanceMutex;
@@ -24,8 +23,9 @@ void MessageQueue::subscribe(MessageSubscriber *subscriber) {
 
 void MessageQueue::unsubscribe(MessageSubscriber *subscriber) {
   std::lock_guard<std::mutex> lock(subscribersMutex);
-  subscribers.erase(std::remove(subscribers.begin(), subscribers.end(), subscriber),
-                    subscribers.end());
+  subscribers.erase(
+      std::remove(subscribers.begin(), subscribers.end(), subscriber),
+      subscribers.end());
 }
 
 void MessageQueue::enqueueEvent(const GameEvent &event) {

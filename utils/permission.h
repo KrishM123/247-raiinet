@@ -16,7 +16,6 @@ private:
 public:
   Permission();
   Permission(shared_ptr<Player> owner);
-  ~Permission();
 
   shared_ptr<Player> getOwner() const;
 
@@ -24,8 +23,6 @@ public:
   void setVisibleTo(const vector<shared_ptr<Player>> &players);
 
   void addViewer(shared_ptr<Player> player);
-
-  void setOwner(shared_ptr<Player> newOwner);
 };
 
 #endif // PERMISSION_H

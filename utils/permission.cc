@@ -1,13 +1,11 @@
 #include "permission.h"
 #include "../game/player.h"
 
-Permission::Permission() : owner{} {}
+Permission::Permission() {}
 
 Permission::Permission(shared_ptr<Player> owner) : owner{owner} {
   visibleTo.push_back(owner);
 }
-
-Permission::~Permission() {}
 
 shared_ptr<Player> Permission::getOwner() const { return owner.lock(); }
 
@@ -30,17 +28,4 @@ void Permission::setVisibleTo(const vector<shared_ptr<Player>> &players) {
 
 void Permission::addViewer(shared_ptr<Player> player) {
   visibleTo.push_back(player);
-}
-
-void Permission::setOwner(shared_ptr<Player> newOwner) {
-    bool already_visible = false;
-    for (const auto& viewer : visibleTo) {
-        if ((*viewer.lock()).getPlayerNumber() == newOwner->getPlayerNumber()) {
-            already_visible = true;
-            break;
-        }
-    }
-    if (!already_visible) {
-        visibleTo.push_back(owner.lock());
-    }
 }
