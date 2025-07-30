@@ -168,6 +168,7 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       // If input is not valid, throw error
       throw std::invalid_argument("Invalid command");
     }
+    return nullptr;
   } catch (const std::exception &e) {
     std::cerr << "Error parsing command: " << e.what() << std::endl;
     return nullptr;
