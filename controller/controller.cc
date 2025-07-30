@@ -16,8 +16,9 @@
 #include "move_command.h"
 
 Controller::Controller(int numPlayers, int boardSize)
-    : graphicsEnabled{false}, boardSize{boardSize}, numPlayers{numPlayers},
-      views{}, linkFiles{std::vector<std::string>(numPlayers)},
+    : graphicsEnabled{false}, obstaclesEnabled{false}, sideMovesEnabled{false},
+      boardSize{boardSize}, numPlayers{numPlayers}, views{},
+      linkFiles{std::vector<std::string>(numPlayers)},
       abilities{std::vector<std::string>(numPlayers)}, playing{true} {}
 
 Controller::~Controller() {
@@ -31,7 +32,8 @@ void Controller::init(int argc, char *argv[]) {
   }
 
   gameState = std::make_unique<GameState>(numPlayers, boardSize,
-                                          loadLinkFiles(), abilities);
+                                          loadLinkFiles(), abilities,
+                                          obstaclesEnabled, sideMovesEnabled);
   gameState->init();
   for (int i = 0; i < numPlayers; i++) {
     if (graphicsEnabled) {
@@ -55,6 +57,10 @@ void Controller::parseCommandLineArgs(int argc, char *argv[]) {
       abilities[arg[arg.size() - 1] - '1'] = argv[++i];
     } else if (arg == "-graphics") {
       graphicsEnabled = true;
+    } else if (arg == "-obstacles") {
+      obstaclesEnabled = true;
+    } else if (arg == "-sidemoves") {
+      sideMovesEnabled = true;
     }
   }
 }

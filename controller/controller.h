@@ -15,6 +15,8 @@ class View;
 class Controller final : public MessageSubscriber {
   bool playing;
   bool graphicsEnabled;
+  bool obstaclesEnabled;
+  bool sideMovesEnabled;
   int boardSize;
   int numPlayers;
   std::vector<std::string> linkFiles;
@@ -33,7 +35,7 @@ public:
   ~Controller();
   void init(int argc = 0, char *argv[] = nullptr);
   void play();
-  
+
   void notify(GameEvent &event) override;
 };
 
