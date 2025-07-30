@@ -4,7 +4,9 @@
 
 #include "../utils/position.h"
 #include "cell.h"
+#include "link.h"
 #include "occupant.h"
+#include "player.h"
 
 Board::Board(int gridSize) : gridSize{gridSize} {
   grid.resize(gridSize + 2);
@@ -20,9 +22,19 @@ Board::~Board() {};
 
 bool Board::isValidPosition(const Position &pos, int curPlayer) {
   // Check if position is on a server cell or out of bounds
-  if (getCell(pos).getType()%10 == curPlayer % 10 ||
+  if (getCell(pos).getType() % 10 == curPlayer % 10 ||
       getCell(pos).getType() == -1) {
     return false;
+  }
+
+  vector<shared_ptr<Occupant>> occupants = getCell(pos).getOccupants();
+  for (auto &occupant : occupants) {
+    if (dynamic_pointer_cast<Link>(occupant)) {
+      shared_ptr<Link> link = dynamic_pointer_cast<Link>(occupant);
+      if (link->permission.getOwner()->getPlayerNumber() == curPlayer) {
+        return false;
+      }
+    }
   }
 
   return pos.getPosition().first >= 0 &&
