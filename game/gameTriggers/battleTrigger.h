@@ -6,10 +6,10 @@
 #include <memory>
 
 class BattleTrigger : public Trigger {
-  void notifyBattleTriggered(char winner, Position& position);
+  void notifyBattleTriggered(char winner, Position &position);
+
 public:
   BattleTrigger(GameState &gameState, const Position &pos);
-  ~BattleTrigger() override;
 };
 
 #endif // BATTLE_TRIGGER_H

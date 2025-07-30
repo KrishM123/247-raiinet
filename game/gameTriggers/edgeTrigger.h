@@ -9,7 +9,6 @@ class EdgeTrigger : public Trigger {
 public:
   EdgeTrigger(GameState &gameState, const Position &pos,
               const Permission &perm);
-  ~EdgeTrigger() override;
 };
 
 #endif // EDGE_TRIGGER_H

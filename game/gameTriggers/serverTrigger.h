@@ -8,7 +8,6 @@ class ServerTrigger : public Trigger {
 public:
   ServerTrigger(GameState &gameState, const Position &pos,
                 const Permission &perm);
-  ~ServerTrigger() override;
 };
 
 #endif // SERVER_TRIGGER_H
