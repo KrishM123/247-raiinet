@@ -10,11 +10,8 @@
 
 using namespace std;
 
-
 LinkBoost::LinkBoost(Permission &permission, GameState &gameState)
     : Ability("L", permission, gameState) {}
-
-LinkBoost::~LinkBoost() {}
 
 void LinkBoost::execute(const Payload &payload) {
   // Input: string (single char) representing a link
@@ -33,7 +30,8 @@ void LinkBoost::execute(const Payload &payload) {
   shared_ptr<Link> targetLink = gameState.getLink(linkId);
 
   // A player can only boost their own link
-  if (!targetLink || targetLink->permission.getOwner().get() != &currentPlayer) {
+  if (!targetLink ||
+      targetLink->permission.getOwner().get() != &currentPlayer) {
     return;
   }
 
@@ -44,7 +42,7 @@ void LinkBoost::execute(const Payload &payload) {
   for (const auto &move : currentMoves) {
     Position originalDelta = move.second;
     pair<int, int> deltaCoords = originalDelta.getPosition();
-    
+
     int newRow = deltaCoords.first;
     int newCol = deltaCoords.second;
 
@@ -59,7 +57,7 @@ void LinkBoost::execute(const Payload &payload) {
     } else if (newCol < 0) {
       newCol--;
     }
-    
+
     boostedMoves[move.first] = Position{newRow, newCol};
   }
   targetLink->setMoves(boostedMoves);

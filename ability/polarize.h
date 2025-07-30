@@ -6,7 +6,6 @@
 class Polarize final : public Ability {
 public:
   Polarize(Permission &permission, GameState &gameState);
-  ~Polarize() override;
 
   void execute(const Payload &payload) override;
 };

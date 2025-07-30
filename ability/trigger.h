@@ -18,7 +18,6 @@ public:
   Trigger(GameState &gameState, const Position &pos, const Permission &perm);
   Trigger(GameState &gameState, const Position &pos, const Permission &perm,
           std::function<void()> action);
-  ~Trigger() override = default;
 
   void trigger();
 };

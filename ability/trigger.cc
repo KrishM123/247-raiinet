@@ -1,5 +1,4 @@
 #include "trigger.h"
-#include "../utils/payload.h"
 
 using namespace std;
 

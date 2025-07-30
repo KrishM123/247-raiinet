@@ -11,8 +11,6 @@ using namespace std;
 Scan::Scan(Permission &permission, GameState &gameState)
     : Ability("A", permission, gameState) {}
 
-Scan::~Scan() {}
-
 void Scan::execute(const Payload &payload) {
   // Input: string (single char) representing a link. Example: "A"
   string args = payload.get("args");
@@ -25,19 +23,19 @@ void Scan::execute(const Payload &payload) {
   }
   char linkId = linkIdStr[0];
 
-  // 1. Find the target link
+  // Find the target link
   shared_ptr<Link> targetLink = gameState.getLink(linkId);
 
   if (!targetLink) {
     return;
   }
 
-  // 2. Get current player's shared_ptr
+  // Get current player's shared_ptr
   Player &currentPlayer = gameState.getCurPlayer();
   shared_ptr<Player> currentPlayerPtr =
       gameState.getPlayers()[currentPlayer.getPlayerNumber() - 1];
 
-  // 3. Add the current player to the link's visibility list
+  // Add the current player to the link's visibility list
   if (currentPlayerPtr) {
     targetLink->permission.addViewer(currentPlayerPtr);
   }

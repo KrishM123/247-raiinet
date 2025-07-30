@@ -1,24 +1,18 @@
 #include "../ability/barbed_wire.h"
-#include "../utils/game_event.h"
 #include "../game/board.h"
 #include "../game/cell.h"
 #include "../game/game_state.h"
 #include "../game/link.h"
-#include "../utils/message_queue.h"
 #include "../utils/payload.h"
 #include "../utils/position.h"
 #include "trigger.h"
-#include <iostream>
 #include <sstream>
 #include <string>
 
 using namespace std;
 
-// Constructor and Destructor
 BarbedWire::BarbedWire(Permission &permission, GameState &gameState)
     : Ability("B", permission, gameState) {}
-
-BarbedWire::~BarbedWire() {}
 
 void BarbedWire::execute(const Payload &payload) {
   // Input:
@@ -46,8 +40,9 @@ void BarbedWire::execute(const Payload &payload) {
 
     Position targetPos{row, col};
 
-    Cell& targetCell = gameState.getBoard().getCell(targetPos);
-    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 || targetCell.getType() == 2) {
+    Cell &targetCell = gameState.getBoard().getCell(targetPos);
+    if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
+        targetCell.getType() == 2) {
       throw invalid_argument("Position is not empty");
     }
 
@@ -59,7 +54,8 @@ void BarbedWire::execute(const Payload &payload) {
 
       for (auto &occupant : myCell.getOccupants()) {
         if (auto link = dynamic_pointer_cast<Link>(occupant)) {
-          if (link->permission.getOwner().get() != this->permission.getOwner().get()) {
+          if (link->permission.getOwner().get() !=
+              this->permission.getOwner().get()) {
             triggeredLink = link;
             break;
           }
@@ -74,28 +70,21 @@ void BarbedWire::execute(const Payload &payload) {
       triggeredLink->permission.setVisibleTo(allPlayers);
 
       // Reset the link's strength based on its type (Virus = 1, Data = 0)
-      if (triggeredLink->getType() == 0) { 
+      if (triggeredLink->getType() == 0) {
         triggeredLink->setStrength(1);
-      } else if (triggeredLink->getType() == 1) { 
+      } else if (triggeredLink->getType() == 1) {
         triggeredLink->setStrength(4);
       }
     };
 
     // Create a Trigger with the defined action
-    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission, barbedWireAction);
+    auto trigger = make_shared<Trigger>(gameState, targetPos, this->permission,
+                                        barbedWireAction);
 
     // Place the trigger on the board
     gameState.addOccupant(trigger, targetPos);
 
-    std::shared_ptr<MessageQueue> queue = MessageQueue::getInstance();
-
-    map<string, string> payloadMap;
-    payloadMap["x"] = to_string(targetPos.getPosition().first);
-    payloadMap["y"] = to_string(targetPos.getPosition().second);
-    payloadMap["marker"] = "x";
-    EventType eventType = EventType::AbilityPlaced;
-    Payload eventPayload{payloadMap};
-    queue->enqueueEvent(GameEvent(eventType, eventPayload));
+    notifyAbilityPlaced(targetPos, "x");
 
     notifyAbilityUsed();
 
