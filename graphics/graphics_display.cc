@@ -5,6 +5,7 @@
 #include "../game/player.h"
 #include "../utils/payload.h"
 #include <iostream>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -101,11 +102,125 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
   auto p2Links = player2->getLinks();
   for (int i = 0; i < 4; ++i) {
     auto link = p2Links[i];
-    std::string details;
+    string details;
     if (playerView == 1) { // P2's view
-      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      details = string(1, link->getName()) + ": " + (link->getDetails());
     } else { // P1's view, hide P2's details
-      details = std::string(1, link->getName()) + ": ??";
+      details = string(1, link->getName()) + ": ??";
+    }
+    window.drawString(x + i * 100, y, details);
+  }
+  y += 25;
+  for (int i = 4; i < 8; ++i) {
+    auto link = p2Links[i];
+    string details;
+    if (playerView == 1) {
+      details = string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      details = string(1, link->getName()) + ": ??";
+    }
+    window.drawString(x + (i - 4) * 100, y, details);
+  }
+}
+
+GraphicsDisplay::~GraphicsDisplay() {
+  // Graphics display cleanup
+}
+
+void GraphicsDisplay::updatePlayerInfo() {
+  // Clear existing player info areas
+  window.fillRectangle(0, 0, 420, 150, Xwindow::Seashell1);
+  window.fillRectangle(0, 600, 420, 200, Xwindow::Seashell1);
+
+  auto players = gameState.getPlayers();
+  auto player1 = players[0];
+  auto player2 = players[1];
+  int curPlayerNum = gameState.getCurPlayer().getPlayerNumber();
+
+  // Player 1 info
+  int x = 15;
+  int y = 50;
+  std::string p1Title = "Player 1:";
+  if (curPlayerNum == 1) {
+    p1Title += " *";
+  }
+  window.drawString(x, y, p1Title);
+
+  y += 25;
+  std::string p1Downloads =
+      "Downloaded: " + std::to_string(player1->getScore().first) + "D " +
+      std::to_string(player1->getScore().second) + "V";
+  window.drawString(x, y, p1Downloads);
+
+  y += 25;
+  std::string p1Abilities =
+      "Abilities: " + std::to_string(player1->getAbilities().size());
+  window.drawString(x, y, p1Abilities);
+
+  y += 25;
+  auto p1Links = player1->getLinks();
+  for (int i = 0; i < 4; ++i) {
+    auto link = p1Links[i];
+    std::string details;
+    if (playerView == 0) {
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      if (link->permission.viewableBy(*player2)) {
+        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      } else {
+        details = std::string(1, link->getName()) + ": ??";
+      }
+    }
+    window.drawString(x + i * 100, y, details);
+  }
+  y += 25;
+  for (int i = 4; i < 8; ++i) {
+    auto link = p1Links[i];
+    std::string details;
+    if (playerView == 0) {
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      if (link->permission.viewableBy(*player2)) {
+        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      } else {
+        details = std::string(1, link->getName()) + ": ??";
+      }
+    }
+    window.drawString(x + (i - 4) * 100, y, details);
+  }
+
+  // Player 2 info
+  y = 650;
+  std::string p2Title = "Player 2:";
+  if (curPlayerNum == 2) {
+    p2Title += " *";
+  }
+  window.drawString(x, y, p2Title);
+
+  y += 25;
+  std::string p2Downloads =
+      "Downloaded: " + std::to_string(player2->getScore().first) + "D " +
+      std::to_string(player2->getScore().second) + "V";
+  window.drawString(x, y, p2Downloads);
+
+  y += 25;
+  std::string p2Abilities =
+      "Abilities: " + std::to_string(player2->getAbilities().size());
+  window.drawString(x, y, p2Abilities);
+
+  y += 25;
+  auto p2Links = player2->getLinks();
+  for (int i = 0; i < 4; ++i) {
+    auto link = p2Links[i];
+    std::string details;
+    if (playerView == 1) {
+      details = std::string(1, link->getName()) + ": " + (link->getDetails());
+    } else {
+      if (link->permission.viewableBy(*player1)) {
+        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      } else {
+        details = std::string(1, link->getName()) + ": ??";
+      }
     }
     window.drawString(x + i * 100, y, details);
   }
@@ -116,37 +231,69 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
     if (playerView == 1) {
       details = std::string(1, link->getName()) + ": " + (link->getDetails());
     } else {
-      details = std::string(1, link->getName()) + ": ??";
+      if (link->permission.viewableBy(*player1)) {
+        details = std::string(1, link->getName()) + ": " + (link->getDetails());
+      } else {
+        details = std::string(1, link->getName()) + ": ??";
+      }
     }
     window.drawString(x + (i - 4) * 100, y, details);
   }
 }
-
-GraphicsDisplay::~GraphicsDisplay() {
-  // Graphics display cleanup
-}
-
 void GraphicsDisplay::printGame() {
-  // Graphics game printing implementation
+  updatePlayerInfo();
   Payload diff = getDiff();
-  std::cout << "Diff: " << std::endl;
-  std::cout << "Number of changes: " << diff.get("n") << std::endl;
-  std::cout << "X coordinates: " << diff.get("x") << std::endl;
-  std::cout << "Y coordinates: " << diff.get("y") << std::endl;
-  std::cout << "New values: " << diff.get("news") << std::endl;
+  string x = diff.get("x");
+  string y = diff.get("y");
+  string news = diff.get("news");
+  std::istringstream xStream(x);
+  std::istringstream yStream(y);
+  std::istringstream newsStream(news);
 
-  for (int i = 0; i < diff.get("n"); i++) {
-    int x = std::stoi(diff.get("x").at(i));
-    int y = std::stoi(diff.get("y").at(i));
-    std::string item = diff.get("news").at(i);
-
-    if (item == "D") {
-      drawCell(x, y, "D");
-    } else if (item == "V") {
-      drawCell(x, y, "V");
-    }
-    drawCell(x, y, item);
+  for (int i = 0; i < stoi(diff.get("n")); i++) {
+    int xVal, yVal;
+    char item;
+    xStream >> xVal;
+    yStream >> yVal;
+    newsStream >> item;
+    drawCell(xVal, yVal, item);
   }
 }
 
-void GraphicsDisplay::drawCell(int x, int y, string item) {}
+void GraphicsDisplay::drawCell(int x, int y, char item) {
+
+  cout << "Drawing cell: " << x << ", " << y << ", " << item << endl;
+
+  int xPos = (y - 1) * cellSize + 10;
+  int yPos = (x - 1) * cellSize + 175;
+
+  window.fillRectangle(xPos, yPos, cellSize, cellSize, Xwindow::Black);
+
+  if (item == '.') {
+    window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                         Xwindow::White);
+    return;
+  } else if (item >= 'a' && item <= 'h' || item >= 'A' && item <= 'H') {
+    auto link = gameState.getLink(item);
+    auto players = gameState.getPlayers();
+    auto curPlayer = players[playerView];
+    if (link->permission.viewableBy(*curPlayer)) {
+      if (link->getType() == 0) {
+        window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                             Xwindow::Seagreen2);
+      } else {
+        window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                             Xwindow::Brown1);
+      }
+    } else {
+      window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                           Xwindow::Gray50);
+    }
+
+  } else if (item == 'S') {
+    window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                         Xwindow::Gray30);
+  }
+  window.drawString(xPos + cellSize / 2 - 4, yPos + cellSize / 2 + 4,
+                    std::string(1, item));
+}

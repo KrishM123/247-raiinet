@@ -14,10 +14,11 @@ public:
   void printGame() override;
 
 private:
+  void updatePlayerInfo();
   Xwindow window;
   int gridSize;
   int cellSize;
-  void drawCell(int x, int y, string item);
+  void drawCell(int x, int y, char item);
 };
 
 #endif // GRAPHICS_DISPLAY_H
