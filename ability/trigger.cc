@@ -13,9 +13,4 @@ Trigger::Trigger(GameState &gameState, const Position &pos,
 
 void Trigger::trigger() {
   triggerAction();
-  notifyRuleUsed();
-}
-
-void Trigger::notifyRuleUsed() {
-  // Implement this later
 }

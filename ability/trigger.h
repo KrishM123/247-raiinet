@@ -13,10 +13,7 @@ class Trigger : public Occupant {
 protected:
   GameState &gameState;
   std::function<void()> triggerAction;
-
-private:
-  void notifyRuleUsed();
-
+  
 public:
   Trigger(GameState &gameState, const Position &pos, const Permission &perm);
   Trigger(GameState &gameState, const Position &pos, const Permission &perm,

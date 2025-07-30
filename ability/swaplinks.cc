@@ -28,23 +28,24 @@ void Swaplinks::execute(const Payload &payload) {
   string linkId1Str, linkId2Str;
   ss >> linkId1Str >> linkId2Str;
 
-  if (linkId1Str.length() != 1 || linkId2Str.length() != 1 || !ss.eof())
+  if (linkId1Str.length() != 1 || linkId2Str.length() != 1)
     return;
 
   Player &currentPlayer = gameState.getCurPlayer();
   shared_ptr<Link> link1 = gameState.getLink(linkId1Str[0]);
   shared_ptr<Link> link2 = gameState.getLink(linkId2Str[0]);
-  if (link1->permission.getOwner()->getPlayerNumber() !=
-          currentPlayer.getPlayerNumber() ||
-      link2->permission.getOwner()->getPlayerNumber() !=
-          currentPlayer.getPlayerNumber())
+  if (link1->permission.getOwner()->getPlayerNumber() != currentPlayer.getPlayerNumber() || 
+  link2->permission.getOwner()->getPlayerNumber() != currentPlayer.getPlayerNumber()) {
     throw std::invalid_argument("Cannot swap links that do not belong to the current player");
+  }
 
-  if (link1->getIsDownloaded() || link2->getIsDownloaded())
+  if (link1->getIsDownloaded() || link2->getIsDownloaded()) {
     throw std::invalid_argument("Cannot swap a downloaded link.");
+  }
 
-  if (!link1 || !link2 || link1 == link2)
-    return;
+  if (!link1 || !link2 || link1 == link2) {
+    throw std::invalid_argument("Invalid link IDs");
+  }
 
   Position pos1 = link1->getPosition();
   Position pos2 = link2->getPosition();

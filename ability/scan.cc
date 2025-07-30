@@ -20,7 +20,7 @@ void Scan::execute(const Payload &payload) {
   string linkIdStr;
   ss >> linkIdStr;
 
-  if (linkIdStr.length() != 1 || !ss.eof()) {
+  if (linkIdStr.length() != 1) {
     return;
   }
   char linkId = linkIdStr[0];
