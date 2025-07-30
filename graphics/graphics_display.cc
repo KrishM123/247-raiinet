@@ -14,7 +14,7 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
     : View(gameState, playerView), window{420, 800},
       gridSize{gameState.getBoard().getGridSize()}, cellSize{50} {
 
-  window.fillRectangle(0, 0, 420, 800, Xwindow::Seashell1);
+  window.fillRectangle(0, 0, 420, 800, Xwindow::Slategray1);
 
   auto players = gameState.getPlayers();
   auto player1 = players[0];
@@ -23,7 +23,7 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
   // Player 1 info
   int x = 15;
   int y = 50;
-  window.drawString(x, y, "Player 1:");
+  window.drawString(x, y, "Player 1: *");
   y += 25;
   window.drawString(x, y, "Downloaded: 0D 0V");
   y += 25;
@@ -60,14 +60,17 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
       int cellX = (j - 1) * cellSize + 10;
       int cellY = boardY + (i - 1) * cellSize;
       int color = Xwindow::White;
+      window.fillRectangle(cellX, cellY, cellSize, cellSize, Xwindow::Black);
+
       Cell &cell = gameState.getBoard().getCell(Position{i, j});
       if (cell.getType() == 1 || cell.getType() == 2) { // Server port
         color = Xwindow::Gray30;
-        window.fillRectangle(cellX, cellY, cellSize, cellSize, Xwindow::Black);
         window.fillRectangle(cellX + 1, cellY + 1, cellSize - 2, cellSize - 2,
                              color);
         window.drawString(cellX + cellSize / 2 - 4, cellY + cellSize / 2 + 4,
                           std::string(1, 'S'));
+        continue;
+      } else if (cell.getType() == -1) {
         continue;
       }
 
@@ -84,7 +87,6 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
         }
       }
 
-      window.fillRectangle(cellX, cellY, cellSize, cellSize, Xwindow::Black);
       window.fillRectangle(cellX + 1, cellY + 1, cellSize - 2, cellSize - 2,
                            color);
 
@@ -135,8 +137,8 @@ GraphicsDisplay::~GraphicsDisplay() {
 
 void GraphicsDisplay::updatePlayerInfo() {
   // Clear existing player info areas
-  window.fillRectangle(0, 0, 420, 150, Xwindow::Seashell1);
-  window.fillRectangle(0, 600, 420, 200, Xwindow::Seashell1);
+  window.fillRectangle(0, 0, 420, 150, Xwindow::Slategray1);
+  window.fillRectangle(0, 600, 420, 200, Xwindow::Slategray1);
 
   auto players = gameState.getPlayers();
   auto player1 = players[0];
@@ -304,10 +306,15 @@ void GraphicsDisplay::drawCell(int x, int y, char item) {
                              Xwindow::Gray50);
       }
     }
-
   } else if (item == 'S') {
     window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
                          Xwindow::Gray30);
+  } else if (item == 'w' || item == 'm') {
+    window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                         Xwindow::Darkorange);
+  } else if (item == 'x') {
+    window.fillRectangle(xPos + 1, yPos + 1, cellSize - 2, cellSize - 2,
+                         Xwindow::Gray75);
   }
   window.drawString(xPos + cellSize / 2 - 4, yPos + cellSize / 2 + 4,
                     std::string(1, item));
