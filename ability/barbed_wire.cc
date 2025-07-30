@@ -10,6 +10,7 @@
 #include "trigger.h"
 #include <sstream>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -48,7 +49,7 @@ void BarbedWire::execute(const Payload &payload) {
     Cell &targetCell = gameState.getBoard().getCell(targetPos);
     if (targetCell.getOccupants().size() > 1 || targetCell.getType() == 1 ||
         targetCell.getType() == 2) {
-      return;
+      std::cerr << "Position not empty" << std::endl;
     }
 
     // Define the lambda function for the Barbed Wire's action
