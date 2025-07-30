@@ -71,6 +71,8 @@ GraphicsDisplay::GraphicsDisplay(GameState &gameState, int playerView)
                           std::string(1, 'S'));
         continue;
       } else if (cell.getType() == -1) {
+        window.fillRectangle(cellX + 1, cellY + 1, cellSize - 2, cellSize - 2,
+                             Xwindow::Slategray1);
         continue;
       }
 

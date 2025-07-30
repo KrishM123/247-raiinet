@@ -72,6 +72,21 @@ void GameState::init() {
       }
     }
   }
+  // Set 3 random spaces to be empty (-1), avoiding first and last rows
+  srand(time(nullptr));
+  int count = 0;
+  while (count < 3) {
+    int i =
+        (rand() % (board.getGridSize() - 5)) + 3; // Range from row 3 to size-1
+    int j = (rand() % board.getGridSize()) + 1;
+    Cell &cell = board.getCell(Position{i, j});
+    // Skip if cell is a server
+    if (cell.getType() == -1) {
+      continue;
+    }
+    cell.setType(-1);
+    count++;
+  }
   // place links on board
   for (int i = 0; i < players.size(); i++) {
     auto playerLinks = players[i]->getLinks();
@@ -154,7 +169,8 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
   Position oldPos = link->getPosition();
   map<string, Position> possibleMoves = link->getMoves();
 
-  if (possibleMoves.find(direction) == possibleMoves.end() || link->getIsDownloaded()) {
+  if (possibleMoves.find(direction) == possibleMoves.end() ||
+      link->getIsDownloaded()) {
     throw invalid_argument("Invalid move: " + direction);
   }
 
@@ -165,10 +181,11 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
   int curPlayerNum = getCurPlayer().getPlayerNumber();
 
   if (curPlayerNum == 1) {
-    if (newRow > board.getGridSize() + 1) newRow = board.getGridSize() + 1;
-  } 
-  else if (curPlayerNum == 2) {
-    if (newRow < 0) newRow = 0;
+    if (newRow > board.getGridSize() + 1)
+      newRow = board.getGridSize() + 1;
+  } else if (curPlayerNum == 2) {
+    if (newRow < 0)
+      newRow = 0;
   }
   newPos.setPosition(newRow, newPos.getPosition().second);
 
