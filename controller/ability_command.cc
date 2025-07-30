@@ -31,7 +31,6 @@ void AbilityCommand::execute() {
       
       std::map<std::string, std::string> payloadMap = {{"args", args}};
       ability_ptr->execute(Payload(payloadMap));
-      std::cout << "Ability: " << ability_ptr->name << std::endl;
       std::map<std::string, std::string> eventPayloadMap = {
           {"player", std::to_string(gameState.getCurPlayer().getPlayerNumber() - 1)},
           {"ability", ability}};
@@ -39,7 +38,6 @@ void AbilityCommand::execute() {
       EventType eventType = EventType::AbilityUsed;
       MessageQueue::getInstance()->enqueueEvent(GameEvent(eventType, eventPayload));
       gameState.abilityUsed = true;
-      std::cout << "Ability used" << std::endl;
     }
   }
   if (!found) {

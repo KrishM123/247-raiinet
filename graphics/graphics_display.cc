@@ -246,6 +246,7 @@ void GraphicsDisplay::printGame() {
   string x = diff.get("x");
   string y = diff.get("y");
   string news = diff.get("news");
+  std::cout << "Diff: " << x << " " << y << " " << news << std::endl;
   std::istringstream xStream(x);
   std::istringstream yStream(y);
   std::istringstream newsStream(news);

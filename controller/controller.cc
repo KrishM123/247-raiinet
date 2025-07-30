@@ -144,7 +144,9 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
 void Controller::notify(GameEvent &event) {
   for (auto &view : views) {
     view->notify(event);
-    view->printGame();
+    if (graphicsEnabled) {
+      view->printGame();
+    }
   }
 }
 
