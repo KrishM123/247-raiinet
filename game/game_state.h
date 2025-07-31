@@ -22,7 +22,6 @@ class GameState final {
   void notifyLinkMoved(shared_ptr<Link> link, Position oldPos, Position newPos);
   void notifyLinkDownloaded(shared_ptr<Link> link,
                             shared_ptr<Player> downloader);
-  void notifySideTriggered(char winner, Position &oldPos, Position &newPos);
 
 public:
   GameState(int numPlayers, int boardSize, vector<string> links,
