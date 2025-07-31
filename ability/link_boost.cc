@@ -22,7 +22,7 @@ void LinkBoost::execute(const Payload &payload) {
 
   ss >> linkIdStr;
   if (linkIdStr.length() != 1) {
-    return;
+    throw std::invalid_argument("Invalid link ID");
   }
   char linkId = linkIdStr[0];
 
@@ -32,7 +32,7 @@ void LinkBoost::execute(const Payload &payload) {
   // A player can only boost their own link
   if (!targetLink ||
       targetLink->permission.getOwner().get() != &currentPlayer) {
-    return;
+    throw std::invalid_argument("Cannot boost link that doesn't belong to the current player");
   }
 
   // Apply boost
