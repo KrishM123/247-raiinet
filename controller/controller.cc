@@ -6,9 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "../game/game_state.h"
 #include "../game/player.h"
 #include "../graphics/graphics_display.h"
-#include "../game/game_state.h"
+#include "../graphics/single_graphics.h"
 #include "../graphics/text_display.h"
 #include "../graphics/view.h"
 #include "../utils/message_queue.h"
@@ -17,9 +18,9 @@
 #include "move_command.h"
 
 Controller::Controller(int numPlayers, int boardSize)
-    : graphicsEnabled{false}, obstaclesEnabled{false}, sideMovesEnabled{false},
-      boardSize{boardSize}, numPlayers{numPlayers}, views{},
-      linkFiles{std::vector<std::string>(numPlayers)},
+    : graphicsEnabled{false}, twoViews{false}, obstaclesEnabled{false},
+      sideMovesEnabled{false}, boardSize{boardSize}, numPlayers{numPlayers},
+      views{}, linkFiles{std::vector<std::string>(numPlayers)},
       abilities{std::vector<std::string>(numPlayers)}, playing{true} {}
 
 Controller::~Controller() {
@@ -38,11 +39,16 @@ void Controller::init(int argc, char *argv[]) {
                                           obstaclesEnabled, sideMovesEnabled);
   gameState->init();
   // Initialize views
-  for (int i = 0; i < numPlayers; i++) {
-    if (graphicsEnabled) {
-      views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
-    } else {
-      views.push_back(std::make_unique<TextDisplay>(*gameState, i));
+
+  if (graphicsEnabled && !twoViews) {
+    views.push_back(std::make_unique<SingleGraphics>(*gameState, 0));
+  } else {
+    for (int i = 0; i < numPlayers; i++) {
+      if (graphicsEnabled && twoViews) {
+        views.push_back(std::make_unique<GraphicsDisplay>(*gameState, i));
+      } else {
+        views.push_back(std::make_unique<TextDisplay>(*gameState, i));
+      }
     }
   }
 
@@ -61,6 +67,8 @@ void Controller::parseCommandLineArgs(int argc, char *argv[]) {
       abilities[arg[arg.size() - 1] - '1'] = argv[++i];
     } else if (arg == "-graphics") {
       graphicsEnabled = true;
+    } else if (arg == "-twoViews") {
+      twoViews = true;
     } else if (arg == "-obstacles") {
       obstaclesEnabled = true;
     } else if (arg == "-sidemoves") {
@@ -85,6 +93,8 @@ std::vector<std::string> Controller::loadLinkFiles() {
 
 void Controller::play() {
   std::cout << "Game started" << std::endl;
+  std::cout << "Views: " << views.size() << std::endl;
+
   // While game is not won and playing
   while (!gameState->isWon() && playing) {
     // Get input
