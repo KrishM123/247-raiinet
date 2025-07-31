@@ -225,7 +225,7 @@ void SingleGraphics::updatePlayerInfo() {
   y += 25;
   // Draw the player 1 abilities count
   string p1Abilities =
-      "Abilities: " + std::to_string(player1->getAbilities().size());
+      "Abilities: " + std::to_string(player1->getUnusedAbilities());
   // Draw the player 1 abilities count
   window.drawString(x, y, p1Abilities);
   // Increment the y position
@@ -292,7 +292,7 @@ void SingleGraphics::updatePlayerInfo() {
   // Increment the y position
   y += 25;
   string p2Abilities =
-      "Abilities: " + std::to_string(player2->getAbilities().size());
+      "Abilities: " + std::to_string(player2->getUnusedAbilities());
   // Draw the player 2 abilities count
   window.drawString(x, y, p2Abilities);
   // Increment the y position

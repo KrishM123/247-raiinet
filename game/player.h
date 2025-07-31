@@ -30,6 +30,7 @@ public:
   std::vector<std::shared_ptr<Link>> getDownloadedLinks();
   std::pair<int, int> getScore() const;
   int getPlayerNumber() const;
+  int getUnusedAbilities() const;
 
   void setDownloadedLinks(const std::vector<std::shared_ptr<Link>> &downloadedLinks);
 };
