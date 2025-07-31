@@ -18,8 +18,6 @@ View::View(GameState &gameState, int playerView)
           gridSize, std::vector<std::string>(gridSize, "."))),
       linksOnBoard(std::vector<std::vector<std::string>>(
           gridSize, std::vector<std::string>(gridSize, ""))),
-      usedAbilities(0),
-      unusedAbilities(gameState.getCurPlayer().getAbilities().size()),
       downloadedData(std::vector<int>(gameState.getPlayers().size(), 0)),
       downloadedVirus(std::vector<int>(gameState.getPlayers().size(), 0)) {
   // Initialize the board
@@ -111,25 +109,12 @@ void View::notify(GameEvent &event) {
       linksOnBoard[x][y] = "";
     }
   }
-  // If the event is a ability used
-  else if (event.getEventType() == EventType::AbilityUsed) {
-    // Get the player
-    int player = std::stoi(event.getPayload().get("player"));
-    // Increment the used abilities
-    usedAbilities++;
-    // Decrement the unused abilities
-    unusedAbilities--;
-  }
   // If the event is a ability placed
   else if (event.getEventType() == EventType::AbilityPlaced) {
     // Get the x and y of the ability
     int x = std::stoi(event.getPayload().get("x")) - 1;
     int y = std::stoi(event.getPayload().get("y")) - 1;
     string marker = event.getPayload().get("marker");
-    // Increment the used abilities
-    usedAbilities++;
-    // Decrement the unused abilities
-    unusedAbilities--;
     // Set the ability to the marker
     board[x][y] = marker[0];
   }

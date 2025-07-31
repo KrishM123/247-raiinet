@@ -151,3 +151,13 @@ void Player::setDownloadedLinks(
     const vector<shared_ptr<Link>> &downloadedLinks) {
   this->downloadedLinks = downloadedLinks;
 }
+
+int Player::getUnusedAbilities() const {
+  int unusedAbilities = 0;
+  for (const auto &ability : abilities) {
+    if (!ability->used) {
+      unusedAbilities++;
+    }
+  }
+  return unusedAbilities;
+}
