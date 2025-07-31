@@ -31,22 +31,10 @@ void AbilityCommand::execute() {
       } catch (const std::exception &e) {
         throw std::invalid_argument("Error executing ability: " + ability);
       }
-      // Send event to update UI
-      notifyAbilityUsed();
       gameState.abilityUsed = true;
     }
   }
   if (!found) {
     throw std::invalid_argument("Ability not found: " + ability);
   }
-}
-
-void AbilityCommand::notifyAbilityUsed() {
-  // Payload just needs player number
-  std::map<std::string, std::string> eventPayloadMap = {
-      {"player",
-       std::to_string(gameState.getCurPlayer().getPlayerNumber() - 1)}};
-  Payload eventPayload(eventPayloadMap);
-  EventType eventType = EventType::AbilityUsed;
-  MessageQueue::getInstance()->enqueueEvent(GameEvent(eventType, eventPayload));
 }

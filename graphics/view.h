@@ -17,8 +17,6 @@ protected:
   std::vector<std::vector<std::string>> oldBoard;
   std::vector<std::vector<std::string>> board;
   std::vector<std::vector<std::string>> linksOnBoard;
-  int usedAbilities;
-  int unusedAbilities;
   std::vector<int> downloadedData;
   std::vector<int> downloadedVirus;
 
