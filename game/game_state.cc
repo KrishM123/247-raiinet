@@ -201,19 +201,27 @@ void GameState::moveLink(shared_ptr<Link> link, string direction) {
   // Get the new position of the link
   Position newPos = oldPos + possibleMoves[direction];
 
-  // Cap row and col to be in the board + 2 buffer (for link boost error)
+  // Handle board wrap-around for side movements (left/right)
   int newRow = newPos.getPosition().first;
-  int curPlayerNum = getCurPlayer().getPlayerNumber();
+  int newCol = newPos.getPosition().second;
+  int gridSize = board.getGridSize();
 
-  // Cap the row to be in the board + 2 buffer (for link boost error)
-  if (curPlayerNum == 1) {
-    if (newRow > board.getGridSize() + 1)
-      newRow = board.getGridSize() + 1;
-  } else if (curPlayerNum == 2) {
-    if (newRow < 0)
+  // left/right movements
+  if (newCol < 1) { 
+    newCol = gridSize + newCol;
+  } else if (newCol > gridSize) { 
+    newCol = newCol - gridSize;
+  }
+
+  // up/down movements
+  int curPlayerNum = getCurPlayer().getPlayerNumber();
+  if (curPlayerNum == 1 && newRow > gridSize + 1) {
+      newRow = gridSize + 1;
+  } else if (curPlayerNum == 2 && newRow < 0) {
       newRow = 0;
   }
-  newPos.setPosition(newRow, newPos.getPosition().second);
+
+  newPos.setPosition(newRow, newCol);
 
   // If the new position is invalid, throw an error
   if (!board.isValidPosition(newPos, curPlayerNum)) {
