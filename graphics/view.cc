@@ -208,9 +208,7 @@ Payload View::getDiff() {
 }
 
 // Print the abilities
-void View::printAbilities() {
-  // Get the player display
-  Player &playerDisplay = *gameState.getPlayers()[playerView];
+void View::printAbilities(Player &playerDisplay) {
   // Loop through the players
   for (int i = 0; i < gameState.getPlayers().size(); i++) {
     // Get the current player

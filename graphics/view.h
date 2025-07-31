@@ -6,6 +6,7 @@
 
 class GameEvent;
 class GameState;
+class Player;
 class Payload;
 
 class View {
@@ -25,7 +26,7 @@ public:
   View(GameState &gameState, int playerView);
   void notify(GameEvent &event);
   virtual void printGame() = 0;
-  void printAbilities();
+  void printAbilities(Player &playerDisplay);
   void storeOldboard();
   Payload getDiff();
 };

@@ -164,12 +164,12 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       // For each player, if player number matches current player, print
       // abilities
       if (graphicsEnabled && !twoViews) {
-        views[0]->printAbilities();
+        views[0]->printAbilities(gameState->getCurPlayer());
       } else {
         for (int i = 0; i < numPlayers; i++) {
           if (gameState->getPlayers().at(i)->getPlayerNumber() ==
               gameState->getCurPlayer().getPlayerNumber()) {
-            views[i]->printAbilities();
+            views[i]->printAbilities(*gameState->getPlayers().at(i));
             break;
           }
         }
