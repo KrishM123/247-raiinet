@@ -21,6 +21,7 @@ public:
 
   bool viewableBy(const Player &player) const;
   void setVisibleTo(const vector<shared_ptr<Player>> &players);
+  vector<weak_ptr<Player>> getVisibleTo() const;
 
   void addViewer(shared_ptr<Player> player);
 };

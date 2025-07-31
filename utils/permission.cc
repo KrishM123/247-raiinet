@@ -32,3 +32,5 @@ void Permission::addViewer(shared_ptr<Player> player) {
   // Add the player to the visibleTo list
   visibleTo.push_back(player);
 }
+
+vector<weak_ptr<Player>> Permission::getVisibleTo() const { return visibleTo; };

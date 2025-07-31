@@ -15,6 +15,7 @@ class View;
 class Controller final : public MessageSubscriber {
   bool playing;
   bool graphicsEnabled;
+  bool twoViews;
   bool obstaclesEnabled;
   bool sideMovesEnabled;
   int boardSize;
