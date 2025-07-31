@@ -159,11 +159,15 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
     } else if (input.find("abilities") != std::string::npos) {
       // For each player, if player number matches current player, print
       // abilities
-      for (int i = 0; i < numPlayers; i++) {
-        if (gameState->getPlayers().at(i)->getPlayerNumber() ==
-            gameState->getCurPlayer().getPlayerNumber()) {
-          views[i]->printAbilities();
-          break;
+      if (graphicsEnabled && !twoViews) {
+        views[0]->printAbilities();
+      } else {
+        for (int i = 0; i < numPlayers; i++) {
+          if (gameState->getPlayers().at(i)->getPlayerNumber() ==
+              gameState->getCurPlayer().getPlayerNumber()) {
+            views[i]->printAbilities();
+            break;
+          }
         }
       }
     } else if (input.find("sequence") != std::string::npos) {
