@@ -149,11 +149,15 @@ std::unique_ptr<Command> Controller::parseInput(const std::string &input) {
       // If input is board, print game
     } else if (input == "board") {
       // For each player, if player number matches current player, print game
-      for (int i = 0; i < numPlayers; i++) {
-        if (gameState->getPlayers().at(i)->getPlayerNumber() ==
-            gameState->getCurPlayer().getPlayerNumber()) {
-          views[i]->printGame();
-          break;
+      if (graphicsEnabled && !twoViews) {
+        views[0]->printGame();
+      } else {
+        for (int i = 0; i < numPlayers; i++) {
+          if (gameState->getPlayers().at(i)->getPlayerNumber() ==
+              gameState->getCurPlayer().getPlayerNumber()) {
+            views[i]->printGame();
+            break;
+          }
         }
       }
     } else if (input.find("abilities") != std::string::npos) {
