@@ -93,7 +93,6 @@ std::vector<std::string> Controller::loadLinkFiles() {
 
 void Controller::play() {
   std::cout << "Game started" << std::endl;
-  std::cout << "Views: " << views.size() << std::endl;
 
   // While game is not won and playing
   while (!gameState->isWon() && playing) {
