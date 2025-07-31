@@ -41,4 +41,6 @@ void Scan::execute(const Payload &payload) {
   }
   
   notifyAbilityUsed();
+  notifyOccupantRemoved(targetLink->getPosition());
+  notifyOccupantAdded(targetLink->getPosition(), linkId);
 }
